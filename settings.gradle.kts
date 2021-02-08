@@ -1,3 +1,1 @@
-
-rootProject.name = "tix-core"
-
+rootProject.name = "core"
