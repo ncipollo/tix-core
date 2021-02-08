@@ -39,8 +39,8 @@ kotlin {
 
     nativeTarget.apply {
         binaries {
-            executable {
-                entryPoint = "main"
+            sharedLib {
+                baseName = "core"
             }
         }
     }
