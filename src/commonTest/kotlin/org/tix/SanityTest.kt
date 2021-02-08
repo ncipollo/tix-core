@@ -1,4 +1,4 @@
-package tixorg
+package org.tix
 
 import kotlin.test.Test
 import kotlin.test.expect
