@@ -6,8 +6,6 @@ import kotlin.test.expect
 class SanityTest {
     @Test
     fun testSanity() {
-        expect(true) {
-            false
-        }
+        expect(true) { true }
     }
 }
