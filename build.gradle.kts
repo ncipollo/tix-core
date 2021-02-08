@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "org.tix"
-version = "0.0.2"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
