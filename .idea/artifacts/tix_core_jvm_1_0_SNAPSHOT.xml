@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="tix-core-jvm-1.0-SNAPSHOT">
+    <output-path>$PROJECT_DIR$/build/libs</output-path>
+    <root id="archive" name="tix-core-jvm-1.0-SNAPSHOT.jar">
+      <element id="module-output" name="tix-core.jvmMain" />
+    </root>
+  </artifact>
+</component>
