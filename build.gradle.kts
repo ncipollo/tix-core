@@ -7,6 +7,8 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    // Note: We are using a fork until this PR is merged: https://github.com/JetBrains/markdown/pull/59
+    maven { setUrl("https://dl.bintray.com/drewcarlson/mordant") }
 }
 
 kotlin {
@@ -45,7 +47,11 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains:markdown:0.2.0.pre-mpp")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
