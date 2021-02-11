@@ -1,5 +1,8 @@
 plugins {
-    kotlin("multiplatform") version "1.4.30"
+    val kotlinVersion = "1.4.30"
+
+    kotlin("multiplatform") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
 }
 
 group = "org.tix"
@@ -7,6 +10,7 @@ version = "0.0.1"
 
 repositories {
     mavenCentral()
+    jcenter()
     // Note: We are using a fork until this PR is merged: https://github.com/JetBrains/markdown/pull/59
     maven { setUrl("https://dl.bintray.com/drewcarlson/mordant") }
 }
@@ -40,6 +44,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains:markdown:0.2.0.pre-mpp")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0-RC")
+                implementation("net.mamoe.yamlkt:yamlkt:0.9.0-dev-1")
             }
         }
         val commonTest by getting {
