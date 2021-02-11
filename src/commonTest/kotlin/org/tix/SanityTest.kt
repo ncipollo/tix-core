@@ -17,7 +17,7 @@ import kotlin.test.Test
 import kotlin.test.expect
 
 class SanityTest {
-    val markdown =
+    private val markdown =
         """
             # Section 1
             This is a section.
