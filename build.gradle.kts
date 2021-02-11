@@ -1,6 +1,5 @@
 plugins {
     val kotlinVersion = "1.4.30"
-
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 }
@@ -43,6 +42,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
                 implementation("org.jetbrains:markdown:0.2.0.pre-mpp")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0-RC")
                 implementation("net.mamoe.yamlkt:yamlkt:0.9.0-dev-1")
