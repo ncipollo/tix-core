@@ -4,4 +4,8 @@ import kotlinx.serialization.Serializable
 import org.tix.model.ticket.body.BodySegment
 
 @Serializable
-data class Ticket(val title: String = "", val body: List<BodySegment> = emptyList())
+data class Ticket(
+    val title: String = "",
+    val body: List<BodySegment> = emptyList(),
+    val children: List<Ticket> = emptyList()
+)
