@@ -1,4 +1,4 @@
-package org.tix.domain.plan.parse
+package org.tix.feature.plan.parse
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
