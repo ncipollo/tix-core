@@ -11,11 +11,22 @@ class TicketParserTest {
             Ticket 2
             ## Section 3
             Sub Ticket 1
+            - Item 1 blah blah
+            blah blah blah
+            - Item 2
+            - Item 3
+            ```tix
+            epic: test
+            ```
         """.trimIndent()
     private val parser = TicketParser()
 
     @Test
     fun parse() {
-        parser.parse(markdown)
+        try {
+            parser.parse(markdown)
+        } catch (e: ParseException) {
+
+        }
     }
 }

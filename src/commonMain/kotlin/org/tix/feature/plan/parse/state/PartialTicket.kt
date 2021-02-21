@@ -5,7 +5,7 @@ import org.tix.model.ticket.body.BodySegment
 import org.tix.model.ticket.body.TicketBody
 import org.tix.model.ticket.field.TicketFields
 
-data class PartialTicket(
+internal data class PartialTicket(
     var title: String = "",
     var body: MutableList<BodySegment> = ArrayList(),
     val fields: TicketFields = TicketFields(),
