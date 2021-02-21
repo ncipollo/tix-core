@@ -1,5 +1,12 @@
 package org.tix.feature.plan.parse
 
-class ParseException(message: String) : RuntimeException(message)
+import org.intellij.markdown.ast.ASTNode
 
-fun parseError(message: Any): Nothing = throw ParseException(message.toString())
+class ParseException(message: String, node: ASTNode, markdownText: String) :
+    RuntimeException(parserMessage(message, node, markdownText))
+
+fun parseError(message: Any, node: ASTNode, markdownText: String): Nothing =
+    throw ParseException(message.toString(), node, markdownText)
+
+private fun parserMessage(message: String, node: ASTNode, markdownText: String) =
+    "Markdown Parser  (L${node.lineNumber(markdownText)}): $message"

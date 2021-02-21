@@ -1,7 +1,7 @@
 package org.tix.feature.plan.parse.nodeparser
 
-import org.intellij.markdown.IElementType
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.ast.ASTNode
 import org.tix.feature.plan.parse.parseError
 
 internal class NodeParserMap {
@@ -13,8 +13,9 @@ internal class NodeParserMap {
         MarkdownElementTypes.ATX_4 to headingParser,
         MarkdownElementTypes.ATX_5 to headingParser,
         MarkdownElementTypes.ATX_6 to headingParser
-    ).mapKeys { it.key.toString() }
+    ).mapKeys { it.key.name }
 
-    fun parserForElementType(elementType: IElementType) =
-        map[elementType.toString()] ?: parseError("Unknown element type: $elementType")
+    fun parserForNode(node: ASTNode, markdownText: String) = node.run {
+        map[type.name] ?: parseError("Unknown element type: $type", node, markdownText)
+    }
 }

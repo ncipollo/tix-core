@@ -1,6 +1,7 @@
 package org.tix.feature.plan.parse.nodeparser
 
 import org.intellij.markdown.MarkdownElementTypes
+import org.intellij.markdown.ast.LeafASTNode
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -18,7 +19,8 @@ class NodeParserMapTest {
             MarkdownElementTypes.ATX_6,
         )
         headerTypes.forEach { type ->
-            expect(HeadingParser::class) { parserMap.parserForElementType(type)::class }
+            val node = LeafASTNode(type, 0, 1)
+            expect(HeadingParser::class) { parserMap.parserForNode(node, "markdown text")::class }
         }
     }
 }

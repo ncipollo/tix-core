@@ -21,7 +21,7 @@ internal class TicketParser(private val markdownParser: MarkdownParser = default
         var arguments = parserArguments(markdown, rootNode.children)
 
         while (arguments.shouldContinueParsing) {
-            val parser = parserMap.parserForElementType(arguments.currentNode.type)
+            val parser = parserMap.parserForNode(arguments.currentNode, arguments.markdownText)
             val result = parser.parse(arguments)
             arguments = arguments.nextArgsFromResult(result)
         }
