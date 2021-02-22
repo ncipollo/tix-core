@@ -21,29 +21,18 @@ internal class HeadingParser : NodeParser {
     }
 
     override fun parse(arguments: ParserArguments): ParserResult {
-        val ticketTitle = ticketTitle(arguments)
         updateTicketState(arguments)
-        arguments.state.currentTicket?.title = ticketTitle.toString()
+        arguments.state.currentTicket?.title = ticketTitle(arguments)
 
         return results(arguments)
     }
-
-    private fun ticketTitle(arguments: ParserArguments) =
-        arguments.currentNode.run {
-            val contentNode = findChildOfType(MarkdownTokenTypes.ATX_CONTENT)
-            contentNode?.getTextInNode(arguments.markdownText) ?: parseError(
-                "header is missing content",
-                this,
-                arguments.markdownText
-            )
-        }
 
     private fun updateTicketState(arguments: ParserArguments) {
         val node = arguments.currentNode
         val state = arguments.state
         val levelDifference = state.ticketLevel - node.level()
 
-        if (levelDifference >= -1) {
+        if (levelDifference >= 0) {
             completeTickets(state, levelDifference)
             state.startTicket()
         } else {
@@ -52,11 +41,25 @@ internal class HeadingParser : NodeParser {
     }
 
     private fun completeTickets(state: ParserState, levelDifference: Int) =
-        repeat(levelDifference + 1) { state.completeTicket() }
+        repeat(levelDifference) { state.completeTicket() }
 
     private fun ASTNode.level() = levelMap[type.name]!!
 
-    private fun results(arguments: ParserArguments) : ParserResult {
+    private fun ticketTitle(arguments: ParserArguments) =
+        arguments.currentNode.run {
+            val contentNode = findContentNode(this)
+            contentNode?.getTextInNode(arguments.markdownText)?.toString()
+                ?: parseError(
+                    "header is missing content",
+                    this,
+                    arguments.markdownText
+                )
+        }
+
+    private fun findContentNode(node: ASTNode) =
+        node.findChildOfType(MarkdownTokenTypes.ATX_CONTENT)?.findChildOfType(MarkdownTokenTypes.TEXT)
+
+    private fun results(arguments: ParserArguments): ParserResult {
         val nextType = arguments.nextNode?.type?.name
         return if (nextType == MarkdownTokenTypes.EOL.name) {
             arguments.resultsFromArgs(2)

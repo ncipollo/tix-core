@@ -16,7 +16,6 @@ internal class ParserState {
     }
 
     fun completeTicket() {
-        // TODO: Add traversal logic
         if (ticketLevel == 1) {
             currentTicket?.let { rootTickets.add(it) }
         }
