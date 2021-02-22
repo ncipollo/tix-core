@@ -52,10 +52,4 @@ class ParserStateTest {
 
         expect(2) { parserState.ticketLevel }
     }
-
-    @Test
-    fun ticketNeedsTitle() {
-        parserState.startTicket()
-        expect(true) { parserState.ticketNeedsTitle }
-    }
 }
