@@ -16,7 +16,7 @@ internal data class ParserArguments(
 
     fun nextArgsFromResult(result: ParserResult) = copy(nodeIndex = result.nextIndex)
 
-    fun resultsFromArgs(indexIncrement: Int) = ParserResult(nextIndex = nodeIndex + indexIncrement)
+    fun resultsFromArgs(indexIncrement: Int = 1) = ParserResult(nextIndex = nodeIndex + indexIncrement)
 }
 
 internal fun parserArguments(markdownText: String, nodes: List<ASTNode>) =

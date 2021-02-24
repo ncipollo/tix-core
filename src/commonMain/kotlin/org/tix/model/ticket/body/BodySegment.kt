@@ -52,3 +52,6 @@ data class TextSegment(val text: String = "") : BodySegment()
 
 @Serializable
 object ThematicBreakSegment : BodySegment()
+
+@Serializable
+data class WhitespaceSegment(val count: Int) : BodySegment()
