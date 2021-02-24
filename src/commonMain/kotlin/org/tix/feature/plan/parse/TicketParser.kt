@@ -19,11 +19,6 @@ internal class TicketParser(private val markdownParser: MarkdownParser = default
 
     private fun parseNodes(rootNode: ASTNode, markdown: String) {
         var arguments = parserArguments(markdown, rootNode.children)
-
-        while (arguments.shouldContinueParsing) {
-            val parser = parserMap.parserForNode(arguments.currentNode, arguments.markdownText)
-            val result = parser.parse(arguments)
-            arguments = arguments.nextArgsFromResult(result)
-        }
+        traverseTickets(arguments, parserMap)
     }
 }
