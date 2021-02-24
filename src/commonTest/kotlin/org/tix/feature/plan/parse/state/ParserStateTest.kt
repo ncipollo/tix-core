@@ -1,7 +1,7 @@
 package org.tix.feature.plan.parse.state
 
 import org.tix.model.ticket.body.BlockQuoteSegment
-import org.tix.model.ticket.body.LineBreak
+import org.tix.model.ticket.body.LineBreakSegment
 import org.tix.model.ticket.body.TextBlockSegment
 import kotlin.test.Test
 import kotlin.test.expect
@@ -22,7 +22,7 @@ class ParserStateTest {
         parserState.startTicket()
         parserState.addBodyLineBreak()
 
-        expect(listOf(LineBreak)) { parserState.currentTicket!!.body }
+        expect(listOf(LineBreakSegment)) { parserState.currentTicket!!.body }
     }
 
     @Test

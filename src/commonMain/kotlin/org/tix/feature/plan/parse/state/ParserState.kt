@@ -1,7 +1,7 @@
 package org.tix.feature.plan.parse.state
 
 import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.LineBreak
+import org.tix.model.ticket.body.LineBreakSegment
 
 internal class ParserState {
     private val ticketPath: MutableList<PartialTicket> = ArrayList()
@@ -32,5 +32,5 @@ internal class ParserState {
 
     fun addBodySegments(vararg segments: BodySegment) = currentTicket?.body?.addAll(segments)
 
-    fun addBodyLineBreak() = addBodySegments(LineBreak)
+    fun addBodyLineBreak() = addBodySegments(LineBreakSegment)
 }
