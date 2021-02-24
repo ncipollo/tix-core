@@ -1,10 +1,29 @@
 package org.tix.feature.plan.parse.state
 
+import org.tix.model.ticket.body.BlockQuoteSegment
+import org.tix.model.ticket.body.LineBreak
+import org.tix.model.ticket.body.TextBlockSegment
 import kotlin.test.Test
 import kotlin.test.expect
 
 class ParserStateTest {
     private val parserState = ParserState()
+
+    @Test
+    fun addBodySegments() {
+        parserState.startTicket()
+        parserState.addBodySegments(BlockQuoteSegment, TextBlockSegment)
+
+        expect(listOf(BlockQuoteSegment, TextBlockSegment)) { parserState.currentTicket!!.body }
+    }
+
+    @Test
+    fun addBodyLineBreak() {
+        parserState.startTicket()
+        parserState.addBodyLineBreak()
+
+        expect(listOf(LineBreak)) { parserState.currentTicket!!.body }
+    }
 
     @Test
     fun completeTicket() {
