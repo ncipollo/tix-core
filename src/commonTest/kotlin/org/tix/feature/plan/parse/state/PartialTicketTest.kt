@@ -1,6 +1,8 @@
 package org.tix.feature.plan.parse.state
 
 import org.tix.model.ticket.Ticket
+import org.tix.model.ticket.body.BodySegment
+import org.tix.model.ticket.body.LineBreakSegment
 import org.tix.model.ticket.body.TextSegment
 import org.tix.model.ticket.body.TicketBody
 import kotlin.test.Test
@@ -18,6 +20,25 @@ class PartialTicketTest {
         body = mutableListOf(TextSegment()),
         children = mutableListOf(childTicket1)
     )
+
+    @Test
+    fun addSegments() {
+        rootTicket.addSegments(arrayOf(LineBreakSegment))
+        expect(listOf(TextSegment(), LineBreakSegment)) { rootTicket.body }
+    }
+
+    @Test
+    fun buildNestedBody() {
+        val outerBody = rootTicket.buildNestedBody {
+            rootTicket.addSegments(arrayOf(LineBreakSegment))
+            val innerBody = rootTicket.buildNestedBody {
+                rootTicket.addSegments(arrayOf(TextSegment("inner")))
+            }
+            expect(listOf<BodySegment>(TextSegment("inner"))) { innerBody }
+        }
+        expect(listOf<BodySegment>(LineBreakSegment)) { outerBody }
+        expect(listOf<BodySegment>(TextSegment())) { rootTicket.body }
+    }
 
     @Test
     fun ticket() {

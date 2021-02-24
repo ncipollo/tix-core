@@ -1,6 +1,5 @@
 package org.tix.feature.plan.parse.state
 
-import org.intellij.markdown.lexer.pop
 import org.tix.model.ticket.body.BodySegment
 
 internal class BodyState(body: MutableList<BodySegment>) : BodyBuilder {
@@ -8,7 +7,7 @@ internal class BodyState(body: MutableList<BodySegment>) : BodyBuilder {
 
     fun pushBody() = bodyStack.add(ArrayList())
 
-    fun popBody() = bodyStack.pop()
+    fun popBody() = bodyStack.removeLast()
 
     override fun addSegments(bodySegments: Array<out BodySegment>) {
         bodyStack.lastOrNull()?.addAll(bodySegments)

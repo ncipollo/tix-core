@@ -10,8 +10,10 @@ internal data class PartialTicket(
     var body: MutableList<BodySegment> = ArrayList(),
     val fields: TicketFields = TicketFields(),
     var children: MutableList<PartialTicket> = ArrayList(),
+) : BodyBuilder  {
     private val bodyState: BodyState = BodyState(body)
-) : BodyBuilder by bodyState {
+
+    override fun addSegments(bodySegments: Array<out BodySegment>) = bodyState.addSegments(bodySegments)
 
     fun buildNestedBody(buildBlock: () -> Unit) : List<BodySegment> {
         bodyState.pushBody()
