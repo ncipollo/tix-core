@@ -1,8 +1,6 @@
 package org.tix.feature.plan.parse.state
 
-import org.tix.model.ticket.body.BlockQuoteSegment
-import org.tix.model.ticket.body.LineBreakSegment
-import org.tix.model.ticket.body.TextBlockSegment
+import org.tix.model.ticket.body.*
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -62,6 +60,20 @@ class ParserStateTest {
         parserState.currentTicket?.title = "title"
 
         expect(PartialTicket(title = "title")) { parserState.currentTicket }
+    }
+
+    @Test
+    fun buildNestedBody() {
+        parserState.startTicket()
+        val outerBody = parserState.buildNestedBody {
+            parserState.addBodySegments(LineBreakSegment)
+            val innerBody = parserState.buildNestedBody {
+                parserState.addBodySegments(TextSegment("inner"))
+            }
+            expect(listOf<BodySegment>(TextSegment("inner"))) { innerBody }
+        }
+        expect(listOf<BodySegment>(LineBreakSegment)) { outerBody }
+        expect(emptyList()) { parserState.currentTicket!!.body }
     }
 
     @Test

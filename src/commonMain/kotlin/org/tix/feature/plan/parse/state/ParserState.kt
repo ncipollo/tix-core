@@ -33,4 +33,7 @@ internal class ParserState {
     fun addBodySegments(vararg segments: BodySegment) = currentTicket?.addSegments(segments)
 
     fun addBodyLineBreak() = addBodySegments(LineBreakSegment)
+
+    fun buildNestedBody(buildBlock: () -> Unit) : List<BodySegment> =
+        currentTicket?.buildNestedBody(buildBlock) ?: error("no ticket has been started")
 }
