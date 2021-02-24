@@ -15,6 +15,7 @@ internal class NodeParserMap {
         MarkdownElementTypes.ATX_5 to headingParser,
         MarkdownElementTypes.ATX_6 to headingParser,
         MarkdownTokenTypes.EOL to LineBreakParser(),
+        MarkdownTokenTypes.TEXT to TextParser(),
         MarkdownTokenTypes.WHITE_SPACE to WhitespaceParser(),
     ).mapKeys { it.key.name }
 

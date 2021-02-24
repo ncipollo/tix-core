@@ -13,6 +13,20 @@ class ParserArgumentsTest {
     """.trimIndent().toParserArguments()
 
     @Test
+    fun childArguments_noChildren() {
+        expect(null) {
+            initialArguments.childArguments!!.childArguments
+        }
+    }
+
+    @Test
+    fun childArguments_withChildren() {
+        expect(initialArguments.copy(nodes = initialArguments.currentNode.children, nodeIndex = 0)) {
+            initialArguments.childArguments
+        }
+    }
+
+    @Test
     fun currentNode() {
         expect(MarkdownElementTypes.ATX_1.toString()) { initialArguments.currentNode.type.toString() }
     }
@@ -60,5 +74,10 @@ class ParserArgumentsTest {
     @Test
     fun shouldContinueParsing_returnsTrueWhenMoreNodesExist() {
         assertTrue { initialArguments.shouldContinueParsing }
+    }
+
+    @Test
+    fun textInCurrentNode() {
+        expect("# Section 1") { initialArguments.textInCurrentNode() }
     }
 }
