@@ -9,8 +9,16 @@ internal data class PartialTicket(
     var title: String = "",
     var body: MutableList<BodySegment> = ArrayList(),
     val fields: TicketFields = TicketFields(),
-    var children: MutableList<PartialTicket> = ArrayList()
-) {
+    var children: MutableList<PartialTicket> = ArrayList(),
+    private val bodyState: BodyState = BodyState(body)
+) : BodyBuilder by bodyState {
+
+    fun buildNestedBody(buildBlock: () -> Unit) : List<BodySegment> {
+        bodyState.pushBody()
+        buildBlock()
+        return bodyState.popBody()
+    }
+
     fun ticket(): Ticket = Ticket(
         title = title,
         body = TicketBody(body),

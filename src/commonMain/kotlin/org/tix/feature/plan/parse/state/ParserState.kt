@@ -30,7 +30,7 @@ internal class ParserState {
         }
     }
 
-    fun addBodySegments(vararg segments: BodySegment) = currentTicket?.body?.addAll(segments)
+    fun addBodySegments(vararg segments: BodySegment) = currentTicket?.addSegments(segments)
 
     fun addBodyLineBreak() = addBodySegments(LineBreakSegment)
 }
