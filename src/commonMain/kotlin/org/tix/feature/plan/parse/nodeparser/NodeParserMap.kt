@@ -15,6 +15,7 @@ internal class NodeParserMap {
         MarkdownElementTypes.ATX_5 to headingParser,
         MarkdownElementTypes.ATX_6 to headingParser,
         MarkdownTokenTypes.EOL to LineBreakParser(),
+        MarkdownTokenTypes.WHITE_SPACE to WhitespaceParser(),
     ).mapKeys { it.key.name }
 
     fun parserForNode(node: ASTNode, markdownText: String) = node.run {

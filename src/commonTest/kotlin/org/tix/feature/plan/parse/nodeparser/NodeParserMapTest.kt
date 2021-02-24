@@ -30,4 +30,10 @@ class NodeParserMapTest {
         val node = LeafASTNode(MarkdownTokenTypes.EOL, 0, 1)
         expect(LineBreakParser::class) { parserMap.parserForNode(node, "markdown text")::class }
     }
+
+    @Test
+    fun parserForElementType_whitespaceType() {
+        val node = LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, 0, 1)
+        expect(WhitespaceParser::class) { parserMap.parserForNode(node, "  ")::class }
+    }
 }
