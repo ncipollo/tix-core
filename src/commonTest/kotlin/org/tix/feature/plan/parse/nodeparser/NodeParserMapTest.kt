@@ -44,6 +44,12 @@ class NodeParserMapTest {
     }
 
     @Test
+    fun parserForElementType_strongEmphasis() {
+        val node = LeafASTNode(MarkdownElementTypes.STRONG, 0, 1)
+        expect(StrongEmphasisParser::class) { parserMap.parserForNode(node, "")::class }
+    }
+
+    @Test
     fun parserForElementType_textType() {
         val node = LeafASTNode(MarkdownTokenTypes.TEXT, 0, 3)
         expect(TextParser::class) { parserMap.parserForNode(node, "")::class }

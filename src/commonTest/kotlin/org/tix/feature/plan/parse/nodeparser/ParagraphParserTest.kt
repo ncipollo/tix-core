@@ -9,16 +9,18 @@ class ParagraphParserTest {
 
     @Test
     fun parse() {
-        val arguments = "line1\nline2".toParserArguments()
+        val arguments = "text\n*emph* **strong**".toParserArguments()
         arguments.state.startTicket()
 
         val results = parser.parse(arguments)
 
         val expectedSegment = ParagraphSegment(
             listOf(
-                TextSegment("line1"),
+                TextSegment("text"),
                 LineBreakSegment,
-                TextSegment("line2")
+                EmphasisSegment("emph"),
+                WhitespaceSegment(1),
+                StrongEmphasisSegment("strong"),
             ).toTicketBody()
         )
         expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }

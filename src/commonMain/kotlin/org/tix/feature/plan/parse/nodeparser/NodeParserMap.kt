@@ -16,6 +16,7 @@ internal class NodeParserMap {
         MarkdownElementTypes.ATX_6 to headingParser,
         MarkdownElementTypes.EMPH to EmphasisParser(),
         MarkdownElementTypes.PARAGRAPH to ParagraphParser(this),
+        MarkdownElementTypes.STRONG to StrongEmphasisParser(),
         MarkdownTokenTypes.EOL to LineBreakParser(),
         MarkdownTokenTypes.TEXT to TextParser(),
         MarkdownTokenTypes.WHITE_SPACE to WhitespaceParser(),
