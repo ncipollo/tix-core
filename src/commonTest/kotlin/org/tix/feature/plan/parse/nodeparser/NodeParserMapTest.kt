@@ -10,6 +10,12 @@ class NodeParserMapTest {
     private val parserMap = NodeParserMap()
 
     @Test
+    fun parserForElementType_emphasis() {
+        val node = LeafASTNode(MarkdownElementTypes.EMPH, 0, 1)
+        expect(EmphasisParser::class) { parserMap.parserForNode(node, "")::class }
+    }
+
+    @Test
     fun parserForElementType_headerTypes() {
         val headerTypes = listOf(
             MarkdownElementTypes.ATX_1,
@@ -21,31 +27,31 @@ class NodeParserMapTest {
         )
         headerTypes.forEach { type ->
             val node = LeafASTNode(type, 0, 1)
-            expect(HeadingParser::class) { parserMap.parserForNode(node, "markdown text")::class }
+            expect(HeadingParser::class) { parserMap.parserForNode(node, "")::class }
         }
     }
 
     @Test
     fun parserForElementType_lineBreakType() {
         val node = LeafASTNode(MarkdownTokenTypes.EOL, 0, 1)
-        expect(LineBreakParser::class) { parserMap.parserForNode(node, "markdown text")::class }
+        expect(LineBreakParser::class) { parserMap.parserForNode(node, "")::class }
     }
 
     @Test
     fun parserForElementType_paragraphType() {
         val node = LeafASTNode(MarkdownElementTypes.PARAGRAPH, 0, 3)
-        expect(ParagraphParser::class) { parserMap.parserForNode(node, "text")::class }
+        expect(ParagraphParser::class) { parserMap.parserForNode(node, "")::class }
     }
 
     @Test
     fun parserForElementType_textType() {
         val node = LeafASTNode(MarkdownTokenTypes.TEXT, 0, 3)
-        expect(TextParser::class) { parserMap.parserForNode(node, "text")::class }
+        expect(TextParser::class) { parserMap.parserForNode(node, "")::class }
     }
 
     @Test
     fun parserForElementType_whitespaceType() {
         val node = LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, 0, 1)
-        expect(WhitespaceParser::class) { parserMap.parserForNode(node, "  ")::class }
+        expect(WhitespaceParser::class) { parserMap.parserForNode(node, "")::class }
     }
 }

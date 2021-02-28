@@ -1,5 +1,5 @@
 plugins {
-    val kotlinVersion = "1.4.30"
+    val kotlinVersion = "1.4.31"
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 }

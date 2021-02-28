@@ -32,6 +32,18 @@ class ParserArgumentsTest {
     }
 
     @Test
+    fun findTextInCurrentNode_returnsChildTextWhenFound() {
+        val arguments = "*text*".toParserArguments().childArguments!!
+        expect("text") { arguments.findTextInCurrentNode() }
+    }
+
+    @Test
+    fun findTextInCurrentNode_returnsEmptyWhenNotFound() {
+        val arguments = "*text*".toParserArguments() // Paragraph doesn't have direct descendant with text
+        expect("") { arguments.findTextInCurrentNode() }
+    }
+
+    @Test
     fun previousNode_returnsNullWhenNoPreviousNode() {
         expect(null) { initialArguments.previousNode }
     }

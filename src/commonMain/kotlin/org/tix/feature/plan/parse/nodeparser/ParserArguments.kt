@@ -1,6 +1,8 @@
 package org.tix.feature.plan.parse.nodeparser
 
+import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
+import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.tix.feature.plan.parse.state.ParserState
 
@@ -19,6 +21,11 @@ internal data class ParserArguments(
     val nextNode by lazy { nodes.getOrNull(nodeIndex + 1) }
     val previousNode by lazy { nodes.getOrNull(nodeIndex - 1) }
     val shouldContinueParsing get() = nodeIndex < nodes.size
+
+    fun findTextInCurrentNode() =
+        currentNode.findChildOfType(MarkdownTokenTypes.TEXT)
+            ?.getTextInNode(markdownText)
+            ?.toString() ?: ""
 
     fun nextArgsFromResult(result: ParserResult) = copy(nodeIndex = result.nextIndex)
 
