@@ -33,6 +33,9 @@ object LineBreakSegment : BodySegment()
 data class LinkSegment(val text: String = "", val url: String = "") : BodySegment()
 
 @Serializable
+data class ParagraphSegment(val body: TicketBody): BodySegment()
+
+@Serializable
 data class OrderedEndSegment(val level: Int) : BodySegment()
 
 @Serializable

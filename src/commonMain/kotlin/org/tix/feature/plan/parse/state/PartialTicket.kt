@@ -2,7 +2,7 @@ package org.tix.feature.plan.parse.state
 
 import org.tix.model.ticket.Ticket
 import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.TicketBody
+import org.tix.model.ticket.body.toTicketBody
 import org.tix.model.ticket.field.TicketFields
 
 internal data class PartialTicket(
@@ -23,7 +23,7 @@ internal data class PartialTicket(
 
     fun ticket(): Ticket = Ticket(
         title = title,
-        body = TicketBody(body),
+        body = body.toTicketBody(),
         fields = fields,
         children = children.map { it.ticket() }
     )
