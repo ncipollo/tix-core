@@ -10,6 +10,12 @@ class NodeParserMapTest {
     private val parserMap = NodeParserMap()
 
     @Test
+    fun parserForElementType_codeFence() {
+        val node = LeafASTNode(MarkdownElementTypes.CODE_FENCE, 0, 1)
+        expect(CodeFenceParser::class) { parserMap.parserForNode(node, "")::class }
+    }
+
+    @Test
     fun parserForElementType_emphasis() {
         val node = LeafASTNode(MarkdownElementTypes.EMPH, 0, 1)
         expect(EmphasisParser::class) { parserMap.parserForNode(node, "")::class }
