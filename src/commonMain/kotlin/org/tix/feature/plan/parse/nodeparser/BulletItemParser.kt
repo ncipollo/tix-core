@@ -11,9 +11,13 @@ internal class BulletItemParser(private val parserMap: NodeParserMap): NodeParse
     override fun parse(arguments: ParserArguments): ParserResult {
         val level = arguments.state.listState.currentLevel
         val marker = findMarkerText(arguments)
-        val partialBody = parseFilteredChildren(arguments, parserMap) { it.type != MarkdownTokenTypes.LIST_BULLET }
+        val partialBody = parseFilteredChildren(arguments, parserMap) {
+            it.type.name != MarkdownTokenTypes.LIST_BULLET.name
+        }
+
         val segment = BulletListItemSegment(body = partialBody.toTicketBody(), level = level, marker = marker)
         arguments.state.addBodySegments(segment)
+
         return arguments.resultsFromArgs()
     }
 

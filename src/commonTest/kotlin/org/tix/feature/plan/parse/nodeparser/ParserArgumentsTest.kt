@@ -2,6 +2,7 @@ package org.tix.feature.plan.parse.nodeparser
 
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.MarkdownTokenTypes
+import org.intellij.markdown.ast.ASTNode
 import kotlin.test.*
 
 class ParserArgumentsTest {
@@ -29,6 +30,29 @@ class ParserArgumentsTest {
     @Test
     fun currentNode() {
         expect(MarkdownElementTypes.ATX_1.toString()) { initialArguments.currentNode.type.toString() }
+    }
+
+    @Test
+    fun filteredChildArguments_allChildrenFiltered() {
+        expect(null) {
+            initialArguments.filteredChildArguments { false }
+        }
+    }
+
+    @Test
+    fun filteredChildArguments_noChildren() {
+        expect(null) {
+            initialArguments.childArguments!!.filteredChildArguments { true }
+        }
+    }
+
+    @Test
+    fun filteredChildArguments_withChildren() {
+        val predicate: (ASTNode) -> Boolean = { it.type.name == MarkdownTokenTypes.ATX_HEADER.name }
+        val expectedNodes = initialArguments.currentNode.children.filter(predicate)
+        expect(initialArguments.copy(nodes = expectedNodes, nodeIndex = 0)) {
+            initialArguments.filteredChildArguments(predicate)
+        }
     }
 
     @Test
