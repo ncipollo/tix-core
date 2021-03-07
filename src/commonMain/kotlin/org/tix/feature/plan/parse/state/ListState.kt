@@ -21,7 +21,7 @@ internal class ListState {
 
     private fun startBulletList() = listStack.add(ListType.BULLET)
 
-    private fun startOrderedList() = listStack.add(ListType.BULLET)
+    private fun startOrderedList() = listStack.add(ListType.ORDERED)
 
     private fun completeList() {
         listStack.removeLastOrNull()
