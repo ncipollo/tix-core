@@ -9,13 +9,14 @@ sealed class BodySegment
 object BlockQuoteSegment : BodySegment()
 
 @Serializable
-data class BulletListEndSegment(val level: Int) : BodySegment()
+data class BulletListItemSegment(
+    override val body: TicketBody = emptyBody(),
+    override val level: Int = 0,
+    val marker: String = "-"
+) : ListSegment, BodySegment()
 
 @Serializable
-data class BulletListItemSegment(val level: Int = 0, val marker: String = "-") : BodySegment()
-
-@Serializable
-data class BulletListStartSegment(val marker: String = "") : BodySegment()
+data class BulletListSegment(override val body: TicketBody, override val level: Int) : ListSegment, BodySegment()
 
 @Serializable
 data class CodeBlockSegment(val code: String = "", val language: String = "") : BodySegment()
@@ -33,16 +34,17 @@ object LineBreakSegment : BodySegment()
 data class LinkSegment(val text: String = "", val url: String = "") : BodySegment()
 
 @Serializable
-data class ParagraphSegment(val body: TicketBody): BodySegment()
+data class ParagraphSegment(val body: TicketBody) : BodySegment()
 
 @Serializable
-data class OrderedEndSegment(val level: Int) : BodySegment()
+data class OrderedListItemSegment(
+    override val body: TicketBody = emptyBody(),
+    override val level: Int = 0,
+    val number: Int = 0
+) : ListSegment, BodySegment()
 
 @Serializable
-data class OrderedListItemSegment(val level: Int = 0, val number: Int = 0) : BodySegment()
-
-@Serializable
-data class OrderedStartSegment(val level: Int, val startingNumber: Int = 0) : BodySegment()
+data class OrderedListSegment(override val body: TicketBody, override val level: Int) : ListSegment, BodySegment()
 
 @Serializable
 data class StrongEmphasisSegment(val text: String = "") : BodySegment()
