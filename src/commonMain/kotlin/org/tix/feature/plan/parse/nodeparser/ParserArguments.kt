@@ -22,6 +22,12 @@ internal data class ParserArguments(
     val previousNode by lazy { nodes.getOrNull(nodeIndex - 1) }
     val shouldContinueParsing get() = nodeIndex < nodes.size
 
+    fun filteredChildArguments(predicate: (ASTNode) -> Boolean) =
+        currentNode.children
+            .filter(predicate)
+            .takeIf { it.isNotEmpty() }
+            ?.let { copy(nodes = it, nodeIndex = 0) }
+
     fun findTextInCurrentNode() =
         currentNode.findChildOfType(MarkdownTokenTypes.TEXT)
             ?.getTextInNode(markdownText)

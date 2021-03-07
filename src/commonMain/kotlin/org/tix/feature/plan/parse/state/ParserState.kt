@@ -7,6 +7,7 @@ internal class ParserState {
     private val ticketPath: MutableList<PartialTicket> = ArrayList()
 
     val currentTicket get() = ticketPath.lastOrNull()
+    val listState = ListState()
     val rootTickets: MutableList<PartialTicket> = ArrayList()
     val ticketLevel get() = ticketPath.size
 

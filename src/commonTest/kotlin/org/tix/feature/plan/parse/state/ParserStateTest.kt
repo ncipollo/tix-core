@@ -20,7 +20,7 @@ class ParserStateTest {
         parserState.startTicket()
         parserState.addBodyLineBreak()
 
-        expect(listOf(LineBreakSegment)) { parserState.currentTicket!!.body }
+        expect(listOf<BodySegment>(LineBreakSegment)) { parserState.currentTicket!!.body }
     }
 
     @Test

@@ -7,16 +7,15 @@ import kotlin.test.Test
 import kotlin.test.expect
 
 class BulletListParserTest {
-    private val parser = CodeBlockParser()
+    private val parser = BulletListParser(NodeParserMap())
 
-    @Ignore
     @Test
+    @Ignore
     fun parse_withLanguage() {
         val arguments = """
             - bullet *emph*
-            - bullet
-                - bullet
-                    1. Number
+            - bullet **strong**
+                - Nested
         """.trimIndent().toParserArguments()
         arguments.state.startTicket()
 
