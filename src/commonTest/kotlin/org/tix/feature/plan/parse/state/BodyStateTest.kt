@@ -1,7 +1,7 @@
 package org.tix.feature.plan.parse.state
 
 import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.LineBreakSegment
+import org.tix.model.ticket.body.LinebreakSegment
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.expect
@@ -12,16 +12,16 @@ class BodyStateTest {
 
     @Test
     fun addSegments_addsToBaseBody() {
-        bodyState.addSegments(arrayOf(LineBreakSegment))
-        assertEquals(listOf<BodySegment>(LineBreakSegment), baseBody)
+        bodyState.addSegments(arrayOf(LinebreakSegment))
+        assertEquals(listOf<BodySegment>(LinebreakSegment), baseBody)
     }
 
     @Test
     fun popBody() {
         bodyState.pushBody()
-        bodyState.addSegments(arrayOf(LineBreakSegment))
+        bodyState.addSegments(arrayOf(LinebreakSegment))
 
-        expect(listOf<BodySegment>(LineBreakSegment)) { bodyState.popBody() }
+        expect(listOf<BodySegment>(LinebreakSegment)) { bodyState.popBody() }
         expect(true) { baseBody.isEmpty() }
     }
 }

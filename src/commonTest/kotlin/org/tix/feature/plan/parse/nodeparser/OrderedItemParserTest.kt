@@ -23,7 +23,7 @@ class OrderedItemParserTest {
                         ).toTicketBody()
                     )
                 ).toTicketBody(),
-                level = 1,
+                level = 0,
                 number = 12
             )
             expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
@@ -47,7 +47,7 @@ class OrderedItemParserTest {
                         ).toTicketBody()
                     )
                 ).toTicketBody(),
-                level = 1,
+                level = 0,
                 number = 1
             )
             expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }

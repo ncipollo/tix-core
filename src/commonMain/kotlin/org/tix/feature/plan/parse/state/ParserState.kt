@@ -1,7 +1,7 @@
 package org.tix.feature.plan.parse.state
 
 import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.LineBreakSegment
+import org.tix.model.ticket.body.LinebreakSegment
 
 internal class ParserState {
     private val ticketPath: MutableList<PartialTicket> = ArrayList()
@@ -33,7 +33,7 @@ internal class ParserState {
 
     fun addBodySegments(vararg segments: BodySegment) = currentTicket?.addSegments(segments)
 
-    fun addBodyLineBreak() = addBodySegments(LineBreakSegment)
+    fun addBodyLinebreak() = addBodySegments(LinebreakSegment)
 
     fun buildNestedBody(buildBlock: () -> Unit) : List<BodySegment> =
         currentTicket?.buildNestedBody(buildBlock) ?: error("no ticket has been started")

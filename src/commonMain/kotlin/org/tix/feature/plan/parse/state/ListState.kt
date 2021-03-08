@@ -17,7 +17,7 @@ internal class ListState {
 
     val currentType get() = listStack.lastOrNull() ?: error("no list started")
 
-    val currentLevel get() = listStack.size
+    val currentLevel get() = listStack.size - 1
 
     private fun startBulletList() = listStack.add(ListType.BULLET)
 

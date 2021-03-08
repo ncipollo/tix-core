@@ -1,7 +1,5 @@
 package org.tix.feature.plan.parse.nodeparser
 
-import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.WhitespaceSegment
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -15,7 +13,7 @@ class WhitespaceParserTest {
 
         val results = parser.parse(arguments)
 
-        expect(listOf<BodySegment>(WhitespaceSegment(count = 3))) { arguments.state.currentTicket!!.body }
+        expectBody(arguments) { whitespace(count = 3) }
         expect(1) { results.nextIndex }
     }
 }

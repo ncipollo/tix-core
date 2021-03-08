@@ -17,13 +17,21 @@ class ParagraphParserTest {
         val expectedSegment = ParagraphSegment(
             listOf(
                 TextSegment("text"),
-                LineBreakSegment,
+                LinebreakSegment,
                 EmphasisSegment("emph"),
                 WhitespaceSegment(1),
                 StrongEmphasisSegment("strong"),
             ).toTicketBody()
         )
-        expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
+        expectBody(arguments) {
+            paragraph {
+                text("text")
+                linebreak()
+                emphasis("emph")
+                whitespace()
+                strongEmphasis("strong")
+            }
+        }
         expect(1) { results.nextIndex }
     }
 }

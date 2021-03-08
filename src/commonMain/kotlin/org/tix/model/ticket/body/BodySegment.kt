@@ -28,7 +28,7 @@ data class CodeSpanSegment(val code: String = "") : BodySegment()
 data class EmphasisSegment(val text: String = "") : BodySegment()
 
 @Serializable
-object LineBreakSegment : BodySegment()
+object LinebreakSegment : BodySegment()
 
 @Serializable
 data class LinkSegment(val text: String = "", val url: String = "") : BodySegment()

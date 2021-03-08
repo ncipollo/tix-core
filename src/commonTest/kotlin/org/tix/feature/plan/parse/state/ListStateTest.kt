@@ -9,15 +9,15 @@ class ListStateTest {
 
     @Test
     fun currentLevel() {
-        expect(0) { listState.currentLevel }
+        expect(-1) { listState.currentLevel }
         listState.buildBulletList {
-            expect(1) { listState.currentLevel }
+            expect(0) { listState.currentLevel }
             listState.buildOrderedList {
-                expect(2) { listState.currentLevel }
+                expect(1) { listState.currentLevel }
             }
-            expect(1) { listState.currentLevel }
+            expect(0) { listState.currentLevel }
         }
-        expect(0) { listState.currentLevel }
+        expect(-1) { listState.currentLevel }
     }
 
     @Test

@@ -1,7 +1,5 @@
 package org.tix.feature.plan.parse.nodeparser
 
-import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.CodeBlockSegment
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -20,11 +18,9 @@ class CodeFenceParserTest {
 
         val results = parser.parse(arguments)
 
-        val expectedSegment = CodeBlockSegment(
-            code = "\ncode goes here\n*next line*\n",
-            language = "tix"
-        )
-        expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
+        expectBody(arguments) {
+            codeBlock(code = "\ncode goes here\n*next line*\n", language = "tix")
+        }
         expect(1) { results.nextIndex }
     }
 
@@ -40,11 +36,9 @@ class CodeFenceParserTest {
 
         val results = parser.parse(arguments)
 
-        val expectedSegment = CodeBlockSegment(
-            code = "\ncode goes here\n*next line*\n",
-            language = ""
-        )
-        expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
+        expectBody(arguments) {
+            codeBlock(code = "\ncode goes here\n*next line*\n")
+        }
         expect(1) { results.nextIndex }
     }
 }

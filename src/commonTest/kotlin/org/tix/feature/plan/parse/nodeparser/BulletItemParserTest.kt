@@ -23,7 +23,7 @@ class BulletItemParserTest {
                         ).toTicketBody()
                     )
                 ).toTicketBody(),
-                level = 1,
+                level = 0,
                 marker = "-"
             )
             expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
@@ -36,21 +36,23 @@ class BulletItemParserTest {
         val arguments = "* text*emph*".toParserArguments().childArguments!!
         arguments.state.startTicket()
 
-        val results = parser.parse(arguments)
+        arguments.state.listState.buildBulletList {
+            val results = parser.parse(arguments)
 
-        val expectedSegment = BulletListItemSegment(
-            body = listOf(
-                ParagraphSegment(
-                    body = listOf(
-                        TextSegment(text = "text"),
-                        EmphasisSegment(text = "emph")
-                    ).toTicketBody()
-                )
-            ).toTicketBody(),
-            level = 0,
-            marker = "*"
-        )
-        expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
-        expect(1) { results.nextIndex }
+            val expectedSegment = BulletListItemSegment(
+                body = listOf(
+                    ParagraphSegment(
+                        body = listOf(
+                            TextSegment(text = "text"),
+                            EmphasisSegment(text = "emph")
+                        ).toTicketBody()
+                    )
+                ).toTicketBody(),
+                level = 0,
+                marker = "*"
+            )
+            expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
+            expect(1) { results.nextIndex }
+        }
     }
 }

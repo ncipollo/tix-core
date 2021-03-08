@@ -16,11 +16,11 @@ class ParserStateTest {
     }
 
     @Test
-    fun addBodyLineBreak() {
+    fun addBodyLinebreak() {
         parserState.startTicket()
-        parserState.addBodyLineBreak()
+        parserState.addBodyLinebreak()
 
-        expect(listOf<BodySegment>(LineBreakSegment)) { parserState.currentTicket!!.body }
+        expect(listOf<BodySegment>(LinebreakSegment)) { parserState.currentTicket!!.body }
     }
 
     @Test
@@ -66,13 +66,13 @@ class ParserStateTest {
     fun buildNestedBody() {
         parserState.startTicket()
         val outerBody = parserState.buildNestedBody {
-            parserState.addBodySegments(LineBreakSegment)
+            parserState.addBodySegments(LinebreakSegment)
             val innerBody = parserState.buildNestedBody {
                 parserState.addBodySegments(TextSegment("inner"))
             }
             expect(listOf<BodySegment>(TextSegment("inner"))) { innerBody }
         }
-        expect(listOf<BodySegment>(LineBreakSegment)) { outerBody }
+        expect(listOf<BodySegment>(LinebreakSegment)) { outerBody }
         expect(emptyList()) { parserState.currentTicket!!.body }
     }
 

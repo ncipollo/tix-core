@@ -1,7 +1,5 @@
 package org.tix.feature.plan.parse.nodeparser
 
-import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.LineBreakSegment
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -15,7 +13,7 @@ class LineBreakParserTest {
 
         val results = parser.parse(arguments)
 
-        expect(listOf<BodySegment>(LineBreakSegment)) { arguments.state.currentTicket!!.body }
+        expectBody(arguments.state.currentTicket) { linebreak() }
         expect(1) { results.nextIndex }
     }
 }
