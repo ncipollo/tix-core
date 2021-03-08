@@ -26,6 +26,10 @@ internal class ExpectedBodyBuilder {
         segments += CodeBlockSegment(code = code, language = language)
     }
 
+    fun codeSpan(code: String = "") {
+        segments += CodeSpanSegment(code = code)
+    }
+
     fun emphasis(text: String = "") {
         segments += EmphasisSegment(text = text)
     }

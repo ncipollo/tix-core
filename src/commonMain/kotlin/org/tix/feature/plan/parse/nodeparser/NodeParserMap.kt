@@ -16,6 +16,7 @@ internal class NodeParserMap {
         MarkdownElementTypes.ATX_6 to headingParser,
         MarkdownElementTypes.CODE_BLOCK to CodeBlockParser(),
         MarkdownElementTypes.CODE_FENCE to CodeFenceParser(),
+        MarkdownElementTypes.CODE_SPAN to CodeSpanParser(),
         MarkdownElementTypes.EMPH to EmphasisParser(),
         MarkdownElementTypes.LIST_ITEM to ListItemParser(this),
         MarkdownElementTypes.ORDERED_LIST to ListParser(this),
