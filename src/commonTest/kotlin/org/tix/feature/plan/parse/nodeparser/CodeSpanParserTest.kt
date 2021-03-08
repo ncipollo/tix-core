@@ -8,7 +8,7 @@ class CodeSpanParserTest {
 
     @Test
     fun parse() {
-        val arguments = "text".toParserArguments().childArguments!!
+        val arguments = "`text`".toParserArguments().childArguments!!
         arguments.state.startTicket()
 
         val results = parser.parse(arguments)
