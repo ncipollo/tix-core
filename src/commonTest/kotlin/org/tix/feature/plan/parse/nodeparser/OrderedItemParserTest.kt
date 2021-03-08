@@ -1,6 +1,5 @@
 package org.tix.feature.plan.parse.nodeparser
 
-import org.tix.model.ticket.body.*
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -13,20 +12,15 @@ class OrderedItemParserTest {
         arguments.state.startTicket()
         arguments.state.listState.buildBulletList {
             val results = parser.parse(arguments)
-
-            val expectedSegment = OrderedListItemSegment(
-                body = listOf(
-                    ParagraphSegment(
-                        body = listOf(
-                            TextSegment(text = "text"),
-                            EmphasisSegment(text = "emph")
-                        ).toTicketBody()
-                    )
-                ).toTicketBody(),
-                level = 0,
-                number = 12
-            )
-            expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
+            
+            expectBody(arguments) {
+                orderedListItem(level = 0, number = 12) {
+                    paragraph {
+                        text("text")
+                        emphasis("emph")
+                    }
+                }
+            }
             expect(1) { results.nextIndex }
         }
     }
@@ -38,19 +32,14 @@ class OrderedItemParserTest {
         arguments.state.listState.buildBulletList {
             val results = parser.parse(arguments)
 
-            val expectedSegment = OrderedListItemSegment(
-                body = listOf(
-                    ParagraphSegment(
-                        body = listOf(
-                            TextSegment(text = "text"),
-                            EmphasisSegment(text = "emph")
-                        ).toTicketBody()
-                    )
-                ).toTicketBody(),
-                level = 0,
-                number = 1
-            )
-            expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
+            expectBody(arguments) {
+                orderedListItem(level = 0, number = 1) {
+                    paragraph {
+                        text("text")
+                        emphasis("emph")
+                    }
+                }
+            }
             expect(1) { results.nextIndex }
         }
     }

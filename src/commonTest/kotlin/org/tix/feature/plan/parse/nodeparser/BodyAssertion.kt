@@ -10,6 +10,18 @@ internal class ExpectedBodyBuilder {
 
     val body = segments.toTicketBody()
 
+    fun bulletList(level: Int = 0, builderBlock: ExpectedBodyBuilder.() -> Unit) {
+        segments += BulletListSegment(body = ExpectedBodyBuilder().apply(builderBlock).body, level)
+    }
+
+    fun bulletListItem(level: Int = 0, marker: String = "-", builderBlock: ExpectedBodyBuilder.() -> Unit) {
+        segments += BulletListItemSegment(
+            body = ExpectedBodyBuilder().apply(builderBlock).body,
+            level = level,
+            marker = marker
+        )
+    }
+
     fun codeBlock(code: String = "", language: String = "") {
         segments += CodeBlockSegment(code = code, language = language)
     }
@@ -20,6 +32,18 @@ internal class ExpectedBodyBuilder {
 
     fun linebreak() {
         segments += LinebreakSegment
+    }
+
+    fun orderedList(level: Int = 0, builderBlock: ExpectedBodyBuilder.() -> Unit) {
+        segments += OrderedListSegment(body = ExpectedBodyBuilder().apply(builderBlock).body, level)
+    }
+
+    fun orderedListItem(level: Int = 0, number: Int = 1, builderBlock: ExpectedBodyBuilder.() -> Unit) {
+        segments += OrderedListItemSegment(
+            body = ExpectedBodyBuilder().apply(builderBlock).body,
+            level = level,
+            number = number
+        )
     }
 
     fun paragraph(builderBlock: ExpectedBodyBuilder.() -> Unit) {
@@ -40,8 +64,8 @@ internal class ExpectedBodyBuilder {
 }
 
 internal fun expectBody(ticket: Ticket, builderBlock: ExpectedBodyBuilder.() -> Unit) {
-    expect(ticket.body) {
-        ExpectedBodyBuilder().apply(builderBlock).body
+    expect(ExpectedBodyBuilder().apply(builderBlock).body) {
+        ticket.body
     }
 }
 

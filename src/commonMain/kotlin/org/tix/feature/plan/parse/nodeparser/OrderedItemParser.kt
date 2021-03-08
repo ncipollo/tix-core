@@ -13,6 +13,7 @@ internal class OrderedItemParser(private val parserMap: NodeParserMap): NodePars
         val number = findNumber(arguments)
         val partialBody = parseFilteredChildren(arguments, parserMap) {
             it.type.name != MarkdownTokenTypes.LIST_NUMBER.name
+                    && it.type.name != MarkdownTokenTypes.WHITE_SPACE.name
         }
 
         val segment = OrderedListItemSegment(body = partialBody.toTicketBody(), level = level, number = number)

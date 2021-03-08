@@ -1,6 +1,5 @@
 package org.tix.feature.plan.parse.nodeparser
 
-import org.tix.model.ticket.body.*
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -17,26 +16,63 @@ class ListParserTest {
 
         val results = parser.parse(arguments)
 
-        val expectedSegment = bulletList(simpleBullet("item1"), lineBreak(), simpleBullet("item2"))
-        expect(listOf<BodySegment>(expectedSegment)) { arguments.state.currentTicket!!.body }
+        expectBody(arguments) {
+            bulletList {
+                bulletListItem { paragraph { text("item1") } }
+                linebreak()
+                bulletListItem { paragraph { text("item2") } }
+            }
+        }
         expect(1) { results.nextIndex }
     }
 
-    private fun bulletList(vararg segments: BodySegment, level: Int = 0) =
-        BulletListSegment(body = segments.toList().toTicketBody(), level = level)
+    @Test
+    fun parse_bullet_nestedBullets() {
+        val arguments = """
+            - item1
+                - nested1
+                - nested2
+            - item2
+                - nested3
+                - nested4
+                    - nested5
+                    - nested6
+        """.trimIndent().toParserArguments()
+        arguments.state.startTicket()
 
-    private fun lineBreak() = LinebreakSegment
+        val results = parser.parse(arguments)
 
-    private fun simpleBullet(text: String, level: Int = 0) =
-        BulletListItemSegment(
-            body = listOf(
-                ParagraphSegment(
-                    body = listOf(
-                        TextSegment(text = text),
-                    ).toTicketBody()
-                )
-            ).toTicketBody(),
-            level = level,
-            marker = "-"
-        )
+        expectBody(arguments) {
+            bulletList {
+                bulletListItem {
+                    paragraph { text("item1") }
+                    linebreak()
+                    bulletList(1) {
+                        bulletListItem(1) { paragraph { text("nested1") } }
+                        linebreak()
+                        bulletListItem(1) { paragraph { text("nested2") } }
+                    }
+                }
+                linebreak()
+                bulletListItem {
+                    paragraph { text("item2") }
+                    linebreak()
+                    bulletList(1) {
+                        bulletListItem(1) { paragraph { text("nested3") } }
+                        linebreak()
+                        bulletListItem(1) {
+                            paragraph { text("nested4") }
+                            linebreak()
+                            bulletList(2) {
+                                bulletListItem(2) { paragraph { text("nested5") } }
+                                linebreak()
+                                bulletListItem(2) { paragraph { text("nested6") } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        expect(1) { results.nextIndex }
+    }
 }
