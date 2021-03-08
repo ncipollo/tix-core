@@ -7,9 +7,34 @@ class ListParserTest {
     private val parser = ListParser(NodeParserMap())
 
     @Test
-    fun parse_bullet_singleLevel() {
+    fun parse_bullet_mixed() {
         val arguments = """
             - item1
+                1. item2
+        """.trimIndent().toParserArguments()
+        arguments.state.startTicket()
+
+        val results = parser.parse(arguments)
+
+        expectBody(arguments) {
+            bulletList {
+                bulletListItem {
+                    paragraph { text("item1") }
+                    linebreak()
+                    orderedList(1) {
+                        orderedListItem(1, 1) { paragraph { text("item2") } }
+                    }
+                }
+            }
+        }
+        expect(1) { results.nextIndex }
+    }
+
+    @Test
+    fun parse_bullet_multipleLines() {
+        val arguments = """
+            - line1
+            line2
             - item2
         """.trimIndent().toParserArguments()
         arguments.state.startTicket()
@@ -18,7 +43,13 @@ class ListParserTest {
 
         expectBody(arguments) {
             bulletList {
-                bulletListItem { paragraph { text("item1") } }
+                bulletListItem {
+                    paragraph {
+                        text("line1")
+                        linebreak()
+                        text("line2")
+                    }
+                }
                 linebreak()
                 bulletListItem { paragraph { text("item2") } }
             }
@@ -77,20 +108,20 @@ class ListParserTest {
     }
 
     @Test
-    fun parse_ordered_singleLevel() {
+    fun parse_bullet_singleLevel() {
         val arguments = """
-            1. item1
-            2. item2
+            - item1
+            - item2
         """.trimIndent().toParserArguments()
         arguments.state.startTicket()
 
         val results = parser.parse(arguments)
 
         expectBody(arguments) {
-            orderedList {
-                orderedListItem(0, 1) { paragraph { text("item1") } }
+            bulletList {
+                bulletListItem { paragraph { text("item1") } }
                 linebreak()
-                orderedListItem(0, 2) { paragraph { text("item2") } }
+                bulletListItem { paragraph { text("item2") } }
             }
         }
         expect(1) { results.nextIndex }
@@ -128,7 +159,7 @@ class ListParserTest {
                     paragraph { text("item2") }
                     linebreak()
                     orderedList(1) {
-                        orderedListItem(1, 1){ paragraph { text("nested3") } }
+                        orderedListItem(1, 1) { paragraph { text("nested3") } }
                         linebreak()
                         orderedListItem(1, 2) {
                             paragraph { text("nested4") }
@@ -141,6 +172,26 @@ class ListParserTest {
                         }
                     }
                 }
+            }
+        }
+        expect(1) { results.nextIndex }
+    }
+
+    @Test
+    fun parse_ordered_singleLevel() {
+        val arguments = """
+            1. item1
+            2. item2
+        """.trimIndent().toParserArguments()
+        arguments.state.startTicket()
+
+        val results = parser.parse(arguments)
+
+        expectBody(arguments) {
+            orderedList {
+                orderedListItem(0, 1) { paragraph { text("item1") } }
+                linebreak()
+                orderedListItem(0, 2) { paragraph { text("item2") } }
             }
         }
         expect(1) { results.nextIndex }
