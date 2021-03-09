@@ -110,6 +110,12 @@ class NodeParserMapTest {
     }
 
     @Test
+    fun parserForElementType_unknownType_defaultsToText() {
+        val node = LeafASTNode(MarkdownTokenTypes.LPAREN, 0, 1)
+        expect(TextParser::class) { parserMap.parserForNode(node, "")::class }
+    }
+
+    @Test
     fun parserForElementType_whitespaceType() {
         val node = LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, 0, 1)
         expect(WhitespaceParser::class) { parserMap.parserForNode(node, "")::class }
