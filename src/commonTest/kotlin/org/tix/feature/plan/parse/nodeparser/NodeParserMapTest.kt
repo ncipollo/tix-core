@@ -98,6 +98,12 @@ class NodeParserMapTest {
     }
 
     @Test
+    fun parserForElementType_thematicBreakType() {
+        val node = LeafASTNode(MarkdownTokenTypes.HORIZONTAL_RULE, 0, 3)
+        expect(ThematicBreakParser::class) { parserMap.parserForNode(node, "")::class }
+    }
+
+    @Test
     fun parserForElementType_whitespaceType() {
         val node = LeafASTNode(MarkdownTokenTypes.WHITE_SPACE, 0, 1)
         expect(WhitespaceParser::class) { parserMap.parserForNode(node, "")::class }

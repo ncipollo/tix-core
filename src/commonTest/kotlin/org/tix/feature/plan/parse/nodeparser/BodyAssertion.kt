@@ -66,6 +66,10 @@ internal class ExpectedBodyBuilder {
         segments += TextSegment(text)
     }
 
+    fun thematicBreak() {
+        segments += ThematicBreakSegment
+    }
+
     fun whitespace(count: Int = 1) {
         segments += WhitespaceSegment(count)
     }

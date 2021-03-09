@@ -25,6 +25,7 @@ internal class NodeParserMap {
         MarkdownElementTypes.STRONG to StrongEmphasisParser(),
         MarkdownElementTypes.UNORDERED_LIST to ListParser(this),
         MarkdownTokenTypes.EOL to LineBreakParser(),
+        MarkdownTokenTypes.HORIZONTAL_RULE to ThematicBreakParser(),
         MarkdownTokenTypes.TEXT to TextParser(),
         MarkdownTokenTypes.WHITE_SPACE to WhitespaceParser(),
     ).mapKeys { it.key.name }
