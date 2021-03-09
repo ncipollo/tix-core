@@ -38,6 +38,10 @@ internal class ExpectedBodyBuilder {
         segments += LinebreakSegment
     }
 
+    fun link(destination: String = "", title: String = "") {
+        segments += LinkSegment(destination, title)
+    }
+
     fun orderedList(level: Int = 0, builderBlock: ExpectedBodyBuilder.() -> Unit) {
         segments += OrderedListSegment(body = ExpectedBodyBuilder().apply(builderBlock).body, level)
     }

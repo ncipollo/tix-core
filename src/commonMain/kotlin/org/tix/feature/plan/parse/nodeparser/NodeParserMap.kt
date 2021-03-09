@@ -18,6 +18,7 @@ internal class NodeParserMap {
         MarkdownElementTypes.CODE_FENCE to CodeFenceParser(),
         MarkdownElementTypes.CODE_SPAN to CodeSpanParser(),
         MarkdownElementTypes.EMPH to EmphasisParser(),
+        MarkdownElementTypes.INLINE_LINK to LinkParser(),
         MarkdownElementTypes.LIST_ITEM to ListItemParser(this),
         MarkdownElementTypes.ORDERED_LIST to ListParser(this),
         MarkdownElementTypes.PARAGRAPH to ParagraphParser(this),

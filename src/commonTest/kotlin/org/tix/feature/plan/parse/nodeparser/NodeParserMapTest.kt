@@ -40,6 +40,12 @@ class NodeParserMapTest {
     }
 
     @Test
+    fun parserForElementType_inlineLink() {
+        val node = LeafASTNode(MarkdownElementTypes.INLINE_LINK, 0, 1)
+        expect(LinkParser::class) { parserMap.parserForNode(node, "")::class }
+    }
+
+    @Test
     fun parserForElementType_listItem() {
         val node = LeafASTNode(MarkdownElementTypes.LIST_ITEM, 0, 1)
         expect(ListItemParser::class) { parserMap.parserForNode(node, "")::class }
