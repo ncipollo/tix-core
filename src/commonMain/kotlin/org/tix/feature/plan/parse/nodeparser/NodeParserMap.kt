@@ -24,6 +24,7 @@ internal class NodeParserMap {
         MarkdownElementTypes.PARAGRAPH to ParagraphParser(this),
         MarkdownElementTypes.STRONG to StrongEmphasisParser(),
         MarkdownElementTypes.UNORDERED_LIST to ListParser(this),
+        MarkdownTokenTypes.BLOCK_QUOTE to BlockQuoteParser(this),
         MarkdownTokenTypes.EOL to LineBreakParser(),
         MarkdownTokenTypes.HORIZONTAL_RULE to ThematicBreakParser(),
         MarkdownTokenTypes.TEXT to TextParser(),

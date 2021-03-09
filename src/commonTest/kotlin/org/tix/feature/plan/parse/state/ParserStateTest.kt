@@ -1,6 +1,9 @@
 package org.tix.feature.plan.parse.state
 
-import org.tix.model.ticket.body.*
+import org.tix.model.ticket.body.BodySegment
+import org.tix.model.ticket.body.EmphasisSegment
+import org.tix.model.ticket.body.LinebreakSegment
+import org.tix.model.ticket.body.TextSegment
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -10,9 +13,9 @@ class ParserStateTest {
     @Test
     fun addBodySegments() {
         parserState.startTicket()
-        parserState.addBodySegments(BlockQuoteSegment, TextBlockSegment)
+        parserState.addBodySegments(TextSegment(), EmphasisSegment())
 
-        expect(listOf(BlockQuoteSegment, TextBlockSegment)) { parserState.currentTicket!!.body }
+        expect(listOf(TextSegment(), EmphasisSegment())) { parserState.currentTicket!!.body }
     }
 
     @Test

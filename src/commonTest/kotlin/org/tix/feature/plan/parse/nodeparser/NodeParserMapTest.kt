@@ -10,6 +10,12 @@ class NodeParserMapTest {
     private val parserMap = NodeParserMap()
 
     @Test
+    fun parserForElementType_blockQuote() {
+        val node = LeafASTNode(MarkdownElementTypes.BLOCK_QUOTE, 0, 1)
+        expect(BlockQuoteParser::class) { parserMap.parserForNode(node, "")::class }
+    }
+
+    @Test
     fun parserForElementType_bulletList() {
         val node = LeafASTNode(MarkdownElementTypes.UNORDERED_LIST, 0, 1)
         expect(ListParser::class) { parserMap.parserForNode(node, "")::class }

@@ -10,6 +10,10 @@ internal class ExpectedBodyBuilder {
 
     val body = segments.toTicketBody()
 
+    fun blockQuote(builderBlock: ExpectedBodyBuilder.() -> Unit) {
+        segments += BlockQuoteSegment(body = ExpectedBodyBuilder().apply(builderBlock).body)
+    }
+
     fun bulletList(level: Int = 0, builderBlock: ExpectedBodyBuilder.() -> Unit) {
         segments += BulletListSegment(body = ExpectedBodyBuilder().apply(builderBlock).body, level)
     }

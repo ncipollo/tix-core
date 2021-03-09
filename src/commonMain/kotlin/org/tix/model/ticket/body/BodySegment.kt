@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 sealed class BodySegment
 
 @Serializable
-object BlockQuoteSegment : BodySegment()
+data class BlockQuoteSegment(val body: TicketBody) : BodySegment()
 
 @Serializable
 data class BulletListItemSegment(
@@ -48,9 +48,6 @@ data class OrderedListSegment(override val body: TicketBody, override val level:
 
 @Serializable
 data class StrongEmphasisSegment(val text: String = "") : BodySegment()
-
-@Serializable
-object TextBlockSegment : BodySegment()
 
 @Serializable
 data class TextSegment(val text: String = "") : BodySegment()
