@@ -11,14 +11,15 @@ internal class TicketParser(private val markdownParser: MarkdownParser = default
 
     fun parse(markdown: String): List<Ticket> {
         val rootNode = parseMarkdown(markdown)
-        parseNodes(rootNode, markdown)
-        return emptyList()
+        return parseNodes(rootNode, markdown)
     }
 
     private fun parseMarkdown(markdown: String) = markdownParser.buildMarkdownTreeFromString(markdown)
 
-    private fun parseNodes(rootNode: ASTNode, markdown: String) {
-        var arguments = parserArguments(markdown, rootNode.children)
+    private fun parseNodes(rootNode: ASTNode, markdown: String): List<Ticket> {
+        val arguments = parserArguments(markdown, rootNode.children)
         traverseTickets(arguments, parserMap)
+        arguments.state.completeAllTickets()
+        return arguments.state.rootTickets.map { it.ticket() }
     }
 }
