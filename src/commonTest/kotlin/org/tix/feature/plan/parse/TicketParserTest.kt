@@ -29,6 +29,7 @@ class TicketParserTest {
             ```
             
             ()[]!- snake_case
+            http://api.example.com
             # Ticket 2
             Body
             ## Nested Ticket
@@ -101,6 +102,8 @@ class TicketParserTest {
                 text("-")
                 whitespace(1)
                 text("snake_case")
+                linebreak()
+                text("http://api.example.com")
             }
 
             linebreak()
