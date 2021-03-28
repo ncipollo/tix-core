@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output url="file://$MODULE_DIR$/../../build/classes/kotlin/mingwX64/main" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/mingwX64Main">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/mingwX64Main/resources" type="kotlin-resource" />
+    </content>
+    <orderEntry type="jdk" jdkName="Kotlin SDK" jdkType="KotlinSDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - stdlib" level="project" />
+    <orderEntry type="module" module-name="core.commonMain" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.31" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-mingwx64:klib:3.0.0-alpha.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-mingwx64:klib:1.4.2" level="project" />
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:nativeMain:1.1.0-RC">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains.kotlinx-kotlinx-serialization-json/org.jetbrains.kotlinx-kotlinx-serialization-json-nativeMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-json/1.1.0-RC/37b2459c3c5fadc815034c1675c3d8ff9e67556d/kotlinx-serialization-json-1.1.0-RC-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: net.mamoe.yamlkt:yamlkt:0.9.0-dev-1" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains:markdown-mingwx64:klib:0.2.0.pre-mpp" level="project" />
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-mingwx64:klib:1.1.0-RC" level="project" />
+    <orderEntry type="library" name="Gradle: net.mamoe.yamlkt:yamlkt-mingwx64:klib:0.9.0-dev-1" level="project" />
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core:nativeMain:1.1.0-RC">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains.kotlinx-kotlinx-serialization-core/org.jetbrains.kotlinx-kotlinx-serialization-core-nativeMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-serialization-core/1.1.0-RC/6c7a2b5276e33d336afdc72e115797beef2de243/kotlinx-serialization-core-1.1.0-RC-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-mingwx64:klib:0.14.4" level="project" />
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-metadata:nativeMain:1.4.2">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains.kotlinx-kotlinx-coroutines-core-metadata/org.jetbrains.kotlinx-kotlinx-coroutines-core-metadata-nativeMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-metadata/1.4.2/7bb58f7cede6d89bdf23dfeed9bc2856693b1b0f/kotlinx-coroutines-core-metadata-1.4.2-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-metadata:nativeOtherMain:1.4.2">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains.kotlinx-kotlinx-coroutines-core-metadata/org.jetbrains.kotlinx-kotlinx-coroutines-core-metadata-nativeOtherMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-metadata/1.4.2/7bb58f7cede6d89bdf23dfeed9bc2856693b1b0f/kotlinx-coroutines-core-metadata-1.4.2-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-mingwx64:klib:cinterop-interop:0.14.4" level="project" />
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains:markdown-metadata:nativeMain:0.2.0.pre-mpp">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains-markdown-metadata/org.jetbrains-markdown-metadata-nativeMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/markdown-metadata/0.2.0.pre-mpp/71ea451a9e29ffafdcce9dbaa23422971705ce36/markdown-metadata-0.2.0.pre-mpp-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:atomicfu-common:commonMain:0.14.4">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains.kotlinx-atomicfu-common/org.jetbrains.kotlinx-atomicfu-common-commonMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/atomicfu-common/0.14.4/ddaae567a948baeed47ff9d7c39f76edf0a8b94e/atomicfu-common-0.14.4-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:atomicfu-common:nativeInterop:0.14.4">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains.kotlinx-atomicfu-common/org.jetbrains.kotlinx-atomicfu-common-nativeInterop.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/atomicfu-common/0.14.4/ddaae567a948baeed47ff9d7c39f76edf0a8b94e/atomicfu-common-0.14.4-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Gradle: org.jetbrains.kotlinx:atomicfu-common:nativeMain:0.14.4">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../.gradle/kotlin/sourceSetMetadata/core/mingwX64Main/implementation/org.jetbrains.kotlinx-atomicfu-common/org.jetbrains.kotlinx-atomicfu-common-nativeMain.klib!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/atomicfu-common/0.14.4/ddaae567a948baeed47ff9d7c39f76edf0a8b94e/atomicfu-common-0.14.4-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-mingwx64:klib:1.1.0-RC" level="project" />
+  </component>
+</module>
