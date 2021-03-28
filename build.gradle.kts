@@ -10,8 +10,16 @@ group = "org.tix"
 version = "0.0.1"
 
 repositories {
-    mavenCentral()
-    jcenter()
+    mavenCentral {
+        content {
+            excludeGroup("net.mamoe.yamlkt")
+        }
+    }
+    jcenter {
+        content {
+            includeGroup("net.mamoe.yamlkt")
+        }
+    }
     // Note: We are using a fork until this PR is merged: https://github.com/JetBrains/markdown/pull/59
     maven { setUrl("https://dl.bintray.com/drewcarlson/mordant") }
 }
