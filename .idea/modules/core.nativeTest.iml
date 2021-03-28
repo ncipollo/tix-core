@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager">
-    <output url="file://$MODULE_DIR$/../../build/classes/kotlin/native/main" />
+    <output-test url="file://$MODULE_DIR$/../../build/classes/kotlin/native/test" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../src/nativeMain" />
+    <content url="file://$MODULE_DIR$/../../src/nativeTest">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/nativeTest/kotlin" type="kotlin-test" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/nativeTest/resources" type="kotlin-test-resource" />
+    </content>
     <orderEntry type="jdk" jdkName="Kotlin SDK" jdkType="KotlinSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - stdlib" level="project" />
-    <orderEntry type="module" module-name="core.commonMain" />
+    <orderEntry type="module" module-name="core.commonMain" scope="TEST" />
+    <orderEntry type="module" module-name="core.commonTest" scope="TEST" production-on-test="" />
+    <orderEntry type="module" module-name="core.nativeMain" scope="TEST" />
     <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - AVFoundation [macos_x64]" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - AVKit [macos_x64]" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - Accelerate [macos_x64]" level="project" />
@@ -159,24 +164,24 @@
     <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - posix [macos_x64]" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - vmnet [macos_x64]" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Kotlin/Native 1.4.31 - zlib [macos_x64]" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.31" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-macosx64:klib:3.0.0-alpha.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-macosx64:klib:1.4.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains:markdown-macosx64:klib:0.2.0.pre-mpp" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-macosx64:klib:1.1.0-RC" level="project" />
-    <orderEntry type="library" name="Gradle: net.mamoe.yamlkt:yamlkt-macosx64:klib:0.9.0-dev-1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-macosx64:klib:0.14.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-macosx64:klib:cinterop-interop:0.14.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-macosx64:klib:1.1.0-RC" level="project" />
-    <orderEntry type="library" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:nativeMain:1.1.0-RC" level="project" />
-    <orderEntry type="library" name="Gradle: net.mamoe.yamlkt:yamlkt:0.9.0-dev-1" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core:nativeMain:1.1.0-RC" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-metadata:nativeDarwinMain:1.4.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-metadata:nativeMain:1.4.2" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains:markdown-metadata:nativeMain:0.2.0.pre-mpp" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-common:commonMain:0.14.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-common:nativeInterop:0.14.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.kotlinx:atomicfu-common:nativeMain:0.14.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-test-common:1.4.31" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-test-annotations-common:1.4.31" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.31" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio-macosx64:klib:3.0.0-alpha.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-macosx64:klib:1.4.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:markdown-macosx64:klib:0.2.0.pre-mpp" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json-macosx64:klib:1.1.0-RC" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: net.mamoe.yamlkt:yamlkt-macosx64:klib:0.9.0-dev-1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:atomicfu-macosx64:klib:0.14.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:atomicfu-macosx64:klib:cinterop-interop:0.14.4" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core-macosx64:klib:1.1.0-RC" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.squareup.okio:okio-multiplatform:3.0.0-alpha.1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-json:all:1.1.0-RC" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: net.mamoe.yamlkt:yamlkt:0.9.0-dev-1" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-serialization-core:all:1.1.0-RC" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:kotlinx-coroutines-core-metadata:all:1.4.2" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:markdown-metadata:all:0.2.0.pre-mpp" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:atomicfu-common:all:0.14.4" level="project" />
   </component>
+  <component name="TestModuleProperties" production-module="core.nativeMain" />
 </module>

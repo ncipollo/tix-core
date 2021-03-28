@@ -34,24 +34,15 @@ kotlin {
         }
     }
 
-    val hostOs = System.getProperty("os.name")
-    val isMingwX64 = hostOs.startsWith("Windows")
-    val nativeTarget = when {
-        hostOs == "Mac OS X" -> macosX64("native")
-        hostOs == "Linux" -> linuxX64("native")
-        isMingwX64 -> mingwX64("native")
-        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
-    }
-    nativeTarget.apply {
-        binaries {
-            sharedLib {
-                baseName = "core"
+    listOf(linuxX64(), macosX64(), mingwX64()).forEach {
+        it.apply {
+            binaries {
+                sharedLib {
+                    baseName = "core"
+                }
             }
         }
     }
-    linuxX64()
-    macosX64()
-    mingwX64()
 
     sourceSets {
         val commonMain by getting {
@@ -76,13 +67,50 @@ kotlin {
             }
         }
 
-        val linuxX64Main by getting
-        val linuxX64Test by getting
-        val macosX64Main by getting
-        val macosX64Test by getting
-        val mingwX64Main by getting
-        val mingwX64Test by getting
-        val nativeMain by getting
-        val nativeTest by getting
+        val desktopMain by creating {
+            dependsOn(commonMain)
+        }
+        val linuxX64Main by getting {
+            dependsOn(desktopMain)
+        }
+        val macosX64Main by getting {
+            dependsOn(desktopMain)
+        }
+        val mingwX64Main by getting {
+            dependsOn(desktopMain)
+        }
+
+        val desktopTest by creating {
+            dependsOn(commonTest)
+        }
+        val linuxX64Test by getting {
+            dependsOn(desktopTest)
+        }
+        val macosX64Test by getting {
+            dependsOn(desktopTest)
+        }
+        val mingwX64Test by getting {
+            dependsOn(desktopTest)
+        }
     }
+}
+
+tasks.withType<Test>() {
+    testLogging.showStandardStreams = true
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest> {
+    testLogging.showStandardStreams = true
+}
+
+tasks.register("nativeTest") {
+    val hostOs = System.getProperty("os.name")
+    val isMingwX64 = hostOs.startsWith("Windows")
+    val testTaskName = when {
+        hostOs == "Mac OS X" -> "macosX64Test"
+        hostOs == "Linux" -> "linuxX64Test"
+        isMingwX64 -> "mingwX64Test"
+        else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
+    }
+    println("Running native tests: $testTaskName")
+    dependsOn(tasks.findByName(testTaskName))
 }
