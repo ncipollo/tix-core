@@ -20,8 +20,6 @@ repositories {
             includeGroup("net.mamoe.yamlkt")
         }
     }
-    // Note: We are using a fork until this PR is merged: https://github.com/JetBrains/markdown/pull/59
-    maven { setUrl("https://dl.bintray.com/drewcarlson/mordant") }
 }
 
 kotlin {
@@ -49,7 +47,7 @@ kotlin {
             dependencies {
                 implementation("com.squareup.okio:okio-multiplatform:3.0.0-alpha.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-                implementation("org.jetbrains:markdown:0.2.0.pre-mpp")
+                implementation("org.jetbrains:markdown:0.2.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0-RC")
                 implementation("net.mamoe.yamlkt:yamlkt:0.9.0-dev-1")
             }
