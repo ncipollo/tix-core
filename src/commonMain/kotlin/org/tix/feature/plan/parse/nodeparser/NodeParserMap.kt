@@ -30,7 +30,7 @@ internal class NodeParserMap {
         MarkdownTokenTypes.WHITE_SPACE to WhitespaceParser(),
     ).mapKeys { it.key.name }
 
-    fun parserForNode(node: ASTNode, markdownText: String) = node.run {
+    fun parserForNode(node: ASTNode) = node.run {
         map[type.name] ?: TextParser()
     }
 }
