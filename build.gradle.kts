@@ -43,6 +43,9 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings.useExperimentalAnnotation("okio.ExperimentalFileSystem")
+        }
         val commonMain by getting {
             dependencies {
                 implementation("com.squareup.okio:okio-multiplatform:3.0.0-alpha.1")
@@ -56,6 +59,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("com.squareup.okio:okio-fakefilesystem-multiplatform:3.0.0-alpha.1")
             }
         }
         val jvmMain by getting
@@ -93,7 +97,7 @@ kotlin {
     }
 }
 
-tasks.withType<Test>() {
+tasks.withType<Test> {
     testLogging.showStandardStreams = true
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest> {
