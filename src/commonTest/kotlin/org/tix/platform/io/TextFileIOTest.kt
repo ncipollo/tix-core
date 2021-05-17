@@ -9,7 +9,7 @@ import kotlin.test.expect
 
 class TextFileIOTest {
     private companion object {
-        val CONTENTS = "test contents"
+        const val CONTENTS = "test contents"
     }
 
     private val fileSystem = FakeFileSystem()

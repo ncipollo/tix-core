@@ -2,8 +2,8 @@
 
 plugins {
     val kotlinVersion = "1.4.31"
-    kotlin("multiplatform") version kotlinVersion
-    kotlin("plugin.serialization") version kotlinVersion
+    kotlin("multiplatform") version Versions.kotlin
+    kotlin("plugin.serialization") version Versions.kotlin
 }
 
 group = "org.tix"
@@ -48,18 +48,20 @@ kotlin {
         }
         val commonMain by getting {
             dependencies {
-                implementation("com.squareup.okio:okio-multiplatform:3.0.0-alpha.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
-                implementation("org.jetbrains:markdown:0.2.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0-RC")
-                implementation("net.mamoe.yamlkt:yamlkt:0.9.0-dev-1")
+                implementation(Deps.coroutines)
+                implementation(Deps.Koin.core)
+                implementation(Deps.markdown)
+                implementation(Deps.Okio.multiplatform)
+                implementation(Deps.Serialization.json)
+                implementation(Deps.Serialization.yml)
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation("com.squareup.okio:okio-fakefilesystem-multiplatform:3.0.0-alpha.1")
+                implementation(Deps.Koin.test)
+                implementation(Deps.Okio.fakeFilesystem)
             }
         }
         val jvmMain by getting
