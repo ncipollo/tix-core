@@ -1,4 +1,4 @@
-name: JVM Test
+name: JS Test
 
 on: [push]
 
