@@ -59,7 +59,6 @@ kotlin {
             dependencies {
                 implementation(Deps.coroutines)
                 implementation(Deps.markdown)
-                implementation(Deps.Okio.multiplatform)
                 implementation(Deps.Serialization.json)
                 implementation(Deps.Serialization.yml)
             }
@@ -72,7 +71,12 @@ kotlin {
             }
         }
 
-        val notWebMain by creating { dependsOn(commonMain) }
+        val notWebMain by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(Deps.Okio.multiplatform)
+            }
+        }
         val notWebTest by creating { dependsOn(commonTest) }
 
         val jsMain by getting
