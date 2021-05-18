@@ -23,6 +23,15 @@ repositories {
 }
 
 kotlin {
+    js {
+        browser {
+            webpackTask {
+                outputFileName = "tix-core.js"
+                output.libraryTarget = "commonjs2"
+            }
+        }
+    }
+
     jvm {
         compilations.all {
             kotlinOptions.jvmTarget = "1.8"
@@ -49,7 +58,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(Deps.coroutines)
-                implementation(Deps.Koin.core)
                 implementation(Deps.markdown)
                 implementation(Deps.Okio.multiplatform)
                 implementation(Deps.Serialization.json)
@@ -60,42 +68,36 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation(Deps.Koin.test)
                 implementation(Deps.Okio.fakeFilesystem)
             }
         }
-        val jvmMain by getting
+
+        val notWebMain by creating { dependsOn(commonMain) }
+        val notWebTest by creating { dependsOn(commonTest) }
+
+        val jsMain by getting
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
+
+        val jvmMain by getting { dependsOn(notWebMain) }
         val jvmTest by getting {
             dependencies {
+                dependsOn(notWebTest)
                 implementation(kotlin("test-junit"))
             }
         }
 
-        val desktopMain by creating {
-            dependsOn(commonMain)
-        }
-        val linuxX64Main by getting {
-            dependsOn(desktopMain)
-        }
-        val macosX64Main by getting {
-            dependsOn(desktopMain)
-        }
-        val mingwX64Main by getting {
-            dependsOn(desktopMain)
-        }
-
-        val desktopTest by creating {
-            dependsOn(commonTest)
-        }
-        val linuxX64Test by getting {
-            dependsOn(desktopTest)
-        }
-        val macosX64Test by getting {
-            dependsOn(desktopTest)
-        }
-        val mingwX64Test by getting {
-            dependsOn(desktopTest)
-        }
+        val desktopMain by creating { dependsOn(notWebMain) }
+        val desktopTest by creating { dependsOn(notWebTest) }
+        val linuxX64Main by getting { dependsOn(desktopMain) }
+        val macosX64Main by getting { dependsOn(desktopMain) }
+        val mingwX64Main by getting { dependsOn(desktopMain) }
+        val linuxX64Test by getting { dependsOn(desktopTest) }
+        val macosX64Test by getting { dependsOn(desktopTest) }
+        val mingwX64Test by getting { dependsOn(desktopTest) }
     }
 }
 

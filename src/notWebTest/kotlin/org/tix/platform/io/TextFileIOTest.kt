@@ -14,6 +14,7 @@ class TextFileIOTest {
 
     private val fileSystem = FakeFileSystem()
     private val path = FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "test.txt"
+    private val pathString = path.toString()
     private val io = TextFileIO(fileSystem)
 
     @BeforeTest
@@ -24,7 +25,7 @@ class TextFileIOTest {
 
     @Test
     fun read_afterWriting() {
-        io.write(path, CONTENTS)
-        expect(CONTENTS) { io.read(path) }
+        io.write(pathString, CONTENTS)
+        expect(CONTENTS) { io.read(pathString) }
     }
 }
