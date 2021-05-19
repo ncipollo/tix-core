@@ -1,5 +1,23 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+/**
+ * Dependency Hierarchy
+ * ```
+ * common
+ * |-- js
+ * '-- notWeb
+ *     |-- jvm
+ *     '-- native
+ *         |-- iOS
+ *             | -- iOSX64
+ *             | -- iOSArm64
+ *         |-- Desktop
+ *             |--linuxX64
+ *             |--macOS64
+ *             |--mingw64 (windows)
+ * ```
+ */
+
 plugins {
     val kotlinVersion = "1.4.31"
     kotlin("multiplatform") version Versions.kotlin
@@ -42,8 +60,8 @@ kotlin {
     }
 
     listOf(
-//        iosX64(),
-//        iosArm64(),
+        iosX64(),
+        iosArm64(),
         linuxX64(),
         macosX64(),
         mingwX64()
@@ -109,10 +127,12 @@ kotlin {
             }
         }
 
-//        val iosArm64Main by getting { dependsOn(nativeMain) }
-//        val iosArm64Test by getting { dependsOn(nativeTest) }
-//        val iosX64Main by getting { dependsOn(nativeMain) }
-//        val iosX64Test by getting { dependsOn(nativeTest) }
+        val iosMain by creating { dependsOn(nativeMain) }
+        val iosTest by creating { dependsOn(nativeTest) }
+        val iosArm64Main by getting { dependsOn(iosMain) }
+        val iosArm64Test by getting { dependsOn(iosTest) }
+        val iosX64Main by getting { dependsOn(iosMain) }
+        val iosX64Test by getting { dependsOn(iosTest) }
 
         val desktopMain by creating { dependsOn(nativeMain) }
         val desktopTest by creating { dependsOn(nativeTest) }
