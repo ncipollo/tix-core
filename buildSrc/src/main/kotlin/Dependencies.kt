@@ -22,6 +22,7 @@ object Deps {
 
     object MockK {
         val common = dep("io.mockk:mockk-common", Versions.mockK)
+        val jvm = dep("io.mockk:mockk", Versions.mockK)
     }
 
     object Okio {

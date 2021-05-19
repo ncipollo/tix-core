@@ -41,7 +41,13 @@ kotlin {
         }
     }
 
-    listOf(linuxX64(), macosX64(), mingwX64()).forEach {
+    listOf(
+//        iosX64(),
+//        iosArm64(),
+        linuxX64(),
+        macosX64(),
+        mingwX64()
+    ).forEach {
         it.apply {
             binaries {
                 sharedLib {
@@ -55,6 +61,10 @@ kotlin {
         all {
             languageSettings.useExperimentalAnnotation("okio.ExperimentalFileSystem")
         }
+        kotlin.sourceSets.matching { it.name.endsWith("Test") }.configureEach {
+            languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
+        }
+
         val commonMain by getting {
             dependencies {
                 implementation(Deps.coroutines)
@@ -68,7 +78,6 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(Deps.Okio.fakeFilesystem)
-                implementation(Deps.MockK.common)
                 implementation(Deps.turbine)
             }
         }
@@ -80,6 +89,9 @@ kotlin {
             }
         }
         val notWebTest by creating { dependsOn(commonTest) }
+
+        val nativeMain by creating { dependsOn(notWebMain) }
+        val nativeTest by creating { dependsOn(notWebTest) }
 
         val jsMain by getting
         val jsTest by getting {
@@ -93,11 +105,17 @@ kotlin {
             dependencies {
                 dependsOn(notWebTest)
                 implementation(kotlin("test-junit"))
+                implementation(Deps.MockK.jvm)
             }
         }
 
-        val desktopMain by creating { dependsOn(notWebMain) }
-        val desktopTest by creating { dependsOn(notWebTest) }
+//        val iosArm64Main by getting { dependsOn(nativeMain) }
+//        val iosArm64Test by getting { dependsOn(nativeTest) }
+//        val iosX64Main by getting { dependsOn(nativeMain) }
+//        val iosX64Test by getting { dependsOn(nativeTest) }
+
+        val desktopMain by creating { dependsOn(nativeMain) }
+        val desktopTest by creating { dependsOn(nativeTest) }
         val linuxX64Main by getting { dependsOn(desktopMain) }
         val macosX64Main by getting { dependsOn(desktopMain) }
         val mingwX64Main by getting { dependsOn(desktopMain) }
@@ -114,7 +132,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest> {
     testLogging.showStandardStreams = true
 }
 
-tasks.register("nativeTest") {
+tasks.register("hostOSNativeTest") {
     val hostOs = System.getProperty("os.name")
     val isMingwX64 = hostOs.startsWith("Windows")
     val testTaskName = when {
