@@ -69,6 +69,7 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
                 implementation(Deps.Okio.fakeFilesystem)
                 implementation(Deps.MockK.common)
+                implementation(Deps.turbine)
             }
         }
 

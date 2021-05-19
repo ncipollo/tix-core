@@ -6,6 +6,7 @@ object Versions {
     const val markdown = "0.2.3"
     const val mockK = "1.11.0"
     const val okio = "3.0.0-alpha.1"
+    const val turbine = "0.5.1"
     const val yml = "0.9.0-dev-1"
 }
 
@@ -32,6 +33,8 @@ object Deps {
         val json = dep("org.jetbrains.kotlinx:kotlinx-serialization-json", Versions.json)
         val yml = dep("net.mamoe.yamlkt:yamlkt", Versions.yml)
     }
+
+    val turbine = dep("app.cash.turbine:turbine", Versions.turbine)
 
     private fun dep(name: String, version: String) = "$name:$version"
 }
