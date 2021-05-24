@@ -1,4 +1,4 @@
-package org.tix.platform.io
+package org.tix.platform.io.domain
 
 import app.cash.turbine.test
 import io.mockk.every
@@ -6,11 +6,12 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.asFlow
 import org.junit.Test
 import org.tix.domain.transform
+import org.tix.platform.io.FileIO
 import org.tix.test.runBlockingTest
 import java.io.IOException
 import kotlin.test.assertEquals
 
-class TextFileSourceTest {
+class TextFileUseCaseTest {
     private companion object {
         const val CONTENTS1 = "contents1"
         const val CONTENTS2 = "contents2"
@@ -18,7 +19,7 @@ class TextFileSourceTest {
     }
 
     private val fileIO = mockk<FileIO<String>>()
-    private val useCase = TextFileSource(fileIO)
+    private val useCase = TextFileUseCase(fileIO)
 
     private val source = listOf("file1.txt", "file2.txt").asFlow().transform(useCase)
 
