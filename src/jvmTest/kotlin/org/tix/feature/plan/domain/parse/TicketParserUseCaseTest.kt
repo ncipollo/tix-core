@@ -31,7 +31,7 @@ class TicketParserUseCaseTest {
     private val source = upstream.transform(useCase)
 
     @Test
-    fun transformFlow_emitsTicketOnError() = runBlockingTest {
+    fun transformFlow_emitsErrorOnFailure() = runBlockingTest {
         every { ticketParser.parse(MARKDOWN) } throws ERROR
         source.test {
             assertEquals(ERROR, expectItem().exceptionOrNull())
