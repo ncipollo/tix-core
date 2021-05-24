@@ -183,5 +183,4 @@
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains:markdown-metadata:all:0.2.0.pre-mpp" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.jetbrains.kotlinx:atomicfu-common:all:0.14.4" level="project" />
   </component>
-  <component name="TestModuleProperties" production-module="core.nativeMain" />
 </module>

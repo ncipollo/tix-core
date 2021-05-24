@@ -95,7 +95,6 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation(Deps.Okio.fakeFilesystem)
                 implementation(Deps.turbine)
             }
         }
@@ -106,13 +105,19 @@ kotlin {
                 implementation(Deps.Okio.multiplatform)
             }
         }
-        val notWebTest by creating { dependsOn(commonTest) }
+        val notWebTest by creating {
+            dependsOn(commonTest)
+            dependencies {
+                implementation(Deps.Okio.fakeFilesystem)
+            }
+        }
 
         val nativeMain by creating { dependsOn(notWebMain) }
         val nativeTest by creating { dependsOn(notWebTest) }
 
-        val jsMain by getting
+        val jsMain by getting { dependsOn(commonMain) }
         val jsTest by getting {
+            dependsOn(commonTest)
             dependencies {
                 implementation(kotlin("test-js"))
             }
