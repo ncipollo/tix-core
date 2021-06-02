@@ -55,7 +55,6 @@ kotlin {
         iosArm64(),
         linuxX64(),
         macosX64(),
-        mingwX64()
     ).forEach {
         it.apply {
             binaries {
@@ -136,10 +135,8 @@ kotlin {
         val desktopTest by creating { dependsOn(nativeTest) }
         val linuxX64Main by getting { dependsOn(desktopMain) }
         val macosX64Main by getting { dependsOn(desktopMain) }
-        val mingwX64Main by getting { dependsOn(desktopMain) }
         val linuxX64Test by getting { dependsOn(desktopTest) }
         val macosX64Test by getting { dependsOn(desktopTest) }
-        val mingwX64Test by getting { dependsOn(desktopTest) }
     }
 }
 
@@ -152,11 +149,9 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest> {
 
 tasks.register("hostOSNativeTest") {
     val hostOs = System.getProperty("os.name")
-    val isMingwX64 = hostOs.startsWith("Windows")
     val testTaskName = when {
         hostOs == "Mac OS X" -> "macosX64Test"
         hostOs == "Linux" -> "linuxX64Test"
-        isMingwX64 -> "mingwX64Test"
         else -> throw GradleException("Host OS is not supported in Kotlin/Native.")
     }
     println("Running native tests: $testTaskName")
