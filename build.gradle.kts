@@ -19,7 +19,6 @@
  */
 
 plugins {
-    val kotlinVersion = "1.4.31"
     kotlin("multiplatform") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
 }
@@ -54,7 +53,7 @@ kotlin {
         iosX64(),
         iosArm64(),
         linuxX64(),
-        macosX64(),
+        macosX64()
     ).forEach {
         it.apply {
             binaries {
