@@ -16,6 +16,10 @@ class PlanViewModel(
         viewEvents.asFlow()
             .flatMapLatest { routeViewEvent(it) }
 
+    suspend fun sendViewEvent(event: PlanViewEvent) {
+        viewEvents.send(event)
+    }
+
     private fun routeViewEvent(event: PlanViewEvent) =
         when (event) {
             is PlanViewEvent.PlanUsingMarkdown -> markdownPlanning(event)
