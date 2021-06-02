@@ -78,6 +78,8 @@ kotlin {
     sourceSets {
         all {
             languageSettings.useExperimentalAnnotation("okio.ExperimentalFileSystem")
+            languageSettings.useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
         }
         kotlin.sourceSets.matching { it.name.endsWith("Test") }.configureEach {
             languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
