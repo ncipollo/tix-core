@@ -7,7 +7,7 @@ import org.tix.feature.plan.domain.parse.TicketParserUseCase
 import org.tix.platform.io.TextFileIO
 import org.tix.platform.io.domain.TextFileUseCase
 
-fun tixForCLI() = Tix(plan = cliPlan())
+actual fun tixForCLI() = Tix(plan = cliPlan())
 
 private fun cliPlan() =
     TixPlan(
