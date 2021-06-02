@@ -1,13 +1,13 @@
 object Versions {
-    const val coroutines = "1.4.3"
+    const val coroutines = "1.5.0"
     const val json = "1.1.0-RC"
     const val koin = "3.0.1"
-    const val kotlin = "1.4.31"
-    const val markdown = "0.2.3"
+    const val kotlin = "1.5.0"
+    const val markdown = "0.2.4"
     const val mockK = "1.11.0"
     const val okio = "3.0.0-alpha.1"
-    const val turbine = "0.4.1"
-    const val yml = "0.9.0-dev-1"
+    const val turbine = "0.5.1"
+    const val yml = "0.9.0-dev-3"
 }
 
 object Deps {

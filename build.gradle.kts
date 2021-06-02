@@ -28,16 +28,7 @@ group = "org.tix"
 version = "0.0.1"
 
 repositories {
-    mavenCentral {
-        content {
-            excludeGroup("net.mamoe.yamlkt")
-        }
-    }
-    jcenter {
-        content {
-            includeGroup("net.mamoe.yamlkt")
-        }
-    }
+    mavenCentral()
 }
 
 kotlin {
