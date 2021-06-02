@@ -76,7 +76,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(Deps.coroutines)
+                api(Deps.coroutines)
                 implementation(Deps.markdown)
                 implementation(Deps.Serialization.json)
                 implementation(Deps.Serialization.yml)
