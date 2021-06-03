@@ -5,7 +5,7 @@ object Versions {
     const val kotlin = "1.5.0"
     const val markdown = "0.2.4"
     const val mockK = "1.11.0"
-    const val okio = "3.0.0-alpha.1"
+    const val okio = "3.0.0-alpha.6"
     const val turbine = "0.5.1"
     const val yml = "0.9.0-dev-3"
 }
