@@ -10,14 +10,15 @@ class PlanViewModel(
     private val markdownSource: FlowTransformer<String, Result<String>>,
     private val parserUseCase: FlowTransformer<String, Result<List<Ticket>>>
 ) : TixViewModel() {
-    private val viewEvents = eventChannel<PlanViewEvent>()
+    private val events = MutableStateFlow<PlanViewEvent?>(null)
 
     val viewState =
-        viewEvents.asFlow()
+        events.asStateFlow()
+            .filterNotNull()
             .flatMapLatest { routeViewEvent(it) }
 
-    suspend fun sendViewEvent(event: PlanViewEvent) {
-        viewEvents.send(event)
+    fun sendViewEvent(event: PlanViewEvent) {
+        events.value = event
     }
 
     private fun routeViewEvent(event: PlanViewEvent) =
@@ -31,5 +32,5 @@ class PlanViewModel(
             .filter { it.isSuccess }
             .map { it.getOrThrow() }
             .transform(parserUseCase)
-            .map { PlanViewState() }
+            .map { PlanViewState(complete = true) }
 }

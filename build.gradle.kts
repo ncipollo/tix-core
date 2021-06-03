@@ -146,6 +146,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinTest> {
     testLogging.showStandardStreams = true
 }
 
+// This task will run the native tests for the operating system you are running.
 tasks.register("hostOSNativeTest") {
     val hostOs = System.getProperty("os.name")
     val testTaskName = when {
