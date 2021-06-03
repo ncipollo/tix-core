@@ -42,7 +42,8 @@ class TicketParserTest {
             ## Nested Ticket 2
         """.trimIndent()
     private val parser = TicketParser()
-    private val tickets = parser.parse(markdown)
+    private val args = TicketParserArguments(markdown = markdown)
+    private val tickets = parser.parse(args)
 
     @Test
     fun parse_hasExpectedBody() {

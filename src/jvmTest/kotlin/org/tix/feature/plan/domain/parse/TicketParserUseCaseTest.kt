@@ -16,6 +16,7 @@ class TicketParserUseCaseTest {
     private companion object {
         const val MARKDOWN = "markdown"
 
+        val ARGUMENTS = TicketParserArguments(markdown = "markdown")
         val ERROR = ParseException(
             message = "error",
             node = LeafASTNode(MarkdownElementTypes.BLOCK_QUOTE, 0, 1),
@@ -25,14 +26,14 @@ class TicketParserUseCaseTest {
 
     private val ticket = Ticket(title = "ticket")
     private val ticketParser = mockk<TicketParser>()
-    private val upstream = flow { emit("markdown") }
+    private val upstream = flow { emit(ARGUMENTS) }
     private val useCase = TicketParserUseCase(ticketParser)
 
     private val source = upstream.transform(useCase)
 
     @Test
     fun transformFlow_emitsErrorOnFailure() = runBlockingTest {
-        every { ticketParser.parse(MARKDOWN) } throws ERROR
+        every { ticketParser.parse(ARGUMENTS) } throws ERROR
         source.test {
             assertEquals(ERROR, expectItem().exceptionOrNull())
             expectComplete()
@@ -41,7 +42,7 @@ class TicketParserUseCaseTest {
 
     @Test
     fun transformFlow_emitsTicketOnSuccess() = runBlockingTest {
-        every { ticketParser.parse(MARKDOWN) } returns listOf(ticket)
+        every { ticketParser.parse(ARGUMENTS) } returns listOf(ticket)
         source.test {
             assertEquals(listOf(ticket), expectItem().getOrThrow())
             expectComplete()

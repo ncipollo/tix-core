@@ -1,33 +1,25 @@
 package org.tix.ext
 
+import org.tix.domain.FlowResult
 import kotlin.test.Test
-import kotlin.test.assertFailsWith
 import kotlin.test.expect
 
 class ResultExtTest {
     @Test
-    fun checkExpectedError_whenFailedResultWithExpectedErrorType_doesNotThrow() {
-        val result = kotlin.runCatching { throw IllegalStateException("not the worst") }
-        expect(IllegalStateException::class) {
-            result.checkExpectedError<IllegalStateException>()
-            result.exceptionOrNull()!!::class
+    fun toFlowResult_whenResultIsFailure_returnsFlowFailure() {
+        val exception = IllegalArgumentException("very much not awesome")
+        val expected = FlowResult.failure<String>(exception)
+        expect(expected) {
+            val thing = Result.failure<String>(exception).toFlowResult()
+            thing
         }
     }
 
     @Test
-    fun checkExpectedError_whenFailedResultWithUnexpectedErrorType_throws() {
-        val result = kotlin.runCatching { throw IllegalArgumentException("very much not awesome") }
-        assertFailsWith<IllegalArgumentException> {
-            result.checkExpectedError<IllegalStateException>()
-        }
-    }
-
-    @Test
-    fun checkExpectedError_whenSuccessfulResult_doesNotThrow() {
-        val result = kotlin.runCatching { "awesome" }
-        expect("awesome") {
-            result.checkExpectedError<IllegalStateException>()
-            result.getOrNull()!!
+    fun toFlowResult_whenResultIsSuccess_returnsFlowSuccess() {
+        val expected = FlowResult.success("awesome")
+        expect(expected) {
+            Result.success("awesome").toFlowResult()
         }
     }
 }

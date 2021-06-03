@@ -2,6 +2,7 @@ package org.tix.feature.plan.domain.parse
 
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.parser.MarkdownParser
+import org.tix.config.data.TixConfiguration
 import org.tix.feature.plan.domain.parse.nodeparser.NodeParserMap
 import org.tix.feature.plan.domain.parse.nodeparser.parserArguments
 import org.tix.model.ticket.Ticket
@@ -9,9 +10,9 @@ import org.tix.model.ticket.Ticket
 internal class TicketParser(private val markdownParser: MarkdownParser = defaultMarkdownParser()) {
     private val parserMap = NodeParserMap()
 
-    fun parse(markdown: String): List<Ticket> {
-        val rootNode = parseMarkdown(markdown)
-        return parseNodes(rootNode, markdown)
+    fun parse(arguments: TicketParserArguments): List<Ticket> {
+        val rootNode = parseMarkdown(arguments.markdown)
+        return parseNodes(rootNode, arguments.markdown)
     }
 
     private fun parseMarkdown(markdown: String) = markdownParser.buildMarkdownTreeFromString(markdown)
@@ -23,3 +24,5 @@ internal class TicketParser(private val markdownParser: MarkdownParser = default
         return arguments.state.rootTickets.map { it.ticket() }
     }
 }
+
+data class TicketParserArguments(val markdown: String = "", val configuration: TixConfiguration = TixConfiguration())
