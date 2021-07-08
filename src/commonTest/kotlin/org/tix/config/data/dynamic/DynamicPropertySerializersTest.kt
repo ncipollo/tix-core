@@ -48,11 +48,10 @@ class DynamicPropertySerializersTest {
                 string: a
                 stringList: [a, 1, b]
         """.trimIndent()
-        // Doubles are getting rounded due to a parser bug. See https://github.com/Him188/yamlkt/issues/28.
         val expectedConfig = GithubFieldConfiguration(
             default = mapOf(
                 "boolean" to DynamicProperty(boolean = true),
-                "double" to DynamicProperty(number = 3),
+                "double" to DynamicProperty(number = 3.14),
                 "long" to DynamicProperty(number = 1000),
                 "string" to DynamicProperty(string = "a"),
                 "stringList" to DynamicProperty(stringList = listOf("a", "1", "b")),

@@ -69,14 +69,24 @@ kotlin {
             languageSettings.useExperimentalAnnotation("okio.ExperimentalFileSystem")
             languageSettings.useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
             languageSettings.useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
-        }
-        kotlin.sourceSets.matching { it.name.endsWith("Test") }.configureEach {
+            // This is required for Turbine
             languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
         }
+//        The following snippet causes the IDE to exception, we should test it again in the next IDEA version.
+//        kotlin.sourceSets.matching { it.name.endsWith("Test") }.configureEach {
+//            languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
+//        }
 
         val commonMain by getting {
             dependencies {
-                api(Deps.coroutines)
+                api(Deps.coroutines) {
+                    version {
+                        strictly(Versions.coroutines)
+                    }
+                }
+                implementation(Deps.Ktor.auth)
+                implementation(Deps.Ktor.core)
+                implementation(Deps.Ktor.serialization)
                 implementation(Deps.markdown)
                 implementation(Deps.Serialization.json)
                 implementation(Deps.Serialization.yml)
@@ -106,7 +116,12 @@ kotlin {
         val nativeMain by creating { dependsOn(notWebMain) }
         val nativeTest by creating { dependsOn(notWebTest) }
 
-        val jsMain by getting { dependsOn(commonMain) }
+        val jsMain by getting {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(Deps.Ktor.js)
+            }
+        }
         val jsTest by getting {
             dependsOn(commonTest)
             dependencies {
@@ -114,7 +129,12 @@ kotlin {
             }
         }
 
-        val jvmMain by getting { dependsOn(notWebMain) }
+        val jvmMain by getting {
+            dependsOn(notWebMain)
+            dependencies {
+                implementation(Deps.Ktor.jvm)
+            }
+        }
         val jvmTest by getting {
             dependencies {
                 dependsOn(notWebTest)
@@ -123,14 +143,24 @@ kotlin {
             }
         }
 
-        val iosMain by creating { dependsOn(nativeMain) }
+        val iosMain by creating {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(Deps.Ktor.iOS)
+            }
+        }
         val iosTest by creating { dependsOn(nativeTest) }
         val iosArm64Main by getting { dependsOn(iosMain) }
         val iosArm64Test by getting { dependsOn(iosTest) }
         val iosX64Main by getting { dependsOn(iosMain) }
         val iosX64Test by getting { dependsOn(iosTest) }
 
-        val desktopMain by creating { dependsOn(nativeMain) }
+        val desktopMain by creating {
+            dependsOn(nativeMain)
+            dependencies {
+                implementation(Deps.Ktor.curl)
+            }
+        }
         val desktopTest by creating { dependsOn(nativeTest) }
         val linuxX64Main by getting { dependsOn(desktopMain) }
         val macosX64Main by getting { dependsOn(desktopMain) }

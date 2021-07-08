@@ -15,5 +15,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
+      - name: Install Curl
+        if: startsWith(matrix.os,'ubuntu')
+        run: sudo apt-get install libcurl4-openssl-dev
       - name: Native Test
         run: ./gradlew hostOSNativeTest
