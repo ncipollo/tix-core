@@ -1,9 +1,10 @@
 package org.tix.config.merge
 
-import org.tix.config.data.GithubConfiguration
 import org.tix.config.data.GithubFieldConfiguration
+import org.tix.config.data.raw.RawGithubConfiguration
 
-fun GithubConfiguration.merge(overlay: GithubConfiguration) = GithubConfiguration(
+fun RawGithubConfiguration.merge(overlay: RawGithubConfiguration) = RawGithubConfiguration(
+    auth = overlay.auth ?: auth,
     owner = overlay.owner ?: owner,
     repo = overlay.repo ?: repo,
     noProjects = overlay.noProjects ?: noProjects,

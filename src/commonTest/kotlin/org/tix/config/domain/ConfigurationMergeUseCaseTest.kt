@@ -2,7 +2,7 @@ package org.tix.config.domain
 
 import app.cash.turbine.test
 import kotlinx.coroutines.flow.flowOf
-import org.tix.config.data.TixConfiguration
+import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.merge.flatten
 import org.tix.domain.transform
@@ -12,12 +12,12 @@ import kotlin.test.assertEquals
 
 class ConfigurationMergeUseCaseTest {
     private val configs = listOf(
-        TixConfiguration(include = DynamicProperty(string = "original1"), variables = mapOf("original1" to "var1")),
-        TixConfiguration(include = DynamicProperty(string = "original2"), variables = mapOf("original2" to "var1"))
+        RawTixConfiguration(include = DynamicProperty(string = "original1"), variables = mapOf("original1" to "var1")),
+        RawTixConfiguration(include = DynamicProperty(string = "original2"), variables = mapOf("original2" to "var1"))
     )
     private val overrideConfigs = listOf(
-        TixConfiguration(include = DynamicProperty(string = "override1"), variables = mapOf("override1" to "var3")),
-        TixConfiguration(include = DynamicProperty(string = "override2"), variables = mapOf("override2" to "var4"))
+        RawTixConfiguration(include = DynamicProperty(string = "override1"), variables = mapOf("override1" to "var3")),
+        RawTixConfiguration(include = DynamicProperty(string = "override2"), variables = mapOf("override2" to "var4"))
     )
 
     @Test
@@ -34,7 +34,7 @@ class ConfigurationMergeUseCaseTest {
     @Test
     fun transformFlow_whenNoConfigurations_emitsErrorResult() = runBlockingTest {
         val useCase = ConfigurationMergeUseCase()
-        flowOf(emptyList<TixConfiguration>()).transform(useCase)
+        flowOf(emptyList<RawTixConfiguration>()).transform(useCase)
             .test {
                 assertEquals(TixConfigurationMergeException, expectItem().exceptionOrNull())
                 expectComplete()

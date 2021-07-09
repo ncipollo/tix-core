@@ -1,7 +1,7 @@
 package org.tix.config
 
 import okio.Path
-import org.tix.config.data.TixConfiguration
+import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.platform.path.pathByExpandingTilde
 
 internal object ConfigurationPaths {
@@ -12,7 +12,7 @@ internal object ConfigurationPaths {
         val searchPaths = extensions.map { "~/.tix/config.$it".pathByExpandingTilde() }
     }
 
-    fun savedConfigSearchPaths(config: TixConfiguration?) =
+    fun savedConfigSearchPaths(config: RawTixConfiguration?) =
         config?.include
             ?.asStringList()
             ?.flatMap { name ->

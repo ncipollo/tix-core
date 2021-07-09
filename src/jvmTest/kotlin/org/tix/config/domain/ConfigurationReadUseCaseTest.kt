@@ -6,8 +6,9 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import okio.Path.Companion.toPath
 import org.tix.config.ConfigurationPaths
-import org.tix.config.data.TixConfiguration
 import org.tix.config.data.dynamic.DynamicProperty
+import org.tix.config.data.raw.RawTixConfiguration
+import org.tix.config.reader.RawTixConfigurationReader
 import org.tix.domain.transform
 import org.tix.test.runBlockingTest
 import kotlin.test.Test
@@ -19,14 +20,14 @@ class ConfigurationReadUseCaseTest {
         const val PATH2 = "/path2/tix.md"
     }
 
-    private val rootConfig = TixConfiguration(variables = mapOf("root" to "config"))
-    private val savedConfig = TixConfiguration(variables = mapOf("saved" to "config"))
-    private val workSpaceConfig = TixConfiguration(
+    private val rootConfig = RawTixConfiguration(variables = mapOf("root" to "config"))
+    private val savedConfig = RawTixConfiguration(variables = mapOf("saved" to "config"))
+    private val workSpaceConfig = RawTixConfiguration(
         include = DynamicProperty(string = "saved"),
         variables = mapOf("workspace" to "workspace")
     )
 
-    private val reader = mockk<ConfigurationReader>()
+    private val reader = mockk<RawTixConfigurationReader>()
     private val useCase = ConfigurationReadUseCase(reader)
 
     @Test
@@ -34,7 +35,7 @@ class ConfigurationReadUseCaseTest {
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsNull()
-        workspaceConfigReturnsNull(PATH1)
+        workspaceConfigReturnsNull()
 
         source.test {
             assertEquals(emptyList(), expectItem())
@@ -92,6 +93,7 @@ class ConfigurationReadUseCaseTest {
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsValue()
+        emptyConfigListReturnsNull()
         workspaceConfigReturnsValue(PATH1, workspaceConfigNoSaved)
 
         source.test {
@@ -105,7 +107,7 @@ class ConfigurationReadUseCaseTest {
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsValue()
-        workspaceConfigReturnsNull(PATH1)
+        workspaceConfigReturnsNull()
 
         source.test {
             assertEquals(listOf(rootConfig), expectItem())
@@ -113,33 +115,38 @@ class ConfigurationReadUseCaseTest {
         }
     }
 
+    private fun emptyConfigListReturnsNull() =
+        every {
+            reader.firstConfigFile(emptyList())
+        } returns null
+
     private fun rootConfigReturnsNull() =
-        ConfigurationPaths.RootConfig.searchPaths.forEach {
-            every { reader.readConfig(it) } returns null
-        }
+        every {
+            reader.firstConfigFile(ConfigurationPaths.RootConfig.searchPaths)
+        } returns null
 
     private fun rootConfigReturnsValue() =
-        ConfigurationPaths.RootConfig.searchPaths.forEach {
-            every { reader.readConfig(it) } returns rootConfig
-        }
+        every {
+            reader.firstConfigFile(ConfigurationPaths.RootConfig.searchPaths)
+        } returns rootConfig
 
     private fun savedConfigReturnsNull() =
-        ConfigurationPaths.savedConfigSearchPaths(workSpaceConfig)!!.forEach {
-            every { reader.readConfig(it) } returns null
-        }
+        every {
+            reader.firstConfigFile(ConfigurationPaths.savedConfigSearchPaths(workSpaceConfig)!!)
+        } returns null
 
     private fun savedConfigReturnsValue() =
-        ConfigurationPaths.savedConfigSearchPaths(workSpaceConfig)!!.forEach {
-            every { reader.readConfig(it) } returns savedConfig
-        }
+        every {
+            reader.firstConfigFile(ConfigurationPaths.savedConfigSearchPaths(workSpaceConfig)!!)
+        } returns savedConfig
 
-    private fun workspaceConfigReturnsNull(path: String) =
-        ConfigurationPaths.workspaceSearchPaths(path.toPath())!!.forEach {
-            every { reader.readConfig(it) } returns null
-        }
+    private fun workspaceConfigReturnsNull() =
+        every {
+            reader.firstConfigFile(ConfigurationPaths.workspaceSearchPaths(PATH1.toPath())!!)
+        } returns null
 
-    private fun workspaceConfigReturnsValue(path: String, value: TixConfiguration = workSpaceConfig) =
-        ConfigurationPaths.workspaceSearchPaths(path.toPath())!!.forEach {
-            every { reader.readConfig(it) } returns value
-        }
+    private fun workspaceConfigReturnsValue(path: String, value: RawTixConfiguration = workSpaceConfig) =
+        every {
+            reader.firstConfigFile(ConfigurationPaths.workspaceSearchPaths(path.toPath())!!)
+        } returns value
 }

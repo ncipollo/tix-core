@@ -7,14 +7,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 import okio.Path
 import org.tix.config.ConfigurationPaths
-import org.tix.config.data.TixConfiguration
+import org.tix.config.data.raw.RawTixConfiguration
+import org.tix.config.reader.RawTixConfigurationReader
 import org.tix.domain.FlowTransformer
 import org.tix.platform.path.pathByExpandingTilde
 
 internal class ConfigurationReadUseCase(
-    private val reader: ConfigurationReader
-) : FlowTransformer<String, List<TixConfiguration>> {
-    override fun transformFlow(upstream: Flow<String>): Flow<List<TixConfiguration>> =
+    private val reader: RawTixConfigurationReader
+) : FlowTransformer<String, List<RawTixConfiguration>> {
+    override fun transformFlow(upstream: Flow<String>): Flow<List<RawTixConfiguration>> =
         upstream
             .map { it.pathByExpandingTilde() }
             .transform { markdownPath ->
@@ -29,13 +30,15 @@ internal class ConfigurationReadUseCase(
                 }
             }
 
-    private fun readRootConfig() = ConfigurationPaths.RootConfig.searchPaths.firstConfig()
+    private fun readRootConfig() = reader.firstConfigFile(ConfigurationPaths.RootConfig.searchPaths)
 
     private fun readWorkspaceConfig(markdownPath: Path) =
-        ConfigurationPaths.workspaceSearchPaths(markdownPath).firstConfig()
+        ConfigurationPaths.workspaceSearchPaths(markdownPath)?.let {
+            reader.firstConfigFile(it)
+        }
 
-    private fun readSavedConfig(workspaceConfig: TixConfiguration?) =
-        ConfigurationPaths.savedConfigSearchPaths(workspaceConfig).firstConfig()
-
-    private fun List<Path>?.firstConfig() = this?.firstNotNullOfOrNull { reader.readConfig(it) }
+    private fun readSavedConfig(workspaceConfig: RawTixConfiguration?) =
+        ConfigurationPaths.savedConfigSearchPaths(workspaceConfig)?.let {
+            reader.firstConfigFile(it)
+        }
 }

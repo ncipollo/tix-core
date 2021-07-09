@@ -1,6 +1,7 @@
 package org.tix.feature.plan.domain.parse
 
 import org.tix.feature.plan.domain.parse.nodeparser.expectBody
+import org.tix.fixture.config.tixConfiguration
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -42,7 +43,7 @@ class TicketParserTest {
             ## Nested Ticket 2
         """.trimIndent()
     private val parser = TicketParser()
-    private val args = TicketParserArguments(markdown = markdown)
+    private val args = TicketParserArguments(markdown = markdown, configuration = tixConfiguration)
     private val tickets = parser.parse(args)
 
     @Test

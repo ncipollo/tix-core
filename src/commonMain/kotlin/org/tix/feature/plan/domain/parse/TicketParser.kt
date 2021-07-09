@@ -25,4 +25,4 @@ internal class TicketParser(private val markdownParser: MarkdownParser = default
     }
 }
 
-data class TicketParserArguments(val markdown: String = "", val configuration: TixConfiguration = TixConfiguration())
+data class TicketParserArguments(val markdown: String = "", val configuration: TixConfiguration)

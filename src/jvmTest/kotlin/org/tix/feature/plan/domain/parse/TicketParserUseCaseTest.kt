@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flow
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.LeafASTNode
 import org.tix.domain.transform
+import org.tix.fixture.config.tixConfiguration
 import org.tix.model.ticket.Ticket
 import org.tix.test.runBlockingTest
 import kotlin.test.Test
@@ -16,7 +17,7 @@ class TicketParserUseCaseTest {
     private companion object {
         const val MARKDOWN = "markdown"
 
-        val ARGUMENTS = TicketParserArguments(markdown = "markdown")
+        val ARGUMENTS = TicketParserArguments(markdown = "markdown", configuration = tixConfiguration)
         val ERROR = ParseException(
             message = "error",
             node = LeafASTNode(MarkdownElementTypes.BLOCK_QUOTE, 0, 1),

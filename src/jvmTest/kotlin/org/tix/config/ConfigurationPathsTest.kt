@@ -2,7 +2,7 @@ package org.tix.config
 
 import okio.Path.Companion.toPath
 import org.junit.Test
-import org.tix.config.data.TixConfiguration
+import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.platform.path.pathByExpandingTilde
 import kotlin.test.expect
@@ -17,7 +17,7 @@ class ConfigurationPathsTest {
 
     @Test
     fun savedConfigSearchPaths_whenConfigIsString_returnsNull() {
-        val config = TixConfiguration(include = DynamicProperty(string = "saved"))
+        val config = RawTixConfiguration(include = DynamicProperty(string = "saved"))
         val expectedPaths = listOf("~/.tix/configs/saved.yml", "~/.tix/configs/saved.json")
             .map { it.pathByExpandingTilde() }
         expect(expectedPaths) { ConfigurationPaths.savedConfigSearchPaths(config) }
@@ -25,7 +25,7 @@ class ConfigurationPathsTest {
 
     @Test
     fun savedConfigSearchPaths_whenConfigIsStringList_returnsNull() {
-        val config = TixConfiguration(include = DynamicProperty(stringList = listOf("saved1", "saved2")))
+        val config = RawTixConfiguration(include = DynamicProperty(stringList = listOf("saved1", "saved2")))
         val expectedPaths = listOf(
             "~/.tix/configs/saved1.yml",
             "~/.tix/configs/saved1.json",

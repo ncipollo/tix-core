@@ -1,13 +1,16 @@
 package org.tix.config.merge
 
-import org.tix.config.data.GithubConfiguration
 import org.tix.config.data.GithubFieldConfiguration
+import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.dynamic.DynamicProperty
+import org.tix.config.data.raw.RawAuthConfiguration
+import org.tix.config.data.raw.RawGithubConfiguration
 import kotlin.test.Test
 import kotlin.test.expect
 
 class GithubMergerTest {
-    private val base = GithubConfiguration(
+    private val base = RawGithubConfiguration(
+        auth = RawAuthConfiguration(AuthSource.ENV, "base-auth.json"),
         owner = "baseOwner",
         repo = "baseRepo",
         noProjects = false,
@@ -20,13 +23,14 @@ class GithubMergerTest {
 
     @Test
     fun merge_whenOverlayIsBlank_returnsBaseConfiguration() {
-        val overlay = GithubConfiguration()
+        val overlay = RawGithubConfiguration()
         expect(base) { base.merge(overlay) }
     }
 
     @Test
-    fun merge_whenOverlayFullyPopulated_returnsBaseConfiguration() {
-        val overlay = GithubConfiguration(
+    fun merge_whenOverlayFullyPopulated_returnsOverlayConfiguration() {
+        val overlay = RawGithubConfiguration(
+            auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),
             owner = "overlayOwner",
             repo = "overlayRepo",
             noProjects = true,
@@ -36,7 +40,8 @@ class GithubMergerTest {
                 issue = mapOf("overlay" to DynamicProperty(string = "issue"))
             )
         )
-        val expected = GithubConfiguration(
+        val expected = RawGithubConfiguration(
+            auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),
             owner = "overlayOwner",
             repo = "overlayRepo",
             noProjects = true,

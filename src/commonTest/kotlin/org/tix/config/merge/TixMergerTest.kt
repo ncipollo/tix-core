@@ -2,14 +2,17 @@ package org.tix.config.merge
 
 import org.tix.config.data.*
 import org.tix.config.data.dynamic.DynamicProperty
+import org.tix.config.data.raw.RawGithubConfiguration
+import org.tix.config.data.raw.RawJiraConfiguration
+import org.tix.config.data.raw.RawTixConfiguration
 import kotlin.test.Test
 import kotlin.test.expect
 
 class TixMergerTest {
     private val configs = listOf(1, 2, 3).map {
-        TixConfiguration(
+        RawTixConfiguration(
             include = DynamicProperty(string = "config$it"),
-            github = GithubConfiguration(
+            github = RawGithubConfiguration(
                 fields = GithubFieldConfiguration(
                     default = mapOf(
                         "github$it" to DynamicProperty(
@@ -18,7 +21,7 @@ class TixMergerTest {
                     )
                 )
             ),
-            jira = JiraConfiguration(
+            jira = RawJiraConfiguration(
                 fields = JiraFieldConfiguration(
                     default = mapOf(
                         "jira$it" to DynamicProperty(
@@ -33,9 +36,9 @@ class TixMergerTest {
 
     @Test
     fun flatten() {
-        val expected = TixConfiguration(
+        val expected = RawTixConfiguration(
             include = DynamicProperty(string = "config3"),
-            github = GithubConfiguration(
+            github = RawGithubConfiguration(
                 fields = GithubFieldConfiguration(
                     default = mapOf(
                         "github1" to DynamicProperty(number = 1),
@@ -44,7 +47,7 @@ class TixMergerTest {
                     )
                 )
             ),
-            jira = JiraConfiguration(
+            jira = RawJiraConfiguration(
                 fields = JiraFieldConfiguration(
                     default = mapOf(
                         "jira1" to DynamicProperty(number = 1),
