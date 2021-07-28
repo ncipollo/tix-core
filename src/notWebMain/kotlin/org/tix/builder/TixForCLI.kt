@@ -17,7 +17,9 @@ import org.tix.platform.io.domain.TextFileUseCase
 
 actual fun tixForCLI() = Tix(plan = cliPlan())
 
-private fun cliPlan() =
+private fun cliPlan() = planWithFileSystem()
+
+private fun planWithFileSystem() =
     TixPlan(
         authConfigUseCase = AuthConfigurationUseCase(authReader()),
         configBakerUseCase = ConfigurationBakerUseCase(),
