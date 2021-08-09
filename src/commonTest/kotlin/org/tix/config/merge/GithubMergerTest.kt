@@ -2,9 +2,9 @@ package org.tix.config.merge
 
 import org.tix.config.data.GithubFieldConfiguration
 import org.tix.config.data.auth.AuthSource
-import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.data.raw.RawGithubConfiguration
+import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -15,9 +15,9 @@ class GithubMergerTest {
         repo = "baseRepo",
         noProjects = false,
         fields = GithubFieldConfiguration(
-            default = mapOf("base" to DynamicProperty(string = "default")),
-            project = mapOf("base" to DynamicProperty(string = "project")),
-            issue = mapOf("base" to DynamicProperty(string = "issue"))
+            default = mapOf("base" to DynamicElement("default")),
+            project = mapOf("base" to DynamicElement("project")),
+            issue = mapOf("base" to DynamicElement("issue"))
         )
     )
 
@@ -35,9 +35,9 @@ class GithubMergerTest {
             repo = "overlayRepo",
             noProjects = true,
             fields = GithubFieldConfiguration(
-                default = mapOf("overlay" to DynamicProperty(string = "default")),
-                project = mapOf("overlay" to DynamicProperty(string = "project")),
-                issue = mapOf("overlay" to DynamicProperty(string = "issue"))
+                default = mapOf("overlay" to DynamicElement("default")),
+                project = mapOf("overlay" to DynamicElement("project")),
+                issue = mapOf("overlay" to DynamicElement("issue"))
             )
         )
         val expected = RawGithubConfiguration(
@@ -46,9 +46,9 @@ class GithubMergerTest {
             repo = "overlayRepo",
             noProjects = true,
             fields = GithubFieldConfiguration(
-                default = base.fields.default + mapOf("overlay" to DynamicProperty(string = "default")),
-                project = base.fields.project + mapOf("overlay" to DynamicProperty(string = "project")),
-                issue = base.fields.issue + mapOf("overlay" to DynamicProperty(string = "issue"))
+                default = base.fields.default + mapOf("overlay" to DynamicElement("default")),
+                project = base.fields.project + mapOf("overlay" to DynamicElement("project")),
+                issue = base.fields.issue + mapOf("overlay" to DynamicElement("issue"))
             )
         )
         expect(expected) { base.merge(overlay) }

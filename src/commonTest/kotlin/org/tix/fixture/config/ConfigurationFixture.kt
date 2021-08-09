@@ -4,8 +4,8 @@ import org.tix.config.data.GithubConfiguration
 import org.tix.config.data.JiraConfiguration
 import org.tix.config.data.TixConfiguration
 import org.tix.config.data.auth.AuthConfiguration
-import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.domain.TicketSystemAuth
+import org.tix.serialize.dynamic.DynamicElement
 
 //We need the custom getter here otherwise this fails in JS environments.
 val authConfiguration
@@ -39,7 +39,7 @@ val ticketSystemAuth
 
 val tixConfiguration
     get() = TixConfiguration(
-        include = DynamicProperty(string = "my_tix"),
+        include = DynamicElement("my_tix"),
         github = githubConfiguration,
         jira = jiraConfiguration,
         variables = mapOf("key" to "value")

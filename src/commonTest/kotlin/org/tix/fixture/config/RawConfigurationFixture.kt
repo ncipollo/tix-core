@@ -1,11 +1,11 @@
 package org.tix.fixture.config
 
 import org.tix.config.data.auth.AuthSource
-import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.data.raw.RawGithubConfiguration
 import org.tix.config.data.raw.RawJiraConfiguration
 import org.tix.config.data.raw.RawTixConfiguration
+import org.tix.serialize.dynamic.DynamicElement
 
 //We need the custom getter here otherwise this fails in JS environments.
 val rawAuthConfiguration
@@ -31,7 +31,7 @@ val rawJiraConfiguration
 
 val rawTixConfiguration
     get() = RawTixConfiguration(
-        include = DynamicProperty(string = "my_tix"),
+        include = DynamicElement("my_tix"),
         github = rawGithubConfiguration,
         jira = rawJiraConfiguration,
         variables = mapOf("key" to "value")

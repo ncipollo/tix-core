@@ -6,10 +6,10 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import okio.Path.Companion.toPath
 import org.tix.config.ConfigurationPaths
-import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.reader.RawTixConfigurationReader
 import org.tix.domain.transform
+import org.tix.serialize.dynamic.DynamicElement
 import org.tix.test.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -23,7 +23,7 @@ class ConfigurationReadUseCaseTest {
     private val rootConfig = RawTixConfiguration(variables = mapOf("root" to "config"))
     private val savedConfig = RawTixConfiguration(variables = mapOf("saved" to "config"))
     private val workSpaceConfig = RawTixConfiguration(
-        include = DynamicProperty(string = "saved"),
+        include = DynamicElement("saved"),
         variables = mapOf("workspace" to "workspace")
     )
 
@@ -89,7 +89,7 @@ class ConfigurationReadUseCaseTest {
 
     @Test
     fun transformFlow_whenWorkspaceConfigHasNoInclude_returnsListWithoutSavedConfig() = runBlockingTest {
-        val workspaceConfigNoSaved = workSpaceConfig.copy(include = DynamicProperty())
+        val workspaceConfigNoSaved = workSpaceConfig.copy(include = DynamicElement())
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsValue()

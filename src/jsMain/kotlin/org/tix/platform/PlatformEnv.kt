@@ -1,8 +1,7 @@
 package org.tix.platform
 
-import kotlinx.browser.window
-import org.w3c.dom.get
+import org.tix.node.process
 
 actual object PlatformEnv : Env {
-    actual override operator fun get(name: String) = window[name] as? String ?: ""
+    actual override operator fun get(name: String) = process.env[name] ?: ""
 }

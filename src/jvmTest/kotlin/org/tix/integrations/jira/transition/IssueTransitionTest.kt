@@ -1,0 +1,38 @@
+package org.tix.integrations.jira.transition
+
+import org.junit.Test
+import org.tix.fixture.integrations.jiraApi
+import org.tix.integrations.jira.issue.Issue
+import org.tix.integrations.jira.issue.IssueFields
+import org.tix.integrations.jira.issue.IssueType
+import org.tix.integrations.jira.project.Project
+import org.tix.test.runBlockingTest
+
+class IssueTransitionTest {
+    private companion object {
+        val FIELDS = IssueFields(
+            summary = "Transition test",
+            description = "This is a test",
+            project = Project(key = "TIX"),
+            type = IssueType(name = "Task")
+        )
+        val ISSUE = Issue(fields = FIELDS)
+    }
+
+    private val api = jiraApi()
+
+    @Test
+    fun transitionIssue() = runBlockingTest {
+        val issueResult = api.issue.create(ISSUE)
+
+        val transitions = transitionsByName(issueResult.keyOrId)
+        val transitionId = transitions["Done"]!!.id
+
+        api.transition.transitionIssue(issueResult.keyOrId, transitionId)
+
+        api.issue.delete(issueResult.keyOrId)
+    }
+
+    private suspend fun transitionsByName(issueId: String) =
+        api.transition.transitions(issueId).associateBy { it.name }
+}

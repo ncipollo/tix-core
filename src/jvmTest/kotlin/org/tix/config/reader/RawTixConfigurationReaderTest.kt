@@ -5,10 +5,10 @@ import io.mockk.mockk
 import kotlinx.serialization.encodeToString
 import okio.Path.Companion.toPath
 import org.junit.Test
-import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.data.raw.RawTixConfiguration
-import org.tix.config.serialize.ConfigurationSerializers
 import org.tix.platform.io.FileIO
+import org.tix.serialize.TixSerializers
+import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.expect
 
 class RawTixConfigurationReaderTest {
@@ -16,10 +16,10 @@ class RawTixConfigurationReaderTest {
         val JSON_PATH = "path/tix.json".toPath()
     }
 
-    private val config = RawTixConfiguration(include = DynamicProperty(string = "included"))
+    private val config = RawTixConfiguration(include = DynamicElement("included"))
     private val fileIO = mockk<FileIO<String>>()
     private val fileReader = ConfigurationFileReader(fileIO)
-    private val jsonString = ConfigurationSerializers.json().encodeToString(config)
+    private val jsonString = TixSerializers.json().encodeToString(config)
     private val reader = RawTixConfigurationReader(fileReader)
 
     @Test

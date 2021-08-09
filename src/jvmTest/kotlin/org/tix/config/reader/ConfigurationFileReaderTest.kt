@@ -5,10 +5,10 @@ import io.mockk.mockk
 import kotlinx.serialization.encodeToString
 import okio.Path.Companion.toPath
 import org.junit.Test
-import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.data.raw.RawTixConfiguration
-import org.tix.config.serialize.ConfigurationSerializers
 import org.tix.platform.io.FileIO
+import org.tix.serialize.TixSerializers
+import org.tix.serialize.dynamic.DynamicElement
 import java.io.IOException
 import kotlin.test.expect
 
@@ -18,11 +18,11 @@ class ConfigurationFileReaderTest {
         val YML_PATH = "path/tix.yml".toPath()
     }
 
-    private val config = RawTixConfiguration(include = DynamicProperty(string = "included"))
+    private val config = RawTixConfiguration(include = DynamicElement("included"))
     private val fileIO = mockk<FileIO<String>>()
-    private val jsonString = ConfigurationSerializers.json().encodeToString(config)
+    private val jsonString = TixSerializers.json().encodeToString(config)
     private val reader = ConfigurationFileReader(fileIO)
-    private val ymlString = ConfigurationSerializers.yaml().encodeToString(config)
+    private val ymlString = TixSerializers.yaml().encodeToString(config)
 
     @Test
     fun firstConfigFile_whenAllConfigsAreNull_returnsFirstNotNullConfig() {

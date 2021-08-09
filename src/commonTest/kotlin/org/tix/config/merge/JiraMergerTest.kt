@@ -2,9 +2,9 @@ package org.tix.config.merge
 
 import org.tix.config.data.JiraFieldConfiguration
 import org.tix.config.data.auth.AuthSource
-import org.tix.config.data.dynamic.DynamicProperty
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.data.raw.RawJiraConfiguration
+import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -13,10 +13,10 @@ class JiraMergerTest {
         auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "base-auth.json"),
         noEpics = false,
         fields = JiraFieldConfiguration(
-            default = mapOf("base" to DynamicProperty(string = "default")),
-            epic = mapOf("base" to DynamicProperty(string = "epic")),
-            issue = mapOf("base" to DynamicProperty(string = "issue")),
-            task = mapOf("base" to DynamicProperty(string = "task"))
+            default = mapOf("base" to DynamicElement("default")),
+            epic = mapOf("base" to DynamicElement("epic")),
+            issue = mapOf("base" to DynamicElement("issue")),
+            task = mapOf("base" to DynamicElement("task"))
         ),
         url = "baseUrl"
     )
@@ -33,10 +33,10 @@ class JiraMergerTest {
             auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),
             noEpics = true,
             fields = JiraFieldConfiguration(
-                default = mapOf("overlay" to DynamicProperty(string = "default")),
-                epic = mapOf("overlay" to DynamicProperty(string = "epic")),
-                issue = mapOf("overlay" to DynamicProperty(string = "issue")),
-                task = mapOf("overlay" to DynamicProperty(string = "task"))
+                default = mapOf("overlay" to DynamicElement("default")),
+                epic = mapOf("overlay" to DynamicElement("epic")),
+                issue = mapOf("overlay" to DynamicElement("issue")),
+                task = mapOf("overlay" to DynamicElement("task"))
             ),
             url = "overlayUrl"
         )
@@ -44,10 +44,10 @@ class JiraMergerTest {
             auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),
             noEpics = true,
             fields = JiraFieldConfiguration(
-                default = base.fields.default + mapOf("overlay" to DynamicProperty(string = "default")),
-                epic = base.fields.epic + mapOf("overlay" to DynamicProperty(string = "epic")),
-                issue = base.fields.issue + mapOf("overlay" to DynamicProperty(string = "issue")),
-                task = base.fields.task + mapOf("overlay" to DynamicProperty(string = "task"))
+                default = base.fields.default + mapOf("overlay" to DynamicElement("default")),
+                epic = base.fields.epic + mapOf("overlay" to DynamicElement("epic")),
+                issue = base.fields.issue + mapOf("overlay" to DynamicElement("issue")),
+                task = base.fields.task + mapOf("overlay" to DynamicElement("task"))
             ),
             url = "overlayUrl"
         )

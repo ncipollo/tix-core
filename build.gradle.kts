@@ -32,10 +32,18 @@ repositories {
 
 kotlin {
     js {
-        browser {
-            webpackTask {
-                outputFileName = "tix-core.js"
-                output.libraryTarget = "commonjs2"
+        compilations.all {
+            kotlinOptions {
+                moduleKind = "umd"
+                sourceMap = true
+                metaInfo = true
+            }
+        }
+        nodejs {
+            testTask {
+                useMocha {
+                    timeout = "30s"
+                }
             }
         }
     }
@@ -88,6 +96,7 @@ kotlin {
                 implementation(Deps.Ktor.core)
                 implementation(Deps.Ktor.serialization)
                 implementation(Deps.markdown)
+                implementation(Deps.Okio.multiplatform)
                 implementation(Deps.Serialization.json)
                 implementation(Deps.Serialization.yml)
             }
@@ -97,29 +106,18 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(Deps.turbine)
-            }
-        }
-
-        val notWebMain by creating {
-            dependsOn(commonMain)
-            dependencies {
-                implementation(Deps.Okio.multiplatform)
-            }
-        }
-        val notWebTest by creating {
-            dependsOn(commonTest)
-            dependencies {
                 implementation(Deps.Okio.fakeFilesystem)
             }
         }
 
-        val nativeMain by creating { dependsOn(notWebMain) }
-        val nativeTest by creating { dependsOn(notWebTest) }
+        val nativeMain by creating { dependsOn(commonMain) }
+        val nativeTest by creating { dependsOn(commonTest) }
 
         val jsMain by getting {
             dependsOn(commonMain)
             dependencies {
                 implementation(Deps.Ktor.js)
+                implementation(Deps.Okio.nodeFilesystem)
             }
         }
         val jsTest by getting {
@@ -130,14 +128,14 @@ kotlin {
         }
 
         val jvmMain by getting {
-            dependsOn(notWebMain)
+            dependsOn(commonMain)
             dependencies {
                 implementation(Deps.Ktor.jvm)
             }
         }
         val jvmTest by getting {
             dependencies {
-                dependsOn(notWebTest)
+                dependsOn(commonTest)
                 implementation(kotlin("test-junit"))
                 implementation(Deps.MockK.jvm)
             }

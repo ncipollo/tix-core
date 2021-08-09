@@ -1,6 +1,6 @@
 object Versions {
     const val coroutines = "1.5.0-native-mt"
-    const val json = "1.1.0-RC"
+    const val json = "1.2.2"
     const val koin = "3.0.1"
     const val kotlin = "1.5.20"
     const val ktor = "1.6.1"
@@ -40,6 +40,7 @@ object Deps {
     object Okio {
         val fakeFilesystem = dep("com.squareup.okio:okio-fakefilesystem-multiplatform", Versions.okio)
         val multiplatform = dep("com.squareup.okio:okio-multiplatform", Versions.okio)
+        val nodeFilesystem = dep("com.squareup.okio:okio-nodefilesystem-js", Versions.okio)
     }
 
     object Serialization {
