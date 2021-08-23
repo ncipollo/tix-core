@@ -32,9 +32,10 @@ data class DynamicElement(@Contextual val value: Any? = null) {
             else -> listOfNotNull(value)
         }
 
-    fun asMap(defaultKey: String? = null) =
+    @Suppress("UNCHECKED_CAST")
+    fun asMap(defaultKey: String? = null) : Map<String, Any?> =
         when {
-            value is Map<*, *> -> value
+            value is Map<*, *> -> value as Map<String, Any?>
             defaultKey != null && value != null -> mapOf(defaultKey to value)
             else -> emptyMap()
         }

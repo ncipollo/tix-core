@@ -2,6 +2,7 @@ package org.tix.feature.plan.domain.parse
 
 import org.tix.feature.plan.domain.parse.nodeparser.expectBody
 import org.tix.fixture.config.tixConfiguration
+import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -91,8 +92,6 @@ class TicketParserTest {
 
             repeat(2) { linebreak() }
 
-            codeBlock("\nproject: 1\n", "tix")
-
             repeat(2) { linebreak() }
 
             paragraph {
@@ -119,5 +118,6 @@ class TicketParserTest {
         expect("Nested Ticket 1") { tickets[2].children[0].title }
         expect("Deeply Nested Ticket") { tickets[2].children[0].children[0].title }
         expect("Nested Ticket 2") { tickets[2].children[1].title }
+        expect(DynamicElement(mapOf("project" to 1))) { tickets[0].fields }
     }
 }

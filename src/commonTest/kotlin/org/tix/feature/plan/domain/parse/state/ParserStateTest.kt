@@ -4,6 +4,7 @@ import org.tix.model.ticket.body.BodySegment
 import org.tix.model.ticket.body.EmphasisSegment
 import org.tix.model.ticket.body.LinebreakSegment
 import org.tix.model.ticket.body.TextSegment
+import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -24,6 +25,15 @@ class ParserStateTest {
         parserState.addBodyLinebreak()
 
         expect(listOf<BodySegment>(LinebreakSegment)) { parserState.currentTicket!!.body }
+    }
+
+    @Test
+    fun addFields() {
+        val element = DynamicElement(mapOf("key" to "value"))
+        parserState.startTicket()
+        parserState.addFields(element)
+
+        expect(element) { parserState.currentTicket!!.fields }
     }
 
     @Test

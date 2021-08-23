@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import org.tix.serialize.TixSerializers
+import org.tix.serialize.decodeDynamicElement
+import org.tix.serialize.encodeDynamicElement
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -46,6 +48,31 @@ class DynamicElementJsonSerializerTest {
     private val json = TixSerializers.json()
 
     @Test
+    fun deserialize_map() {
+        val jsonText = """
+        {    
+            "bool": true,
+            "double": 10.5,
+            "long": 1000,
+            "string": "text",
+            "list": [
+                1,
+                "two",
+                {
+                    "key": "value"
+                }
+            ],
+            "map": {
+                "key": "value"
+            },
+            "null": null
+        }    
+        """.trimIndent()
+        val element = json.decodeDynamicElement(jsonText)
+        assertEquals(MAP, element.asMap())
+    }
+
+    @Test
     fun deserialize_object() {
         val holder = json.decodeFromString<ElementHolder>(JSON_TEXT)
         assertEquals(MAP, holder.element.value)
@@ -61,6 +88,31 @@ class DynamicElementJsonSerializerTest {
 
         val holder = json.decodeFromString<ElementHolder>(jsonText)
         assertEquals(10.5, holder.element.value)
+    }
+
+    @Test
+    fun serialize_map() {
+        val expectedText = """
+        {
+            "bool": true,
+            "double": 10.5,
+            "long": 1000,
+            "string": "text",
+            "list": [
+                1,
+                "two",
+                {
+                    "key": "value"
+                }
+            ],
+            "map": {
+                "key": "value"
+            },
+            "null": null
+        }
+        """.trimIndent()
+        val jsonText = json.encodeDynamicElement(DynamicElement(MAP))
+        assertEquals(expectedText, jsonText)
     }
 
     @Test
