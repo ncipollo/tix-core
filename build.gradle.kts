@@ -103,6 +103,7 @@ kotlin {
         }
         val commonTest by getting {
             dependencies {
+                implementation(kotlin("reflect"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(Deps.turbine)

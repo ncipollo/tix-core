@@ -25,7 +25,7 @@ data class IssueFields(
     val watches: Watches? = null,
     val assignee: User? = null,
     val updated: String = "",
-    val description: String = "",
+    val description: String? = "",
     val summary: String = "",
     val creator: User? = null,
     val reporter: User? = null,
