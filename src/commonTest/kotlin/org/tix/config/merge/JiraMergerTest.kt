@@ -28,6 +28,11 @@ class JiraMergerTest {
     }
 
     @Test
+    fun merge_whenOverlayIsNull_returnsBaseConfiguration() {
+        expect(base) { base.merge(null) }
+    }
+
+    @Test
     fun merge_whenOverlayFullyPopulated_returnsBaseConfiguration() {
         val overlay = RawJiraConfiguration(
             auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),

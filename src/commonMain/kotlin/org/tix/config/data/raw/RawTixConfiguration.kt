@@ -8,7 +8,7 @@ import org.tix.serialize.dynamic.emptyDynamic
 @Serializable
 data class RawTixConfiguration(
     @Contextual val include: DynamicElement = emptyDynamic(),
-    val github: RawGithubConfiguration = RawGithubConfiguration(),
-    val jira: RawJiraConfiguration = RawJiraConfiguration(),
+    val github: RawGithubConfiguration? = null,
+    val jira: RawJiraConfiguration? = null,
     val variables: Map<String, String> = emptyMap()
 )

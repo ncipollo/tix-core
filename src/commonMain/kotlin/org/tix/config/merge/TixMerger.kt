@@ -4,8 +4,8 @@ import org.tix.config.data.raw.RawTixConfiguration
 
 fun RawTixConfiguration.merge(overlay: RawTixConfiguration) = RawTixConfiguration(
     include = overlay.include,// We always want to take the top include
-    github = github.merge(overlay.github),
-    jira = jira.merge(overlay.jira),
+    github = github?.merge(overlay.github) ?: overlay.github,
+    jira = jira?.merge(overlay.jira) ?: overlay.jira,
     variables = variables + overlay.variables
 )
 

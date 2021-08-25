@@ -10,20 +10,20 @@ import kotlin.test.Test
 import kotlin.test.expect
 
 class TixMergerTest {
-    private val configs = listOf(1, 2, 3).map {
+    private val configs = listOf(1, 2, 3).map { index ->
         RawTixConfiguration(
-            include = DynamicElement("config$it"),
+            include = DynamicElement("config$index"),
             github = RawGithubConfiguration(
                 fields = GithubFieldConfiguration(
-                    default = mapOf("github$it" to DynamicElement(it))
+                    default = mapOf("github$index" to DynamicElement(index))
                 )
-            ),
+            ).takeIf { index < 3 },
             jira = RawJiraConfiguration(
                 fields = JiraFieldConfiguration(
-                    default = mapOf("jira$it" to DynamicElement(it))
+                    default = mapOf("jira$index" to DynamicElement(index))
                 )
-            ),
-            variables = mapOf("config$it" to "$it")
+            ).takeIf { index < 3 },
+            variables = mapOf("config$index" to "$index")
         )
     }
 
@@ -35,8 +35,7 @@ class TixMergerTest {
                 fields = GithubFieldConfiguration(
                     default = mapOf(
                         "github1" to DynamicElement(1),
-                        "github2" to DynamicElement(2),
-                        "github3" to DynamicElement(3),
+                        "github2" to DynamicElement(2)
                     )
                 )
             ),
@@ -44,8 +43,7 @@ class TixMergerTest {
                 fields = JiraFieldConfiguration(
                     default = mapOf(
                         "jira1" to DynamicElement(1),
-                        "jira2" to DynamicElement(2),
-                        "jira3" to DynamicElement(3),
+                        "jira2" to DynamicElement(2)
                     )
                 )
             ),

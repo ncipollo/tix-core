@@ -73,8 +73,8 @@ class AuthConfigurationUseCaseTest {
                 assertEquals(RawAuthConfiguration(), rawAuthConfig)
             } else {
                 when (ticketSystemType) {
-                    TicketSystemType.GITHUB -> assertEquals(RAW_CONFIGURATION.github.auth, rawAuthConfig)
-                    TicketSystemType.JIRA -> assertEquals(RAW_CONFIGURATION.jira.auth, rawAuthConfig)
+                    TicketSystemType.GITHUB -> assertEquals(RAW_CONFIGURATION.github!!.auth, rawAuthConfig)
+                    TicketSystemType.JIRA -> assertEquals(RAW_CONFIGURATION.jira!!.auth, rawAuthConfig)
                 }
             }
         }

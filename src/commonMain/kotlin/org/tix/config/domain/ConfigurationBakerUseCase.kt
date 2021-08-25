@@ -19,11 +19,17 @@ class ConfigurationBakerUseCase : FlowTransformer<ConfigBakerAction, FlowResult<
         runCatching {
             TixConfiguration(
                 include = rawConfig.include,
-                github = GithubConfigurationBaker.bake(rawConfig.github, ticketSystemAuth.github),
-                jira = JiraConfigurationBaker.bake(rawConfig.jira, ticketSystemAuth.jira),
+                github = githubConfig(rawConfig, ticketSystemAuth),
+                jira = jiraConfig(rawConfig, ticketSystemAuth),
                 variables = rawConfig.variables
             )
         }.toFlowResult()
+
+    private fun githubConfig(rawConfig: RawTixConfiguration, ticketSystemAuth: TicketSystemAuth) =
+        rawConfig.github?.let { GithubConfigurationBaker.bake(it, ticketSystemAuth.github) }
+
+    private fun jiraConfig(rawConfig: RawTixConfiguration, ticketSystemAuth: TicketSystemAuth) =
+        rawConfig.jira?.let { JiraConfigurationBaker.bake(it, ticketSystemAuth.jira) }
 }
 
 data class ConfigBakerAction(val rawConfig: RawTixConfiguration, val ticketSystemAuth: TicketSystemAuth)

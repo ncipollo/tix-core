@@ -23,12 +23,12 @@ class AuthConfigurationUseCase(
 
     private fun githubAuthConfig(action: AuthConfigAction) =
         authReader.read(action.path,
-            action.tixConfig.github.auth ?: RawAuthConfiguration(),
+            action.tixConfig.github?.auth ?: RawAuthConfiguration(),
             TicketSystemType.GITHUB)
 
     private fun jiraAuthConfig(action: AuthConfigAction) =
         authReader.read(action.path,
-            action.tixConfig.jira.auth ?: RawAuthConfiguration(),
+            action.tixConfig.jira?.auth ?: RawAuthConfiguration(),
             TicketSystemType.JIRA)
 }
 

@@ -28,6 +28,12 @@ class GithubMergerTest {
     }
 
     @Test
+    fun merge_whenOverlayIsNull_returnsBaseConfiguration() {
+        val overlay = RawGithubConfiguration()
+        expect(base) { base.merge(overlay) }
+    }
+
+    @Test
     fun merge_whenOverlayFullyPopulated_returnsOverlayConfiguration() {
         val overlay = RawGithubConfiguration(
             auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),
