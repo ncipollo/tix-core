@@ -26,8 +26,8 @@ class ConfigurationMergeUseCaseTest {
         val expected = (configs + overrideConfigs).flatten()
         flowOf(configs).transform(useCase)
             .test {
-                assertEquals(expected, expectItem().getOrThrow())
-                expectComplete()
+                assertEquals(expected, awaitItem().getOrThrow())
+                awaitComplete()
             }
     }
 
@@ -36,8 +36,8 @@ class ConfigurationMergeUseCaseTest {
         val useCase = ConfigurationMergeUseCase()
         flowOf(emptyList<RawTixConfiguration>()).transform(useCase)
             .test {
-                assertEquals(TixConfigurationMergeException, expectItem().exceptionOrNull())
-                expectComplete()
+                assertEquals(TixConfigurationMergeException, awaitItem().exceptionOrNull())
+                awaitComplete()
             }
     }
 }

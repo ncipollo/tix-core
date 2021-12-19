@@ -29,8 +29,8 @@ class ConfigurationBakerUseCaseTest {
                     jira = null,
                     variables = emptyMap()
                 )
-                assertEquals(expected, expectItem().getOrThrow())
-                expectComplete()
+                assertEquals(expected, awaitItem().getOrThrow())
+                awaitComplete()
             }
     }
 
@@ -39,8 +39,8 @@ class ConfigurationBakerUseCaseTest {
         flowOf(ConfigBakerAction(rawTixConfiguration, ticketSystemAuth))
             .transform(useCase)
             .test {
-                assertEquals(tixConfiguration, expectItem().getOrThrow())
-                expectComplete()
+                assertEquals(tixConfiguration, awaitItem().getOrThrow())
+                awaitComplete()
             }
     }
 
@@ -51,8 +51,8 @@ class ConfigurationBakerUseCaseTest {
             .transform(useCase)
             .test {
                 val expectedError = ConfigValidationException("Github Configuration", listOf("owner", "repo"))
-                assertEquals(expectedError, expectItem().exceptionOrNull())
-                expectComplete()
+                assertEquals(expectedError, awaitItem().exceptionOrNull())
+                awaitComplete()
             }
     }
 }

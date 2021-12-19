@@ -29,9 +29,9 @@ class TextFileUseCaseTest {
         every { fileIO.read("file2.txt") } returns CONTENTS2
 
         source.test {
-            assertEquals(ERROR, expectItem().exceptionOrNull())
-            assertEquals(CONTENTS2, expectItem().getOrThrow())
-            expectComplete()
+            assertEquals(ERROR, awaitItem().exceptionOrNull())
+            assertEquals(CONTENTS2, awaitItem().getOrThrow())
+            awaitComplete()
         }
     }
 
@@ -41,9 +41,9 @@ class TextFileUseCaseTest {
         every { fileIO.read("file2.txt") } returns CONTENTS2
 
         source.test {
-            assertEquals(CONTENTS1, expectItem().getOrThrow())
-            assertEquals(CONTENTS2, expectItem().getOrThrow())
-            expectComplete()
+            assertEquals(CONTENTS1, awaitItem().getOrThrow())
+            assertEquals(CONTENTS2, awaitItem().getOrThrow())
+            awaitComplete()
         }
     }
 }

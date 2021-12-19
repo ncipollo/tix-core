@@ -36,8 +36,8 @@ class TicketParserUseCaseTest {
     fun transformFlow_emitsErrorOnFailure() = runBlockingTest {
         every { ticketParser.parse(ARGUMENTS) } throws ERROR
         source.test {
-            assertEquals(ERROR, expectItem().exceptionOrNull())
-            expectComplete()
+            assertEquals(ERROR, awaitItem().exceptionOrNull())
+            awaitComplete()
         }
     }
 
@@ -45,8 +45,8 @@ class TicketParserUseCaseTest {
     fun transformFlow_emitsTicketOnSuccess() = runBlockingTest {
         every { ticketParser.parse(ARGUMENTS) } returns listOf(ticket)
         source.test {
-            assertEquals(listOf(ticket), expectItem().getOrThrow())
-            expectComplete()
+            assertEquals(listOf(ticket), awaitItem().getOrThrow())
+            awaitComplete()
         }
     }
 }

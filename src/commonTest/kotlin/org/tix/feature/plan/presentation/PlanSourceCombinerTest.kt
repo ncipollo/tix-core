@@ -38,8 +38,8 @@ class PlanSourceCombinerTest {
         val expectedResult = PlanSourceResult.Success(tixConfiguration, MARKDOWN)
         source.transform(combiner)
             .test {
-                assertEquals(expectedResult, expectItem())
-                expectComplete()
+                assertEquals(expectedResult, awaitItem())
+                awaitComplete()
             }
     }
 
@@ -49,8 +49,8 @@ class PlanSourceCombinerTest {
         val expectedResult = PlanSourceResult.Error(ERROR)
         source.transform(combiner)
             .test {
-                assertEquals(expectedResult, expectItem())
-                expectComplete()
+                assertEquals(expectedResult, awaitItem())
+                awaitComplete()
             }
     }
 
@@ -60,8 +60,8 @@ class PlanSourceCombinerTest {
         val expectedResult = PlanSourceResult.Error(ERROR)
         source.transform(combiner)
             .test {
-                assertEquals(expectedResult, expectItem())
-                expectComplete()
+                assertEquals(expectedResult, awaitItem())
+                awaitComplete()
             }
     }
 
@@ -71,8 +71,8 @@ class PlanSourceCombinerTest {
         val expectedResult = PlanSourceResult.Error(ERROR)
         source.transform(combiner)
             .test {
-                assertEquals(expectedResult, expectItem())
-                expectComplete()
+                assertEquals(expectedResult, awaitItem())
+                awaitComplete()
             }
     }
 

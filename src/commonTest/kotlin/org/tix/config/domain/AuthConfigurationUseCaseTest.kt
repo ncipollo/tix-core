@@ -33,8 +33,8 @@ class AuthConfigurationUseCaseTest {
         source.transform(useCase)
             .test {
                 val expected = TicketSystemAuth(GITHUB_AUTH_CONFIG, JIRA_AUTH_CONFIG)
-                assertEquals(expected, expectItem())
-                expectComplete()
+                assertEquals(expected, awaitItem())
+                awaitComplete()
             }
     }
 
@@ -47,8 +47,8 @@ class AuthConfigurationUseCaseTest {
         source.transform(useCase)
             .test {
                 val expected = TicketSystemAuth(GITHUB_AUTH_CONFIG, JIRA_AUTH_CONFIG)
-                assertEquals(expected, expectItem())
-                expectComplete()
+                assertEquals(expected, awaitItem())
+                awaitComplete()
             }
     }
 

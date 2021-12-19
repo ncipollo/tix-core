@@ -38,8 +38,8 @@ class ConfigurationReadUseCaseTest {
         workspaceConfigReturnsNull()
 
         source.test {
-            assertEquals(emptyList(), expectItem())
-            expectComplete()
+            assertEquals(emptyList(), awaitItem())
+            awaitComplete()
         }
     }
 
@@ -52,8 +52,8 @@ class ConfigurationReadUseCaseTest {
         savedConfigReturnsValue()
 
         source.test {
-            assertEquals(listOf(rootConfig, savedConfig, workSpaceConfig), expectItem())
-            expectComplete()
+            assertEquals(listOf(rootConfig, savedConfig, workSpaceConfig), awaitItem())
+            awaitComplete()
         }
     }
 
@@ -67,9 +67,9 @@ class ConfigurationReadUseCaseTest {
         savedConfigReturnsValue()
 
         source.test {
-            assertEquals(listOf(rootConfig, savedConfig, workSpaceConfig), expectItem())
-            assertEquals(listOf(rootConfig, savedConfig, workSpaceConfig), expectItem())
-            expectComplete()
+            assertEquals(listOf(rootConfig, savedConfig, workSpaceConfig), awaitItem())
+            assertEquals(listOf(rootConfig, savedConfig, workSpaceConfig), awaitItem())
+            awaitComplete()
         }
     }
 
@@ -82,8 +82,8 @@ class ConfigurationReadUseCaseTest {
         savedConfigReturnsNull()
 
         source.test {
-            assertEquals(listOf(rootConfig, workSpaceConfig), expectItem())
-            expectComplete()
+            assertEquals(listOf(rootConfig, workSpaceConfig), awaitItem())
+            awaitComplete()
         }
     }
 
@@ -97,8 +97,8 @@ class ConfigurationReadUseCaseTest {
         workspaceConfigReturnsValue(PATH1, workspaceConfigNoSaved)
 
         source.test {
-            assertEquals(listOf(rootConfig, workspaceConfigNoSaved), expectItem())
-            expectComplete()
+            assertEquals(listOf(rootConfig, workspaceConfigNoSaved), awaitItem())
+            awaitComplete()
         }
     }
 
@@ -110,8 +110,8 @@ class ConfigurationReadUseCaseTest {
         workspaceConfigReturnsNull()
 
         source.test {
-            assertEquals(listOf(rootConfig), expectItem())
-            expectComplete()
+            assertEquals(listOf(rootConfig), awaitItem())
+            awaitComplete()
         }
     }
 
