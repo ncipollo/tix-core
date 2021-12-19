@@ -6,8 +6,8 @@ import org.tix.model.ticket.body.CodeBlockSegment
 class GithubCodeBlockRenderer: BodySegmentRenderer<CodeBlockSegment> {
     override fun render(segment: CodeBlockSegment) =
         if (segment.language.isNotBlank()) {
-            "```${segment.language}\n${segment.code}\n```"
+            "```${segment.language}${segment.code}```"
         } else {
-            "```\n${segment.code}\n```"
+            "```${segment.code}```"
         }
 }

@@ -7,7 +7,7 @@ import org.tix.model.ticket.body.CodeBlockSegment
 
 internal class CodeBlockParser: NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {
-        val code = code(arguments)
+        val code = "\n${code(arguments)}\n"
         arguments.state.addBodySegments(CodeBlockSegment(code = code))
         return arguments.resultsFromArgs()
     }
@@ -18,7 +18,7 @@ internal class CodeBlockParser: NodeParser {
 
     private fun mapChildNode(node: ASTNode, arguments: ParserArguments) =
         when(node.type.name) {
-            MarkdownTokenTypes.CODE_LINE.name -> node.getTextInNode(arguments.markdownText).toString()
+            MarkdownTokenTypes.CODE_LINE.name -> node.getTextInNode(arguments.markdownText).toString().trimIndent()
             MarkdownTokenTypes.EOL.name -> "\n"
             else -> ""
         }

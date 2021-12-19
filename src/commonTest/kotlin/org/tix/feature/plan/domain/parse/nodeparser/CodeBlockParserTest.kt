@@ -13,7 +13,7 @@ class CodeBlockParserTest {
 
         val results = parser.parse(arguments)
 
-        expectBody(arguments) {codeBlock(code = "    line1\n    line2")}
+        expectBody(arguments) { codeBlock(code = "\nline1\nline2\n") }
         expect(1) { results.nextIndex }
     }
 }

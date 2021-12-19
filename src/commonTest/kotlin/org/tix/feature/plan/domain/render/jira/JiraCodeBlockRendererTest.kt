@@ -7,7 +7,7 @@ import kotlin.test.expect
 class JiraCodeBlockRendererTest {
     @Test
     fun render_withLanguage() {
-        val segment = CodeBlockSegment("println(\"hi\")", "kotlin")
+        val segment = CodeBlockSegment("\nprintln(\"hi\")\n", "kotlin")
 
         val expected = """
             {code:kotlin}
@@ -19,7 +19,7 @@ class JiraCodeBlockRendererTest {
 
     @Test
     fun render_withoutLanguage() {
-        val segment = CodeBlockSegment("println(\"hi\")")
+        val segment = CodeBlockSegment("\nprintln(\"hi\")\n")
 
         val expected = """
             {code}
