@@ -1,8 +1,8 @@
 object Versions {
-    const val coroutines = "1.5.0-native-mt"
+    const val coroutines = "1.5.2-native-mt"
     const val json = "1.2.2"
     const val koin = "3.0.1"
-    const val kotlin = "1.5.20"
+    const val kotlin = "1.6.10"
     const val ktor = "1.6.1"
     const val markdown = "0.2.4"
     const val mockK = "1.11.0"

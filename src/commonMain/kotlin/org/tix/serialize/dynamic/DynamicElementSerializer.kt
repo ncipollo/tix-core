@@ -1,6 +1,5 @@
 package org.tix.serialize.dynamic
 
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.MapSerializer
@@ -14,7 +13,6 @@ interface DynamicElementSerializer : KSerializer<DynamicElement> {
     override val descriptor: SerialDescriptor
         get() = buildClassSerialDescriptor("org.tix.serialize.dynamic.DynamicElement")
 
-    @ExperimentalSerializationApi
     override fun serialize(encoder: Encoder, value: DynamicElement) {
         when (val elementValue = value.value) {
             is Boolean -> encoder.encodeBoolean(elementValue)
