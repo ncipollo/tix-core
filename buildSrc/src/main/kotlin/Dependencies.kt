@@ -7,7 +7,7 @@ object Versions {
     const val mockK = "1.11.0"
     const val okio = "3.0.0-alpha.9"
     const val turbine = "0.7.0"
-    const val yml = "0.10.0"
+    const val yml = "0.10.2"
 }
 
 object Deps {
