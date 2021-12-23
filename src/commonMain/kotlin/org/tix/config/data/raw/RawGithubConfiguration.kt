@@ -12,5 +12,6 @@ data class RawGithubConfiguration(
     @SerialName("no_projects") val noProjects: Boolean? = null,
     private val tickets: GithubFieldConfiguration? = null, // Legacy property with weird name
     val fields: GithubFieldConfiguration = tickets ?: GithubFieldConfiguration(),
+    val workflows: RawTicketWorkflows? = null
 )
 

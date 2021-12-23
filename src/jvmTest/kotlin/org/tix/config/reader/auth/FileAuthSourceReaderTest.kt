@@ -8,7 +8,7 @@ import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.reader.ConfigurationFileReader
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.system.TicketSystemType
 import org.tix.platform.io.FileIO
 import org.tix.platform.path.pathByExpandingTilde
 import org.tix.serialize.TixSerializers

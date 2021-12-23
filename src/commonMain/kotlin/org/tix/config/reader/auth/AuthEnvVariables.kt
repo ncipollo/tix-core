@@ -1,6 +1,6 @@
 package org.tix.config.reader.auth
 
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.system.TicketSystemType
 
 internal object AuthEnvVariables {
     fun forSystemType(ticketSystemType: TicketSystemType) =

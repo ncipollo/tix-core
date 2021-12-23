@@ -2,6 +2,7 @@ package org.tix.config.domain
 
 import app.cash.turbine.test
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.data.raw.RawGithubConfiguration
@@ -9,8 +10,7 @@ import org.tix.config.data.raw.RawJiraConfiguration
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.reader.auth.AuthSourceReader
 import org.tix.domain.transform
-import org.tix.model.ticket.system.TicketSystemType
-import org.tix.test.runBlockingTest
+import org.tix.ticket.system.TicketSystemType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -25,7 +25,7 @@ class AuthConfigurationUseCaseTest {
     }
 
     @Test
-    fun transform_whenConfigurationIsNotEmpty_readsAuthConfigurations() = runBlockingTest {
+    fun transform_whenConfigurationIsNotEmpty_readsAuthConfigurations() = runTest {
         val authReader = TestAuthReader(false)
         val useCase = AuthConfigurationUseCase(authReader)
         val source = flowOf(AuthConfigAction("", RAW_CONFIGURATION))
@@ -39,7 +39,7 @@ class AuthConfigurationUseCaseTest {
     }
 
     @Test
-    fun transform_whenConfigurationIsEmpty_readsAuthConfigurations() = runBlockingTest {
+    fun transform_whenConfigurationIsEmpty_readsAuthConfigurations() = runTest {
         val authReader = TestAuthReader(true)
         val useCase = AuthConfigurationUseCase(authReader)
         val source = flowOf(AuthConfigAction("", RawTixConfiguration()))

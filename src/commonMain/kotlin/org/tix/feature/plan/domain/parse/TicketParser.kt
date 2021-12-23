@@ -5,7 +5,7 @@ import org.intellij.markdown.parser.MarkdownParser
 import org.tix.config.data.TixConfiguration
 import org.tix.feature.plan.domain.parse.nodeparser.NodeParserMap
 import org.tix.feature.plan.domain.parse.nodeparser.parserArguments
-import org.tix.model.ticket.Ticket
+import org.tix.ticket.Ticket
 
 internal class TicketParser(private val markdownParser: MarkdownParser = defaultMarkdownParser()) {
     private val parserMap = NodeParserMap()

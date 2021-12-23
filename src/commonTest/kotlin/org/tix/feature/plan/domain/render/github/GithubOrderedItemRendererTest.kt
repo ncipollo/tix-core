@@ -1,6 +1,9 @@
 package org.tix.feature.plan.domain.render.github
 
-import org.tix.model.ticket.body.*
+import org.tix.ticket.body.LinebreakSegment
+import org.tix.ticket.body.OrderedListItemSegment
+import org.tix.ticket.body.TextSegment
+import org.tix.ticket.body.TicketBody
 import kotlin.test.Test
 import kotlin.test.expect
 

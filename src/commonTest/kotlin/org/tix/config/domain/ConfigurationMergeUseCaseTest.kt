@@ -2,11 +2,11 @@ package org.tix.config.domain
 
 import app.cash.turbine.test
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.merge.flatten
 import org.tix.domain.transform
 import org.tix.serialize.dynamic.DynamicElement
-import org.tix.test.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -21,7 +21,7 @@ class ConfigurationMergeUseCaseTest {
     )
 
     @Test
-    fun transformFlow_whenConfigurationsAreProvided_emittedMergedResult() = runBlockingTest {
+    fun transformFlow_whenConfigurationsAreProvided_emittedMergedResult() = runTest {
         val useCase = ConfigurationMergeUseCase(overrideConfigs)
         val expected = (configs + overrideConfigs).flatten()
         flowOf(configs).transform(useCase)
@@ -32,7 +32,7 @@ class ConfigurationMergeUseCaseTest {
     }
 
     @Test
-    fun transformFlow_whenNoConfigurations_emitsErrorResult() = runBlockingTest {
+    fun transformFlow_whenNoConfigurations_emitsErrorResult() = runTest {
         val useCase = ConfigurationMergeUseCase()
         flowOf(emptyList<RawTixConfiguration>()).transform(useCase)
             .test {

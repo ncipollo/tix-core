@@ -1,8 +1,8 @@
 package org.tix.feature.plan.domain.parse.nodeparser
 
 import org.intellij.markdown.MarkdownTokenTypes
-import org.tix.model.ticket.body.BlockQuoteSegment
-import org.tix.model.ticket.body.toTicketBody
+import org.tix.ticket.body.BlockQuoteSegment
+import org.tix.ticket.body.toTicketBody
 
 internal class BlockQuoteParser(private val parserMap: NodeParserMap) : NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

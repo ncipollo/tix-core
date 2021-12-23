@@ -3,7 +3,7 @@ package org.tix.feature.plan.domain.render.github
 import org.tix.feature.plan.domain.render.bodyRenderer
 import org.tix.feature.plan.domain.render.common.*
 import org.tix.feature.plan.domain.render.jira.JiraStrongEmphasisRenderer
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.system.TicketSystemType
 
 fun githubBodyRenderer() = bodyRenderer(TicketSystemType.GITHUB) {
     commonRenderers()

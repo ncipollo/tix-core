@@ -2,18 +2,17 @@ package org.tix.feature.plan
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.runTest
 import org.junit.Ignore
 import org.junit.Test
 import org.tix.builder.tixForCLI
 import org.tix.feature.plan.presentation.PlanViewEvent
-import org.tix.test.runBlockingTest
 
 class TixPlanIntegrationTest {
     @Ignore
     @Test
-    fun plan() = runBlockingTest {
+    fun plan() = runTest {
         val viewModel = tixForCLI().plan.planViewModel()
 
         coroutineScope {

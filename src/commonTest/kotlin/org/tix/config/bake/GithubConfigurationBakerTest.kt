@@ -2,9 +2,11 @@ package org.tix.config.bake
 
 import org.tix.config.bake.validation.ConfigValidationException
 import org.tix.config.data.GithubConfiguration
+import org.tix.config.data.TicketWorkflows
 import org.tix.config.data.raw.RawGithubConfiguration
 import org.tix.fixture.config.authConfiguration
 import org.tix.fixture.config.rawGithubConfiguration
+import org.tix.fixture.config.workflows
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.expect
@@ -19,6 +21,7 @@ class GithubConfigurationBakerTest {
             repo = config.repo!!,
             noProjects = config.noProjects!!,
             fields = config.fields,
+            workflows = workflows
         )
         expect(expectedConfig) { GithubConfigurationBaker.bake(config, authConfiguration) }
     }
@@ -32,6 +35,7 @@ class GithubConfigurationBakerTest {
             repo = config.repo!!,
             noProjects = false,
             fields = config.fields,
+            workflows = TicketWorkflows()
         )
         expect(expectedConfig) { GithubConfigurationBaker.bake(config, authConfiguration) }
     }

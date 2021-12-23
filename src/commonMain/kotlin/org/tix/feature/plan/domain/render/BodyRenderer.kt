@@ -1,8 +1,8 @@
 package org.tix.feature.plan.domain.render
 
-import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.TicketBody
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.body.BodySegment
+import org.tix.ticket.body.TicketBody
+import org.tix.ticket.system.TicketSystemType
 
 class BodyRenderer(private val ticketSystemType: TicketSystemType, builder: BodyRendererBuilder) {
     private val renderers = builder.build(this)

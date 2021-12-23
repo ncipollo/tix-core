@@ -4,10 +4,10 @@ import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.tix.domain.transform
 import org.tix.platform.io.FileIO
-import org.tix.test.runBlockingTest
 import java.io.IOException
 import kotlin.test.assertEquals
 
@@ -24,7 +24,7 @@ class TextFileUseCaseTest {
     private val source = listOf("file1.txt", "file2.txt").asFlow().transform(useCase)
 
     @Test
-    fun transformFlow_whenFileReadFails_emitErrorThenResumes() = runBlockingTest {
+    fun transformFlow_whenFileReadFails_emitErrorThenResumes() = runTest {
         every { fileIO.read("file1.txt") } throws ERROR
         every { fileIO.read("file2.txt") } returns CONTENTS2
 
@@ -36,7 +36,7 @@ class TextFileUseCaseTest {
     }
 
     @Test
-    fun transformFlow_whenFileReadSucceeds_emitSuccess() = runBlockingTest {
+    fun transformFlow_whenFileReadSucceeds_emitSuccess() = runTest {
         every { fileIO.read("file1.txt") } returns CONTENTS1
         every { fileIO.read("file2.txt") } returns CONTENTS2
 

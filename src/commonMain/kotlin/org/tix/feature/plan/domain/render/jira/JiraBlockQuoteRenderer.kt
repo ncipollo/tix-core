@@ -2,7 +2,7 @@ package org.tix.feature.plan.domain.render.jira
 
 import org.tix.feature.plan.domain.render.BodyRenderer
 import org.tix.feature.plan.domain.render.BodySegmentRenderer
-import org.tix.model.ticket.body.BlockQuoteSegment
+import org.tix.ticket.body.BlockQuoteSegment
 
 class JiraBlockQuoteRenderer(private val bodyRenderer: BodyRenderer) : BodySegmentRenderer<BlockQuoteSegment> {
     override fun render(segment: BlockQuoteSegment) =

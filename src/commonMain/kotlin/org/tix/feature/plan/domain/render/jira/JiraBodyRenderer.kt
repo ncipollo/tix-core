@@ -2,7 +2,7 @@ package org.tix.feature.plan.domain.render.jira
 
 import org.tix.feature.plan.domain.render.bodyRenderer
 import org.tix.feature.plan.domain.render.common.*
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.system.TicketSystemType
 
 fun jiraBodyRenderer() = bodyRenderer(TicketSystemType.JIRA) {
     commonRenderers()

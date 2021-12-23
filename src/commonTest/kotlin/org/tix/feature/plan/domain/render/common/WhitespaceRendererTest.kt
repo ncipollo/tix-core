@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.render.common
 
-import org.tix.model.ticket.body.WhitespaceSegment
+import org.tix.ticket.body.WhitespaceSegment
 import kotlin.test.Test
 import kotlin.test.expect
 

@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.parse.nodeparser
 
-import org.tix.model.ticket.body.WhitespaceSegment
+import org.tix.ticket.body.WhitespaceSegment
 
 internal class WhitespaceParser : NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

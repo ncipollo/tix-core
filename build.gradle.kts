@@ -31,7 +31,7 @@ repositories {
 }
 
 kotlin {
-    js {
+    js(IR) {
         compilations.all {
             kotlinOptions {
                 moduleKind = "umd"
@@ -50,7 +50,7 @@ kotlin {
 
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
         }
         testRuns["test"].executionTask.configure {
             useJUnit()
@@ -74,11 +74,11 @@ kotlin {
 
     sourceSets {
         all {
-            languageSettings.useExperimentalAnnotation("okio.ExperimentalFileSystem")
-            languageSettings.useExperimentalAnnotation("kotlinx.coroutines.ExperimentalCoroutinesApi")
-            languageSettings.useExperimentalAnnotation("kotlinx.coroutines.FlowPreview")
+            languageSettings.optIn("okio.ExperimentalFileSystem")
+            languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+            languageSettings.optIn("kotlinx.coroutines.FlowPreview")
             // This is required for Turbine
-            languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
+            languageSettings.optIn("kotlin.time.ExperimentalTime")
         }
 //        The following snippet causes the IDE to exception, we should test it again in the next IDEA version.
 //        kotlin.sourceSets.matching { it.name.endsWith("Test") }.configureEach {
@@ -87,7 +87,7 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api(Deps.coroutines) {
+                api(Deps.Coroutines.core) {
                     version {
                         strictly(Versions.coroutines)
                     }
@@ -106,6 +106,7 @@ kotlin {
                 implementation(kotlin("reflect"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation(Deps.Coroutines.test)
                 implementation(Deps.turbine)
                 implementation(Deps.Okio.fakeFilesystem)
             }

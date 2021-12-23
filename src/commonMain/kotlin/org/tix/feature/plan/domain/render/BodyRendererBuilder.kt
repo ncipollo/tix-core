@@ -1,7 +1,7 @@
 package org.tix.feature.plan.domain.render
 
-import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.body.BodySegment
+import org.tix.ticket.system.TicketSystemType
 import kotlin.reflect.KClass
 
 private typealias SegmentRendererFactory<T> = (BodyRenderer) -> BodySegmentRenderer<T>

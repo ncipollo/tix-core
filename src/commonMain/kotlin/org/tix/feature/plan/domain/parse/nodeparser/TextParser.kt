@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.parse.nodeparser
 
-import org.tix.model.ticket.body.TextSegment
+import org.tix.ticket.body.TextSegment
 
 internal class TextParser: NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

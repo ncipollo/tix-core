@@ -1,6 +1,6 @@
 package org.tix.config.reader.auth
 
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.system.TicketSystemType
 import kotlin.test.Test
 import kotlin.test.expect
 

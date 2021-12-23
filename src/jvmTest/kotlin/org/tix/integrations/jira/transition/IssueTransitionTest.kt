@@ -1,12 +1,12 @@
 package org.tix.integrations.jira.transition
 
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.tix.fixture.integrations.jiraApi
 import org.tix.integrations.jira.issue.Issue
 import org.tix.integrations.jira.issue.IssueFields
 import org.tix.integrations.jira.issue.IssueType
 import org.tix.integrations.jira.project.Project
-import org.tix.test.runBlockingTest
 
 class IssueTransitionTest {
     private companion object {
@@ -22,7 +22,7 @@ class IssueTransitionTest {
     private val api = jiraApi()
 
     @Test
-    fun transitionIssue() = runBlockingTest {
+    fun transitionIssue() = runTest {
         val issueResult = api.issue.create(ISSUE)
 
         val transitions = transitionsByName(issueResult.keyOrId)

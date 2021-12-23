@@ -3,7 +3,7 @@ package org.tix.config.reader.auth
 import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.raw.RawAuthConfiguration
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.system.TicketSystemType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.expect

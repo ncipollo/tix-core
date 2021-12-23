@@ -3,7 +3,7 @@ package org.tix.feature.plan.domain.parse.nodeparser
 import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.ASTNode
 import org.intellij.markdown.ast.getTextInNode
-import org.tix.model.ticket.body.CodeBlockSegment
+import org.tix.ticket.body.CodeBlockSegment
 
 internal class CodeBlockParser: NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

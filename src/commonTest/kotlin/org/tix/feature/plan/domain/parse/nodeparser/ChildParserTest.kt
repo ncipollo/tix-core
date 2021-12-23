@@ -1,10 +1,10 @@
 package org.tix.feature.plan.domain.parse.nodeparser
 
 import org.intellij.markdown.MarkdownElementTypes
-import org.tix.model.ticket.body.EmphasisSegment
-import org.tix.model.ticket.body.StrongEmphasisSegment
-import org.tix.model.ticket.body.TextSegment
-import org.tix.model.ticket.body.WhitespaceSegment
+import org.tix.ticket.body.EmphasisSegment
+import org.tix.ticket.body.StrongEmphasisSegment
+import org.tix.ticket.body.TextSegment
+import org.tix.ticket.body.WhitespaceSegment
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

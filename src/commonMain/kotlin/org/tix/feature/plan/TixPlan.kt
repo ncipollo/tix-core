@@ -10,7 +10,7 @@ import org.tix.domain.FlowTransformer
 import org.tix.feature.plan.domain.parse.TicketParserArguments
 import org.tix.feature.plan.presentation.PlanViewModel
 import org.tix.feature.plan.presentation.planSourceCombiner
-import org.tix.model.ticket.Ticket
+import org.tix.ticket.Ticket
 
 class TixPlan internal constructor(
     private val authConfigUseCase: FlowTransformer<AuthConfigAction, TicketSystemAuth>,

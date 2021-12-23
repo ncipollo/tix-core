@@ -6,7 +6,7 @@ import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.domain.checkExpectedError
 import org.tix.ext.toFlowResult
-import org.tix.model.ticket.Ticket
+import org.tix.ticket.Ticket
 
 internal class TicketParserUseCase(
     private val ticketParser: TicketParser

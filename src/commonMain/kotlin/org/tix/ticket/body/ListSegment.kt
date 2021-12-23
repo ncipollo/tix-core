@@ -1,4 +1,4 @@
-package org.tix.model.ticket.body
+package org.tix.ticket.body
 
 interface ListSegment {
     val body: TicketBody

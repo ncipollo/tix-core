@@ -4,12 +4,12 @@ import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.test.runTest
 import org.intellij.markdown.MarkdownElementTypes
 import org.intellij.markdown.ast.LeafASTNode
 import org.tix.domain.transform
 import org.tix.fixture.config.tixConfiguration
-import org.tix.model.ticket.Ticket
-import org.tix.test.runBlockingTest
+import org.tix.ticket.Ticket
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -33,7 +33,7 @@ class TicketParserUseCaseTest {
     private val source = upstream.transform(useCase)
 
     @Test
-    fun transformFlow_emitsErrorOnFailure() = runBlockingTest {
+    fun transformFlow_emitsErrorOnFailure() = runTest {
         every { ticketParser.parse(ARGUMENTS) } throws ERROR
         source.test {
             assertEquals(ERROR, awaitItem().exceptionOrNull())
@@ -42,7 +42,7 @@ class TicketParserUseCaseTest {
     }
 
     @Test
-    fun transformFlow_emitsTicketOnSuccess() = runBlockingTest {
+    fun transformFlow_emitsTicketOnSuccess() = runTest {
         every { ticketParser.parse(ARGUMENTS) } returns listOf(ticket)
         source.test {
             assertEquals(listOf(ticket), awaitItem().getOrThrow())

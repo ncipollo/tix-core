@@ -4,13 +4,13 @@ import app.cash.turbine.test
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import okio.Path.Companion.toPath
 import org.tix.config.ConfigurationPaths
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.reader.RawTixConfigurationReader
 import org.tix.domain.transform
 import org.tix.serialize.dynamic.DynamicElement
-import org.tix.test.runBlockingTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -31,7 +31,7 @@ class ConfigurationReadUseCaseTest {
     private val useCase = ConfigurationReadUseCase(reader)
 
     @Test
-    fun transformFlow_whenAllConfigsAreNull_returnsEmptyList() = runBlockingTest {
+    fun transformFlow_whenAllConfigsAreNull_returnsEmptyList() = runTest {
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsNull()
@@ -44,7 +44,7 @@ class ConfigurationReadUseCaseTest {
     }
 
     @Test
-    fun transformFlow_whenAllConfigsAreRead_returnsAllConfigs() = runBlockingTest {
+    fun transformFlow_whenAllConfigsAreRead_returnsAllConfigs() = runTest {
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsValue()
@@ -58,7 +58,7 @@ class ConfigurationReadUseCaseTest {
     }
 
     @Test
-    fun transformFlow_whenMultiplePathsAreProvided_returnsMultipleConfigLists() = runBlockingTest {
+    fun transformFlow_whenMultiplePathsAreProvided_returnsMultipleConfigLists() = runTest {
         val source = flowOf(PATH1, PATH2).transform(useCase)
 
         rootConfigReturnsValue()
@@ -74,7 +74,7 @@ class ConfigurationReadUseCaseTest {
     }
 
     @Test
-    fun transformFlow_whenSavedConfigIsNull_returnsListWithoutSavedConfig() = runBlockingTest {
+    fun transformFlow_whenSavedConfigIsNull_returnsListWithoutSavedConfig() = runTest {
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsValue()
@@ -88,7 +88,7 @@ class ConfigurationReadUseCaseTest {
     }
 
     @Test
-    fun transformFlow_whenWorkspaceConfigHasNoInclude_returnsListWithoutSavedConfig() = runBlockingTest {
+    fun transformFlow_whenWorkspaceConfigHasNoInclude_returnsListWithoutSavedConfig() = runTest {
         val workspaceConfigNoSaved = workSpaceConfig.copy(include = DynamicElement())
         val source = flowOf(PATH1).transform(useCase)
 
@@ -103,7 +103,7 @@ class ConfigurationReadUseCaseTest {
     }
 
     @Test
-    fun transformFlow_whenWorkspaceConfigIsNull_returnsListWithJustRoot() = runBlockingTest {
+    fun transformFlow_whenWorkspaceConfigIsNull_returnsListWithJustRoot() = runTest {
         val source = flowOf(PATH1).transform(useCase)
 
         rootConfigReturnsValue()

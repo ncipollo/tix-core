@@ -10,5 +10,6 @@ data class RawJiraConfiguration(
     @SerialName("no_epics") val noEpics: Boolean? = null,
     val tickets: JiraFieldConfiguration? = null, // Legacy property with weird name
     val fields: JiraFieldConfiguration = tickets ?: JiraFieldConfiguration(), // Legacy property with weird name
-    val url: String? = null
+    val url: String? = null,
+    val workflows: RawTicketWorkflows? = null
 )

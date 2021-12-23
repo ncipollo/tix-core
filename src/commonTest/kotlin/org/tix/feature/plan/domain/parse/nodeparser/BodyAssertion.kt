@@ -1,8 +1,8 @@
 package org.tix.feature.plan.domain.parse.nodeparser
 
 import org.tix.feature.plan.domain.parse.state.PartialTicket
-import org.tix.model.ticket.Ticket
-import org.tix.model.ticket.body.*
+import org.tix.ticket.Ticket
+import org.tix.ticket.body.*
 import kotlin.test.expect
 
 internal class ExpectedBodyBuilder {

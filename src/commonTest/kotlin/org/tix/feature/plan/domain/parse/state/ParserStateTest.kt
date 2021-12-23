@@ -1,9 +1,9 @@
 package org.tix.feature.plan.domain.parse.state
 
-import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.EmphasisSegment
-import org.tix.model.ticket.body.LinebreakSegment
-import org.tix.model.ticket.body.TextSegment
+import org.tix.ticket.body.BodySegment
+import org.tix.ticket.body.EmphasisSegment
+import org.tix.ticket.body.LinebreakSegment
+import org.tix.ticket.body.TextSegment
 import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect

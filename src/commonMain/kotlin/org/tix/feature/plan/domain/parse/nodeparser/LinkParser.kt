@@ -5,7 +5,7 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.tix.feature.plan.domain.parse.parseError
-import org.tix.model.ticket.body.LinkSegment
+import org.tix.ticket.body.LinkSegment
 
 internal class LinkParser : NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

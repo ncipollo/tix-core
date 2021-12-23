@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.parse.state
 
-import org.tix.model.ticket.body.BodySegment
+import org.tix.ticket.body.BodySegment
 
 internal class BodyState(body: MutableList<BodySegment>) : BodyBuilder {
     private val bodyStack = ArrayList<MutableList<BodySegment>>().also { it.add(body) }

@@ -1,9 +1,9 @@
 package org.tix.integrations.jira.issue
 
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.tix.fixture.integrations.jiraApi
 import org.tix.integrations.jira.project.Project
-import org.tix.test.runBlockingTest
 import kotlin.test.expect
 
 class IssueApiTest {
@@ -21,7 +21,7 @@ class IssueApiTest {
     private val api = jiraApi().issue
 
     @Test
-    fun create_update_delete() = runBlockingTest {
+    fun create_update_delete() = runTest {
         val createdResult = api.create(CREATED_ISSUE)
         val createdIssue = api.get(createdResult.key)
         expect(CREATED_FIELDS.summary) { createdIssue.fields?.summary }
@@ -34,13 +34,13 @@ class IssueApiTest {
     }
 
     @Test
-    fun get() = runBlockingTest {
+    fun get() = runTest {
         val issue = api.get("TIX-1")
         expect("First ticket") { issue.fields!!.summary }
     }
 
     @Test
-    fun search() = runBlockingTest {
+    fun search() = runTest {
         val issues = api.search("summary ~ \"first\"")
         expect("First ticket") { issues.first().fields!!.summary }
     }

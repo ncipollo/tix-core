@@ -1,8 +1,8 @@
 package org.tix.feature.plan.domain.parse.state
 
-import org.tix.model.ticket.Ticket
-import org.tix.model.ticket.body.BodySegment
-import org.tix.model.ticket.body.toTicketBody
+import org.tix.ticket.Ticket
+import org.tix.ticket.body.BodySegment
+import org.tix.ticket.body.toTicketBody
 import org.tix.serialize.dynamic.DynamicElement
 import org.tix.serialize.dynamic.emptyDynamic
 

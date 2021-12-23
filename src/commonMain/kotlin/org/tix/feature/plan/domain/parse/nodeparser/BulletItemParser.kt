@@ -4,8 +4,8 @@ import org.intellij.markdown.MarkdownTokenTypes
 import org.intellij.markdown.ast.findChildOfType
 import org.intellij.markdown.ast.getTextInNode
 import org.tix.feature.plan.domain.parse.parseError
-import org.tix.model.ticket.body.BulletListItemSegment
-import org.tix.model.ticket.body.toTicketBody
+import org.tix.ticket.body.BulletListItemSegment
+import org.tix.ticket.body.toTicketBody
 
 internal class BulletItemParser(private val parserMap: NodeParserMap): NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

@@ -1,14 +1,13 @@
 package org.tix.integrations.shared.custom
 
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.tix.fixture.integrations.jiraApi
-import org.tix.integrations.jira.issue.Issue
 import org.tix.integrations.jira.issue.IssueFields
 import org.tix.integrations.jira.issue.IssueType
 import org.tix.integrations.jira.project.Project
 import org.tix.serialize.dynamic.DynamicElement
-import org.tix.test.runBlockingTest
 import kotlin.test.expect
 
 class CustomApiTest {
@@ -19,7 +18,6 @@ class CustomApiTest {
             project = Project(key = "TIX"),
             type = IssueType(name = "Task")
         )
-        val CREATED_ISSUE = Issue(fields = CREATED_FIELDS)
         val ISSUE_MAP = mapOf(
             "fields" to mapOf(
                 "summary" to "Custom request ticket",
@@ -34,7 +32,7 @@ class CustomApiTest {
     private val issueApi = jiraApi().issue
 
     @Test
-    fun request_withBody() = runBlockingTest {
+    fun request_withBody() = runTest {
         val request = CustomRequest(
             method = CustomRequestMethod.POST,
             path = "rest/api/2/issue",

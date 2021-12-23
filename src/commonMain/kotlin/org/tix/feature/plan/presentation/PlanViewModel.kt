@@ -5,7 +5,7 @@ import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.domain.transform
 import org.tix.feature.plan.domain.parse.TicketParserArguments
-import org.tix.model.ticket.Ticket
+import org.tix.ticket.Ticket
 import org.tix.presentation.TixViewModel
 
 class PlanViewModel(

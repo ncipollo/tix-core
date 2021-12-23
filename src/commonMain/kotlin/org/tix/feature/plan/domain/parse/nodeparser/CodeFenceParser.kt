@@ -9,7 +9,7 @@ import org.tix.feature.plan.domain.parse.fieldparser.FieldLanguage
 import org.tix.feature.plan.domain.parse.fieldparser.FieldLanguageDetector
 import org.tix.feature.plan.domain.parse.fieldparser.FieldParser
 import org.tix.feature.plan.domain.parse.parseError
-import org.tix.model.ticket.body.CodeBlockSegment
+import org.tix.ticket.body.CodeBlockSegment
 
 internal class CodeFenceParser: NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

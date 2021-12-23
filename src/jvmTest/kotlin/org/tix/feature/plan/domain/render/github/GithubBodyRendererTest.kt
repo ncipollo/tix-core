@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.render.github
 
-import org.tix.model.ticket.body.BodySegment
+import org.tix.ticket.body.BodySegment
 import kotlin.test.Test
 import kotlin.test.expect
 

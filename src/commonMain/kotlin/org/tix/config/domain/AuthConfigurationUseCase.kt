@@ -6,7 +6,7 @@ import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.reader.auth.AuthSourceReader
 import org.tix.domain.FlowTransformer
-import org.tix.model.ticket.system.TicketSystemType
+import org.tix.ticket.system.TicketSystemType
 
 class AuthConfigurationUseCase(
     private val authReader: AuthSourceReader,

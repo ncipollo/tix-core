@@ -1,5 +1,5 @@
 object Versions {
-    const val coroutines = "1.5.2-native-mt"
+    const val coroutines = "1.6.0-native-mt"
     const val json = "1.3.1"
     const val kotlin = "1.6.10"
     const val ktor = "1.6.7"
@@ -11,7 +11,10 @@ object Versions {
 }
 
 object Deps {
-    val coroutines = dep("org.jetbrains.kotlinx:kotlinx-coroutines-core", Versions.coroutines)
+    object Coroutines {
+        val core = dep("org.jetbrains.kotlinx:kotlinx-coroutines-core", Versions.coroutines)
+        val test = dep("org.jetbrains.kotlinx:kotlinx-coroutines-test", Versions.coroutines)
+    }
 
     object Ktor {
         val android = dep("io.ktor:ktor-client-android", Versions.ktor)

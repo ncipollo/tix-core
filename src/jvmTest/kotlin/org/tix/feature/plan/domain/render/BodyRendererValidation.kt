@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.render
 
-import org.tix.model.ticket.body.BodySegment
+import org.tix.ticket.body.BodySegment
 import kotlin.test.expect
 
 fun BodyRenderer.supportsAllRenderers() {

@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.parse.nodeparser
 
-import org.tix.model.ticket.body.CodeSpanSegment
+import org.tix.ticket.body.CodeSpanSegment
 
 internal class CodeSpanParser: NodeParser {
     override fun parse(arguments: ParserArguments): ParserResult {

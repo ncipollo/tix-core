@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.render.jira
 
-import org.tix.model.ticket.body.LinkSegment
+import org.tix.ticket.body.LinkSegment
 import kotlin.test.Test
 import kotlin.test.expect
 

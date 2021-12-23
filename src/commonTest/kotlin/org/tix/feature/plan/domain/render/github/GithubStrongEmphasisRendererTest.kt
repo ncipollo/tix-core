@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.render.github
 
-import org.tix.model.ticket.body.StrongEmphasisSegment
+import org.tix.ticket.body.StrongEmphasisSegment
 import kotlin.test.Test
 import kotlin.test.expect
 
