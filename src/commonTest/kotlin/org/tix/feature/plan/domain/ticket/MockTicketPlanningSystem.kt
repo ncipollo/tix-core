@@ -2,6 +2,7 @@ package org.tix.feature.plan.domain.ticket
 
 import org.tix.config.data.Workflow
 import org.tix.feature.plan.domain.error.TicketPlanningException
+import org.tix.ticket.RenderedTicket
 import org.tix.ticket.Ticket
 import kotlin.test.assertTrue
 
@@ -12,7 +13,7 @@ internal class MockTicketPlanningSystem : TicketPlanningSystem<MockTicketPlanRes
     private var workflowResults = mutableMapOf<Workflow, Map<String, String>>()
     private var validationError: TicketPlanningException? = null
 
-    override suspend fun setup() {
+    override suspend fun setup(context: PlanningContext<MockTicketPlanResult>) {
         setupCalled = true
     }
 
@@ -22,7 +23,8 @@ internal class MockTicketPlanningSystem : TicketPlanningSystem<MockTicketPlanRes
 
     override suspend fun planTicket(
         context: PlanningContext<MockTicketPlanResult>,
-        ticket: Ticket
+        ticket: RenderedTicket,
+        operation: PlanningOperation
     ) = if (ticketFailure?.ticket == ticket) {
         throw ticketFailure!!.error
     } else {
@@ -30,11 +32,12 @@ internal class MockTicketPlanningSystem : TicketPlanningSystem<MockTicketPlanRes
             id = "$currentId",
             level = context.level,
             results = context.variables,
-            description = ticket.title
+            description = ticket.title,
+            operation = operation
         ).also { currentId++ }
     }
 
-    fun failOnTicket(ticket: Ticket, throwable: Throwable) {
+    fun failOnTicket(ticket: RenderedTicket, throwable: Throwable) {
         ticketFailure = TicketFailure(ticket, throwable)
     }
 
@@ -47,7 +50,7 @@ internal class MockTicketPlanningSystem : TicketPlanningSystem<MockTicketPlanRes
 
     override suspend fun completeInfo(): PlanningCompleteInfo = PlanningCompleteInfo(message = "done")
 
-    override suspend fun validate(tickets: List<Ticket>) {
+    override suspend fun validate(context: PlanningContext<MockTicketPlanResult>, tickets: List<Ticket>) {
         validationError?.let { throw it }
     }
 
@@ -56,4 +59,4 @@ internal class MockTicketPlanningSystem : TicketPlanningSystem<MockTicketPlanRes
     }
 }
 
-private data class TicketFailure(val ticket: Ticket, val error: Throwable)
+private data class TicketFailure(val ticket: RenderedTicket, val error: Throwable)

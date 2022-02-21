@@ -2,7 +2,6 @@ package org.tix.config.bake
 
 import org.tix.config.bake.validation.GithubConfigValidator
 import org.tix.config.data.GithubConfiguration
-import org.tix.config.data.TicketWorkflows
 import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.raw.RawGithubConfiguration
 
@@ -15,7 +14,7 @@ object GithubConfigurationBaker {
             owner = config.owner!!,
             repo = config.repo!!,
             noProjects = config.noProjects ?: false,
-            fields = config.fields,
+            fields = GithubConfigurationFieldBaker.bake(config.fields),
             workflows = config.workflows.bake()
         )
     }

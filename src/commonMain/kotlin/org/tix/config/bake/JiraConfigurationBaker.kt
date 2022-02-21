@@ -2,7 +2,6 @@ package org.tix.config.bake
 
 import org.tix.config.bake.validation.JiraConfigValidator
 import org.tix.config.data.JiraConfiguration
-import org.tix.config.data.TicketWorkflows
 import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.raw.RawJiraConfiguration
 
@@ -13,7 +12,7 @@ object JiraConfigurationBaker {
         return JiraConfiguration(
             auth = authConfig,
             noEpics = config.noEpics ?: false,
-            fields = config.fields,
+            fields = JiraConfigurationFieldBaker.bake(config.fields),
             url = config.url!!,
             workflows = config.workflows.bake()
         )

@@ -25,14 +25,14 @@ class PlanningContextTest {
     @Test
     fun createChildContext() {
         val context = mockPlanningContext(
-            variables = mapOf("ticket.previous" to "previous", "result" to "parent")
+            variables = mapOf("ticket.previous.id" to "previous", "result" to "parent")
         )
         val result = MockTicketPlanResult(id = "id", results = mapOf("result" to "result"))
 
         val expected = mockPlanningContext(
             level = 1,
             parentTicket = result,
-            variables = mapOf("ticket.parent" to "id", "result" to "parent")
+            variables = mapOf("ticket.parent.id" to "id", "result" to "parent")
         )
         expect(expected) {
             context.createChildContext(result)
@@ -45,11 +45,22 @@ class PlanningContextTest {
             parentTicket = MockTicketPlanResult(id = "parent"),
             variables = mapOf("original" to "original")
         )
-        val result = MockTicketPlanResult(id = "id", results = mapOf("result" to "result"))
+        val result = MockTicketPlanResult(
+            description = "description",
+            id = "id",
+            results = mapOf("result" to "result")
+        )
 
         val expected = mockPlanningContext(
             parentTicket = MockTicketPlanResult(id = "parent"),
-            variables = mapOf("original" to "original", "result" to "result", "ticket.previous" to "id")
+            variables = mapOf(
+                "original" to "original",
+                "result" to "result",
+                "ticket.description" to "description",
+                "ticket.id" to "id",
+                "ticket.previous.description" to "description",
+                "ticket.previous.id" to "id"
+            )
         )
         expect(expected) {
             context.createResultContext(result)

@@ -6,8 +6,8 @@ import kotlin.test.expect
 
 class GithubTicketStatsTest {
     @Test
-    fun render_noProjects_empty() = runTestWorkaround {
-        val stats = githubTicketStats(noProjects = true)
+    fun render_withStartingLevel1_empty() = runTestWorkaround {
+        val stats = githubTicketStats(startingLevel = 1)
         val expected = """
             Ticket Stats:
             - Total Tickets: 0
@@ -19,8 +19,8 @@ class GithubTicketStatsTest {
     }
 
     @Test
-    fun render_noProjects_withAllLevels() = runTestWorkaround {
-        val stats = githubTicketStats(noProjects = true)
+    fun render_withStartingLevel1_withAllLevels() = runTestWorkaround {
+        val stats = githubTicketStats(startingLevel = 1)
         stats.countTicket(0)
         stats.countTicket(0)
 
@@ -35,8 +35,8 @@ class GithubTicketStatsTest {
     }
 
     @Test
-    fun render_withProjects_empty() = runTestWorkaround {
-        val stats = githubTicketStats(noProjects = false)
+    fun render_withStartingLevel0_empty() = runTestWorkaround {
+        val stats = githubTicketStats(startingLevel = 0)
         val expected = """
             Ticket Stats:
             - Total Tickets: 0
@@ -49,8 +49,8 @@ class GithubTicketStatsTest {
     }
 
     @Test
-    fun render_withProjects_withAllLevels() = runTestWorkaround {
-        val stats = githubTicketStats(noProjects = false)
+    fun render_withStartingLevel0_withAllLevels() = runTestWorkaround {
+        val stats = githubTicketStats(startingLevel = 0)
         repeat(2) { stats.countTicket(0) }
         repeat(3) { stats.countTicket(1) }
 

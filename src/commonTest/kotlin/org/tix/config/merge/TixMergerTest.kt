@@ -1,10 +1,6 @@
 package org.tix.config.merge
 
-import org.tix.config.data.GithubFieldConfiguration
-import org.tix.config.data.JiraFieldConfiguration
-import org.tix.config.data.raw.RawGithubConfiguration
-import org.tix.config.data.raw.RawJiraConfiguration
-import org.tix.config.data.raw.RawTixConfiguration
+import org.tix.config.data.raw.*
 import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
@@ -14,12 +10,12 @@ class TixMergerTest {
         RawTixConfiguration(
             include = DynamicElement("config$index"),
             github = RawGithubConfiguration(
-                fields = GithubFieldConfiguration(
+                fields = RawGithubFieldConfiguration(
                     default = mapOf("github$index" to DynamicElement(index))
                 )
             ).takeIf { index < 3 },
             jira = RawJiraConfiguration(
-                fields = JiraFieldConfiguration(
+                fields = RawJiraFieldConfiguration(
                     default = mapOf("jira$index" to DynamicElement(index))
                 )
             ).takeIf { index < 3 },
@@ -32,7 +28,7 @@ class TixMergerTest {
         val expected = RawTixConfiguration(
             include = DynamicElement("config3"),
             github = RawGithubConfiguration(
-                fields = GithubFieldConfiguration(
+                fields = RawGithubFieldConfiguration(
                     default = mapOf(
                         "github1" to DynamicElement(1),
                         "github2" to DynamicElement(2)
@@ -40,7 +36,7 @@ class TixMergerTest {
                 )
             ),
             jira = RawJiraConfiguration(
-                fields = JiraFieldConfiguration(
+                fields = RawJiraFieldConfiguration(
                     default = mapOf(
                         "jira1" to DynamicElement(1),
                         "jira2" to DynamicElement(2)

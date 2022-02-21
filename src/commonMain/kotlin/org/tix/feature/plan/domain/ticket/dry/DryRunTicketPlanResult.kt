@@ -1,14 +1,18 @@
 package org.tix.feature.plan.domain.ticket.dry
 
+import org.tix.feature.plan.domain.ticket.PlanningOperation
 import org.tix.feature.plan.domain.ticket.TicketPlanResult
 
 data class DryRunTicketPlanResult(
     override val id: String = "",
+    override val key: String = "",
     override val level: Int = 0,
     override val results: Map<String, String> = emptyMap(),
     val title: String,
     val ticketType: String,
-    val body: String
+    val body: String,
+    val fields: Map<String, Any?>,
+    override val operation: PlanningOperation
 ) : TicketPlanResult {
     override val description: String
         get() {
@@ -17,6 +21,15 @@ data class DryRunTicketPlanResult(
                 |🚀 $ticketType - $title
                 |$body
                 |-----------------
+                |Fields:
+                $fieldsDescription
+                |-----------------
+                |Operation: $operation
+                |-----------------
             """.trimMargin()
         }
+
+    private val fieldsDescription =
+        fields.keys.sorted()
+            .joinToString(separator = "\n") { "|- $it = ${fields[it]}" }
 }

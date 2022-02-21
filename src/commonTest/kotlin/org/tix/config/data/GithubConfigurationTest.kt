@@ -1,28 +1,28 @@
 package org.tix.config.data
 
 import org.tix.fixture.config.githubConfig
-import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
 
 class GithubConfigurationTest {
     @Test
-    fun fieldsForLevel_whenProjectsAreDisabled_returnsFieldsForProvidedLevel() {
+    fun startingLevel_whenProjectsAreDisabled() {
         val config = githubConfig.copy(noProjects = true)
-        val expected = mapOf(
-            "common" to DynamicElement("issue"),
-            "unique0" to DynamicElement("default"),
-            "unique2" to DynamicElement("issue"),
-        )
-        expect(expected) { config.fieldsForLevel(0) }
+        expect(1) { config.startingLevel }
     }
 
     @Test
-    fun fieldsForLevel_whenProjectsAreEnabled_returnsFieldsForProvidedLevel() {
+    fun startingLevel_whenProjectsAreEnabled() {
+        val config = githubConfig.copy(noProjects = false)
+        expect(0) { config.startingLevel }
+    }
+
+    @Test
+    fun fieldsForLevel() {
         val expected = mapOf(
-            "common" to DynamicElement("project"),
-            "unique0" to DynamicElement("default"),
-            "unique1" to DynamicElement("project"),
+            "common" to "project",
+            "unique0" to "default",
+            "unique1" to "project",
         )
         expect(expected) { githubConfig.fieldsForLevel(0) }
     }

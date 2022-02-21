@@ -1,7 +1,6 @@
 package org.tix.config.data
 
 import org.tix.config.data.auth.AuthConfiguration
-import org.tix.serialize.dynamic.DynamicElement
 
 data class GithubConfiguration(
     override val auth: AuthConfiguration,
@@ -11,11 +10,8 @@ data class GithubConfiguration(
     val fields: GithubFieldConfiguration,
     override val workflows: TicketWorkflows
 ) : TicketSystemConfiguration {
-    override fun fieldsForLevel(level: Int): Map<String, DynamicElement> =
-        if (noProjects) {
-            fields.forLevel(level + 1)
-        } else {
-            fields.forLevel(level)
-        }
+    override val startingLevel = if(noProjects) 1 else 0
+
+    override fun fieldsForLevel(level: Int): Map<String, Any?> = fields.forLevel(level)
 }
 

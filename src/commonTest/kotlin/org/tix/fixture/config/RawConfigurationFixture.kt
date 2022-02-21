@@ -1,6 +1,5 @@
 package org.tix.fixture.config
 
-import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.raw.*
 import org.tix.serialize.dynamic.DynamicElement
 
@@ -25,18 +24,51 @@ val rawWorkflows
         afterEach = listOf(RawWorkflow(label = "after_each", actions = listOf(rawAction)))
     )
 
+val rawGithubFieldConfig = RawGithubFieldConfiguration(
+    default = mapOf(
+        "common" to DynamicElement("default"),
+        "unique0" to DynamicElement("default"),
+    ),
+    project = mapOf(
+        "common" to DynamicElement("project"),
+        "unique1" to DynamicElement("project"),
+    ),
+    issue = mapOf(
+        "common" to DynamicElement("issue"),
+        "unique2" to DynamicElement("issue"),
+    )
+)
 val rawGithubConfiguration
     get() = RawGithubConfiguration(
-        fields = githubFieldConfig,
+        fields = rawGithubFieldConfig,
         noProjects = false,
         owner = "owner",
         repo = "repo",
         workflows = rawWorkflows
     )
 
+val rawJiraFieldConfig = RawJiraFieldConfiguration(
+    default = mapOf(
+        "common" to DynamicElement("default"),
+        "unique0" to DynamicElement("default"),
+    ),
+    epic = mapOf(
+        "common" to DynamicElement("epic"),
+        "unique1" to DynamicElement("epic"),
+    ),
+    issue = mapOf(
+        "common" to DynamicElement("issue"),
+        "unique2" to DynamicElement("issue"),
+    ),
+    task = mapOf(
+        "common" to DynamicElement("task"),
+        "unique3" to DynamicElement("task"),
+    )
+)
+
 val rawJiraConfiguration
     get() = RawJiraConfiguration(
-        fields = jiraFieldConfig,
+        fields = rawJiraFieldConfig,
         noEpics = false,
         url = "https://api.example.com",
         workflows = rawWorkflows

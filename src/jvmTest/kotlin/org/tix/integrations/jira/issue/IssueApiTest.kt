@@ -12,7 +12,7 @@ class IssueApiTest {
             summary = "Created Ticket",
             description = "This is a test",
             project = Project(key = "TIX"),
-            type = IssueType(name = "Task")
+            type = IssueType(name = "Story")
         )
         val CREATED_ISSUE = Issue(fields = CREATED_FIELDS)
         val UPDATED_FIELDS = CREATED_FIELDS.copy(summary = "Updated Ticket")

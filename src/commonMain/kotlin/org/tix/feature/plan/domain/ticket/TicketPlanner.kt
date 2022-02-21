@@ -5,11 +5,13 @@ import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import org.tix.config.data.TicketSystemConfiguration
 import org.tix.feature.plan.domain.error.TicketPlanningException
+import org.tix.feature.plan.domain.render.BodyRenderer
 import org.tix.ticket.Ticket
 
 class TicketPlanner<R : TicketPlanResult>(
+    private val renderer: BodyRenderer,
     private val system: TicketPlanningSystem<R>,
-    systemConfig: TicketSystemConfiguration,
+    private val systemConfig: TicketSystemConfiguration,
     private val variables: Map<String, String>
 ) {
     private val workflowPlanner = WorkflowPlanner(system, systemConfig.workflows)
@@ -19,9 +21,14 @@ class TicketPlanner<R : TicketPlanResult>(
             emit(TicketPlanStarted)
 
             try {
-                system.validate(tickets)
+                var context = PlanningContext<R>(
+                    config = systemConfig,
+                    level = systemConfig.startingLevel,
+                    variables = variables
+                )
+                system.validate(context, tickets)
 
-                var context = beforeAll()
+                context = beforeAll(context)
                 context = planTickets(context, tickets)
                 afterAll(context)
                 emit(TicketPlanCompleted(system.completeInfo()))
@@ -30,9 +37,8 @@ class TicketPlanner<R : TicketPlanResult>(
             }
         }
 
-    private suspend fun beforeAll(): PlanningContext<R> {
-        system.setup()
-        val context = PlanningContext<R>(variables = variables)
+    private suspend fun beforeAll(context: PlanningContext<R>,): PlanningContext<R> {
+        system.setup(context)
         return workflowPlanner.beforeAll(context)
     }
 
@@ -52,7 +58,9 @@ class TicketPlanner<R : TicketPlanResult>(
         ticket: Ticket
     ): PlanningContext<R> {
         val beforeContext = workflowPlanner.beforeEach(context)
-        val result = system.planTicket(beforeContext, ticket)
+        val renderedTicket = TicketTransformer(context, renderer, ticket).ticket()
+        val operation = PlanningOperationDecider(renderedTicket).operation()
+        val result = system.planTicket(beforeContext, renderedTicket, operation)
         val resultContext = beforeContext.createResultContext(result)
         val afterContext = workflowPlanner.afterEach(resultContext)
 

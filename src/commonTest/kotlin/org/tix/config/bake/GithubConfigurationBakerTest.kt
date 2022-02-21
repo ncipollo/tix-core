@@ -20,7 +20,7 @@ class GithubConfigurationBakerTest {
             owner = config.owner!!,
             repo = config.repo!!,
             noProjects = config.noProjects!!,
-            fields = config.fields,
+            fields = GithubConfigurationFieldBaker.bake(config.fields),
             workflows = workflows
         )
         expect(expectedConfig) { GithubConfigurationBaker.bake(config, authConfiguration) }
@@ -34,7 +34,7 @@ class GithubConfigurationBakerTest {
             owner = config.owner!!,
             repo = config.repo!!,
             noProjects = false,
-            fields = config.fields,
+            fields = GithubConfigurationFieldBaker.bake(config.fields),
             workflows = TicketWorkflows()
         )
         expect(expectedConfig) { GithubConfigurationBaker.bake(config, authConfiguration) }

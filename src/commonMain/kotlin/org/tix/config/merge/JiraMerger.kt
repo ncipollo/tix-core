@@ -1,7 +1,7 @@
 package org.tix.config.merge
 
-import org.tix.config.data.JiraFieldConfiguration
 import org.tix.config.data.raw.RawJiraConfiguration
+import org.tix.config.data.raw.RawJiraFieldConfiguration
 
 fun RawJiraConfiguration.merge(overlay: RawJiraConfiguration?) = RawJiraConfiguration(
     auth = overlay?.auth ?: auth,
@@ -10,9 +10,9 @@ fun RawJiraConfiguration.merge(overlay: RawJiraConfiguration?) = RawJiraConfigur
     url = overlay?.url ?: url
 )
 
-fun JiraFieldConfiguration.merge(overlay: JiraFieldConfiguration?) =
+fun RawJiraFieldConfiguration.merge(overlay: RawJiraFieldConfiguration?) =
     overlay?.let {
-        JiraFieldConfiguration(
+        RawJiraFieldConfiguration(
             default = default + it.default,
             epic = epic + it.epic,
             issue = issue + it.issue,

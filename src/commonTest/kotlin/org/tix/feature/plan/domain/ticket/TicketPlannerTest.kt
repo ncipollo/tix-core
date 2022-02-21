@@ -4,8 +4,11 @@ import app.cash.turbine.FlowTurbine
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import org.tix.feature.plan.domain.error.TicketPlanningException
+import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
 import org.tix.fixture.config.jiraConfig
 import org.tix.fixture.config.workflows
+import org.tix.serialize.dynamic.DynamicElement
+import org.tix.ticket.RenderedTicket
 import org.tix.ticket.Ticket
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,6 +17,7 @@ import kotlin.test.expect
 
 class TicketPlannerTest {
     private val error = TicketPlanningException("fail")
+    private val renderer = jiraBodyRenderer()
     private val system = MockTicketPlanningSystem().also {
         it.setResultsForWorkflow(workflows.beforeAll.first(), mapOf("before_all" to "before_all"))
         it.setResultsForWorkflow(workflows.beforeEach.first(), mapOf("before_each" to "before_each"))
@@ -23,7 +27,7 @@ class TicketPlannerTest {
 
     @Test
     fun plan_emptyTickets() = runTest {
-        val planner = TicketPlanner(system, jiraConfig, emptyMap())
+        val planner = TicketPlanner(renderer, system, jiraConfig, emptyMap())
         planner.plan(emptyList())
             .test {
                 system.assertSetupCalled()
@@ -36,7 +40,7 @@ class TicketPlannerTest {
     @Test
     fun plan_flatTicketList() = runTest {
         val tickets = listOf(Ticket("1"), Ticket("2"), Ticket("3"))
-        val planner = TicketPlanner(system, jiraConfig, emptyMap())
+        val planner = TicketPlanner(renderer, system, jiraConfig, emptyMap())
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -53,9 +57,9 @@ class TicketPlannerTest {
     fun plan_flatTicketList_withFailure() = runTest {
         val variables = mapOf("var_key" to "var_value")
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(system, jiraConfig, variables)
+        val planner = TicketPlanner(renderer, system, jiraConfig, variables)
 
-        system.failOnTicket(tickets[1], error)
+        system.failOnTicket(RenderedTicket("2", fields = tickets[1].mergedFields(jiraConfig, 0)), error)
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -67,10 +71,24 @@ class TicketPlannerTest {
     }
 
     @Test
+    fun plan_flatTicketList_withUpdateTicket() = runTest {
+        val tickets = listOf(Ticket("1", fields = DynamicElement(mapOf(GenericTicketFields.updateTicket to "id"))))
+        val planner = TicketPlanner(renderer, system, jiraConfig, emptyMap())
+        planner.plan(tickets)
+            .test {
+                system.assertSetupCalled()
+                assertEquals(TicketPlanStarted, awaitItem())
+                assertTicketResult(tickets[0], 1, expectedOperation = PlanningOperation.UpdateTicket("id"))
+                assertPlanningComplete()
+                awaitComplete()
+            }
+    }
+
+    @Test
     fun plan_flatTicketList_withVariables() = runTest {
         val variables = mapOf("var_key" to "var_value")
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(system, jiraConfig, variables)
+        val planner = TicketPlanner(renderer, system, jiraConfig, variables)
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -89,7 +107,7 @@ class TicketPlannerTest {
         val children2 = listOf(Ticket("5"), Ticket("6"))
         val parent2 = Ticket("4", children = children2)
 
-        val planner = TicketPlanner(system, jiraConfig, emptyMap())
+        val planner = TicketPlanner(renderer, system, jiraConfig, emptyMap())
         planner.plan(listOf(parent1, parent2))
             .test {
                 system.assertSetupCalled()
@@ -108,7 +126,7 @@ class TicketPlannerTest {
     @Test
     fun plan_validationFails() = runTest {
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(system, jiraConfig, emptyMap())
+        val planner = TicketPlanner(renderer, system, jiraConfig, emptyMap())
 
         system.failValidation(error)
         planner.plan(tickets)
@@ -124,34 +142,38 @@ class TicketPlannerTest {
         expectedId: Int,
         expectedPreviousId: Int? = null,
         parentTicketId: Int? = null,
-        expectedVariables: Map<String, String> = emptyMap()
+        expectedVariables: Map<String, String> = emptyMap(),
+        expectedOperation: PlanningOperation = PlanningOperation.CreateTicket
     ) {
         val item = awaitItem()
         assertTrue(item is TicketPlanUpdated)
         (item as? TicketPlanUpdated)?.let {
-            assertEquals(expectedId.toString(), it.result.id)
-            assertEquals(ticket.title, it.result.description)
+            assertTrue(it.result is MockTicketPlanResult)
+            val result = it.result as MockTicketPlanResult
+            assertEquals(expectedId.toString(), result.id)
+            assertEquals(ticket.title, result.description)
             if (parentTicketId != null) {
-                assertEquals(parentTicketId.toString(), it.result.results["ticket.parent"])
+                assertEquals(parentTicketId.toString(), result.results["ticket.parent.id"])
             }
 
             if (expectedPreviousId != null) {
-                assertEquals(expectedPreviousId.toString(), it.result.results["ticket.previous"])
+                assertEquals(expectedPreviousId.toString(), result.results["ticket.previous.id"])
             }
 
-            assertEquals("before_all", it.result.results["before_all"])
-            assertEquals("before_each", it.result.results["before_each"])
+            assertEquals("before_all", result.results["before_all"])
+            assertEquals("before_each", result.results["before_each"])
             if (expectedId > 1) {
-                assertEquals("after_each", it.result.results["after_each"])
+                assertEquals("after_each", result.results["after_each"])
             }
             expectedVariables.forEach { (key, value) ->
-                assertEquals(value, it.result.results[key])
+                assertEquals(value, result.results[key])
             }
+            assertEquals(expectedOperation, result.operation)
         }
     }
 
     private suspend fun FlowTurbine<TicketPlanStatus>.assertPlanningComplete() {
-        expect(TicketPlanCompleted(system.completeInfo())){
+        expect(TicketPlanCompleted(system.completeInfo())) {
             awaitItem()
         }
     }

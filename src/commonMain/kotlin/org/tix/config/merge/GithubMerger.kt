@@ -1,7 +1,7 @@
 package org.tix.config.merge
 
-import org.tix.config.data.GithubFieldConfiguration
 import org.tix.config.data.raw.RawGithubConfiguration
+import org.tix.config.data.raw.RawGithubFieldConfiguration
 
 fun RawGithubConfiguration.merge(overlay: RawGithubConfiguration?) = RawGithubConfiguration(
     auth = overlay?.auth ?: auth,
@@ -11,9 +11,9 @@ fun RawGithubConfiguration.merge(overlay: RawGithubConfiguration?) = RawGithubCo
     fields = fields.merge(overlay?.fields)
 )
 
-fun GithubFieldConfiguration.merge(overlay: GithubFieldConfiguration?) =
+fun RawGithubFieldConfiguration.merge(overlay: RawGithubFieldConfiguration?) =
     overlay?.let {
-        GithubFieldConfiguration(
+        RawGithubFieldConfiguration(
             default = default + it.default,
             project = project + it.project,
             issue = issue + it.issue

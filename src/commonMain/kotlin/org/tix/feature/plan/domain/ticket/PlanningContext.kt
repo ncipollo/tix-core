@@ -1,6 +1,10 @@
 package org.tix.feature.plan.domain.ticket
 
+import org.tix.config.data.TicketSystemConfiguration
+import org.tix.config.data.emptyTicketSystemConfig
+
 data class PlanningContext<R : TicketPlanResult>(
+    val config: TicketSystemConfiguration = emptyTicketSystemConfig(),
     val level: Int = 0,
     val parentTicket: R? = null,
     val variables: Map<String, String> = emptyMap()
@@ -9,11 +13,11 @@ data class PlanningContext<R : TicketPlanResult>(
         copy(variables = this.variables + results)
 
     fun createChildContext(parent: R): PlanningContext<R> {
-        val filteredVariables = variables.filterKeys { it != "ticket.previous" }
+        val filteredVariables = variables.filterKeys { !it.startsWith("ticket") }
         val ticketVariables = mapOf(
-            "ticket.parent" to parent.id
+            "ticket.parent.id" to parent.id
         )
-        return PlanningContext(
+        return copy(
             level = level + 1,
             parentTicket = parent,
             variables = filteredVariables + ticketVariables
@@ -22,12 +26,11 @@ data class PlanningContext<R : TicketPlanResult>(
 
     fun createResultContext(result: R): PlanningContext<R> {
         val ticketVariables = mapOf(
-            "ticket.previous" to result.id
+            "ticket.description" to result.description,
+            "ticket.id" to result.id,
+            "ticket.previous.description" to result.description,
+            "ticket.previous.id" to result.id,
         )
-        return PlanningContext(
-            level = level,
-            parentTicket = parentTicket,
-            variables = variables + result.results + ticketVariables
-        )
+        return copy(variables = variables + result.results + ticketVariables)
     }
 }

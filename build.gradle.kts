@@ -21,6 +21,7 @@
 plugins {
     kotlin("multiplatform") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
+    jacoco
 }
 
 group = "org.tix"
@@ -52,6 +53,58 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
         }
+
+        val test by compilations.getting {
+            jacoco {
+                toolVersion = "0.8.7"
+            }
+
+            tasks.register<JacocoReport>("jacocoTestReport") {
+                val coverageSourceDirs = arrayOf(
+                    "src/commonMain/kotlin",
+                    "src/jvmMain/kotlin"
+                )
+
+                val classFiles = File("${buildDir}/classes/kotlin/jvm/")
+                    .walkBottomUp()
+                    .toSet()
+
+                classDirectories.setFrom(classFiles)
+                sourceDirectories.setFrom(files(coverageSourceDirs))
+
+                executionData.setFrom(files("${buildDir}/jacoco/jvmTest.exec"))
+
+                reports {
+                    xml.required.set(true)
+                    html.required.set(true)
+                }
+            }
+
+            tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+                val coverageSourceDirs = arrayOf(
+                    "src/commonMain/kotlin",
+                    "src/jvmMain/kotlin"
+                )
+
+                val classFiles = File("${buildDir}/classes/kotlin/jvm/")
+                    .walkBottomUp()
+                    .toSet()
+
+                classDirectories.setFrom(classFiles)
+                sourceDirectories.setFrom(files(coverageSourceDirs))
+
+                executionData.setFrom(files("${buildDir}/jacoco/jvmTest.exec"))
+
+                violationRules {
+                    rule {
+                        limit {
+                            minimum = "0.6".toBigDecimal()
+                        }
+                    }
+                }
+            }
+        }
+
         testRuns["test"].executionTask.configure {
             useJUnit()
         }
@@ -186,4 +239,16 @@ tasks.register("hostOSNativeTest") {
     }
     println("Running native tests: $testTaskName")
     dependsOn(tasks.findByName(testTaskName))
+}
+
+tasks.register("printCoverageLocation") {
+    val htmlIndexPath = "${buildDir}/reports/jacoco/jacocoTestReport/html/index.html"
+    println("Coverage HTML Location: $htmlIndexPath")
+}
+
+tasks.register("jvmTestCoverage") {
+    dependsOn("jvmTest")
+    finalizedBy("jacocoTestReport")
+    finalizedBy("jacocoTestCoverageVerification")
+    finalizedBy("printCoverageLocation")
 }

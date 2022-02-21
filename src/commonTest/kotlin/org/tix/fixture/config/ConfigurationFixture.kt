@@ -2,8 +2,6 @@ package org.tix.fixture.config
 
 import org.tix.config.data.*
 import org.tix.config.data.auth.AuthConfiguration
-import org.tix.config.data.raw.RawTicketWorkflows
-import org.tix.config.data.raw.RawWorkflow
 import org.tix.config.domain.TicketSystemAuth
 import org.tix.serialize.dynamic.DynamicElement
 
@@ -41,16 +39,16 @@ val ticketSystemAuth
 
 val githubFieldConfig = GithubFieldConfiguration(
     default = mapOf(
-        "common" to DynamicElement("default"),
-        "unique0" to DynamicElement("default"),
+        "common" to "default",
+        "unique0" to "default",
     ),
     project = mapOf(
-        "common" to DynamicElement("project"),
-        "unique1" to DynamicElement("project"),
+        "common" to "project",
+        "unique1" to "project",
     ),
     issue = mapOf(
-        "common" to DynamicElement("issue"),
-        "unique2" to DynamicElement("issue"),
+        "common" to "issue",
+        "unique2" to "issue",
     )
 )
 
@@ -65,20 +63,20 @@ val githubConfig = GithubConfiguration(
 
 val jiraFieldConfig = JiraFieldConfiguration(
     default = mapOf(
-        "common" to DynamicElement("default"),
-        "unique0" to DynamicElement("default"),
+        "common" to "default",
+        "unique0" to "default",
     ),
     epic = mapOf(
-        "common" to DynamicElement("epic"),
-        "unique1" to DynamicElement("epic"),
+        "common" to "epic",
+        "unique1" to "epic",
     ),
     issue = mapOf(
-        "common" to DynamicElement("issue"),
-        "unique2" to DynamicElement("issue"),
+        "common" to "issue",
+        "unique2" to "issue",
     ),
     task = mapOf(
-        "common" to DynamicElement("task"),
-        "unique3" to DynamicElement("task"),
+        "common" to "task",
+        "unique3" to "task",
     )
 )
 

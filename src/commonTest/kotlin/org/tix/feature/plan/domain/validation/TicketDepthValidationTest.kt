@@ -6,7 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertFails
 
 class TicketDepthValidationTest {
-    private val levelLabels = jiraTicketStats(noEpics = true)
+    private val levelLabels = jiraTicketStats(startingLevel = 1)
 
     private val grandChild = Ticket("grandchild")
     private val child = Ticket("child", children = listOf(grandChild))

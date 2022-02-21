@@ -6,8 +6,8 @@ import kotlin.test.expect
 
 class JiraTicketStatsTest {
     @Test
-    fun render_noEpics_empty() = runTestWorkaround {
-        val stats = jiraTicketStats(noEpics = true)
+    fun render_withStartingLevel1_empty() = runTestWorkaround {
+        val stats = jiraTicketStats(startingLevel = 1)
         val expected = """
             Ticket Stats:
             - Total Tickets: 0
@@ -20,8 +20,8 @@ class JiraTicketStatsTest {
     }
 
     @Test
-    fun render_noEpics_withAllLevels() = runTestWorkaround {
-        val stats = jiraTicketStats(noEpics = true)
+    fun render_withStartingLevel1_withAllLevels() = runTestWorkaround {
+        val stats = jiraTicketStats(startingLevel = 1)
         stats.countTicket(0)
         stats.countTicket(1)
         stats.countTicket(1)
@@ -38,8 +38,8 @@ class JiraTicketStatsTest {
     }
 
     @Test
-    fun render_withEpics_empty() = runTestWorkaround {
-        val stats = jiraTicketStats(noEpics = false)
+    fun render_withStartingLevel0_empty() = runTestWorkaround {
+        val stats = jiraTicketStats(startingLevel = 0)
         val expected = """
             Ticket Stats:
             - Total Tickets: 0
@@ -53,8 +53,8 @@ class JiraTicketStatsTest {
     }
 
     @Test
-    fun render_withEpics_withAllLevels() = runTestWorkaround {
-        val stats = jiraTicketStats(noEpics = false)
+    fun render_withStartingLevel0_withAllLevels() = runTestWorkaround {
+        val stats = jiraTicketStats(startingLevel = 0)
         repeat(2) { stats.countTicket(0) }
         repeat(3) { stats.countTicket(1) }
         repeat(2) { stats.countTicket(2) }

@@ -1,9 +1,9 @@
 package org.tix.config.merge
 
-import org.tix.config.data.JiraFieldConfiguration
 import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.data.raw.RawJiraConfiguration
+import org.tix.config.data.raw.RawJiraFieldConfiguration
 import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
@@ -12,7 +12,7 @@ class JiraMergerTest {
     private val base = RawJiraConfiguration(
         auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "base-auth.json"),
         noEpics = false,
-        fields = JiraFieldConfiguration(
+        fields = RawJiraFieldConfiguration(
             default = mapOf("base" to DynamicElement("default")),
             epic = mapOf("base" to DynamicElement("epic")),
             issue = mapOf("base" to DynamicElement("issue")),
@@ -37,7 +37,7 @@ class JiraMergerTest {
         val overlay = RawJiraConfiguration(
             auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),
             noEpics = true,
-            fields = JiraFieldConfiguration(
+            fields = RawJiraFieldConfiguration(
                 default = mapOf("overlay" to DynamicElement("default")),
                 epic = mapOf("overlay" to DynamicElement("epic")),
                 issue = mapOf("overlay" to DynamicElement("issue")),
@@ -48,7 +48,7 @@ class JiraMergerTest {
         val expected = RawJiraConfiguration(
             auth = RawAuthConfiguration(AuthSource.LOCAL_FILE, "overlay-auth.json"),
             noEpics = true,
-            fields = JiraFieldConfiguration(
+            fields = RawJiraFieldConfiguration(
                 default = base.fields.default + mapOf("overlay" to DynamicElement("default")),
                 epic = base.fields.epic + mapOf("overlay" to DynamicElement("epic")),
                 issue = base.fields.issue + mapOf("overlay" to DynamicElement("issue")),

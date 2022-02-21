@@ -16,4 +16,4 @@ jobs:
         env:
           JIRA_USERNAME: ${{secrets.JIRA_USERNAME}}
           JIRA_API_TOKEN: ${{secrets.JIRA_API_TOKEN}}
-        run: ./gradlew jvmTest
+        run: ./gradlew jvmTestCoverage

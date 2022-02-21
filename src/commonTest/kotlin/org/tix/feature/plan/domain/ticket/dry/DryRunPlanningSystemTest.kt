@@ -1,29 +1,26 @@
 package org.tix.feature.plan.domain.ticket.dry
 
-import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
 import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningContext
+import org.tix.feature.plan.domain.ticket.PlanningOperation
+import org.tix.fixture.config.jiraConfig
 import org.tix.test.runTestWorkaround
-import org.tix.ticket.Ticket
-import org.tix.ticket.body.StrongEmphasisSegment
-import org.tix.ticket.body.TicketBody
+import org.tix.ticket.RenderedTicket
 import kotlin.test.Test
-import kotlin.test.assertFails
 import kotlin.test.expect
 
 class DryRunPlanningSystemTest {
-    private val body = TicketBody(listOf(StrongEmphasisSegment("body")))
-    private val ticket = Ticket("title", body = body)
+    private val ticket = RenderedTicket("title", body = "*body*", fields = mapOf("ticket" to "field"))
 
-    private val renderer = jiraBodyRenderer()
-    private val ticketStats = jiraTicketStats(noEpics = false)
-    private val ticketSystem = DryRunPlanningSystem(renderer, ticketStats)
+    private val config = jiraConfig
+    private val ticketStats = jiraTicketStats()
+    private val ticketSystem = DryRunPlanningSystem(ticketStats)
 
     @Test
     fun completeInfo() = runTestWorkaround {
         (0..2).forEach {
-            ticketSystem.planTicket(contextForLevel(it), ticket)
+            ticketSystem.planTicket(contextForLevel(it), ticket, PlanningOperation.CreateTicket)
             expect(PlanningCompleteInfo(message = ticketStats.render())) {
                 ticketSystem.completeInfo()
             }
@@ -32,36 +29,25 @@ class DryRunPlanningSystemTest {
 
     @Test
     fun planTicket() = runTestWorkaround {
+        val operation = PlanningOperation.CreateTicket
         (0..2).forEach {
-            expect(expectedResultForLevel(it)) {
-                ticketSystem.planTicket(contextForLevel(it), ticket)
+            expect(expectedResultForLevel(it, operation)) {
+                ticketSystem.planTicket(contextForLevel(it), ticket, operation)
             }
         }
     }
+    private fun contextForLevel(level: Int) =
+        PlanningContext<DryRunTicketPlanResult>(config = config, level = level)
 
-    @Test
-    fun validate() = runTestWorkaround {
-        assertFails {
-            ticketSystem.validate(listOf(deepTicket()))
-        }
-    }
-
-    private fun contextForLevel(level: Int) = PlanningContext<DryRunTicketPlanResult>(level)
-
-    private fun expectedResultForLevel(level: Int): DryRunTicketPlanResult {
+    private fun expectedResultForLevel(level: Int, operation: PlanningOperation): DryRunTicketPlanResult {
         val ticketType = ticketStats.capitalizedLabel(level, 1)
         return DryRunTicketPlanResult(
             level = level,
             title = ticket.title,
             ticketType = ticketType,
-            body = "*body*"
+            body = "*body*",
+            fields = ticket.fields,
+            operation = operation
         )
-    }
-
-    private fun deepTicket(currentDepth: Int = 0): Ticket {
-        if (currentDepth >= 3) {
-            return Ticket()
-        }
-        return Ticket(children = listOf(deepTicket(currentDepth + 1)))
     }
 }

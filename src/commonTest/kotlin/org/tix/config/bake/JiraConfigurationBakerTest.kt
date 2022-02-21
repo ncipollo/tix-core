@@ -18,7 +18,7 @@ class JiraConfigurationBakerTest {
         val expectedConfig = JiraConfiguration(
             auth = authConfiguration,
             noEpics = config.noEpics!!,
-            fields = config.fields,
+            fields = JiraConfigurationFieldBaker.bake(config.fields),
             url = config.url!!,
             workflows = workflows
         )
@@ -31,7 +31,7 @@ class JiraConfigurationBakerTest {
         val expectedConfig = JiraConfiguration(
             auth = authConfiguration,
             noEpics = false,
-            fields = config.fields,
+            fields = JiraConfigurationFieldBaker.bake(config.fields),
             url = config.url!!,
             workflows = TicketWorkflows()
         )

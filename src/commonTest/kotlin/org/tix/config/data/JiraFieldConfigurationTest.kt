@@ -1,7 +1,6 @@
 package org.tix.config.data
 
 import org.tix.fixture.config.jiraFieldConfig
-import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -9,9 +8,9 @@ class JiraFieldConfigurationTest {
     @Test
     fun forLevel_whenLevelIs0_returnsEpicMergedIntoDefaults() {
         val expected = mapOf(
-            "common" to DynamicElement("epic"),
-            "unique0" to DynamicElement("default"),
-            "unique1" to DynamicElement("epic"),
+            "common" to "epic",
+            "unique0" to "default",
+            "unique1" to "epic",
         )
         expect(expected) { jiraFieldConfig.forLevel(0) }
     }
@@ -19,9 +18,9 @@ class JiraFieldConfigurationTest {
     @Test
     fun forLevel_whenLevelIs1_returnsIssueMergedIntoDefaults() {
         val expected = mapOf(
-            "common" to DynamicElement("issue"),
-            "unique0" to DynamicElement("default"),
-            "unique2" to DynamicElement("issue"),
+            "common" to "issue",
+            "unique0" to "default",
+            "unique2" to "issue",
         )
         expect(expected) { jiraFieldConfig.forLevel(1) }
     }
@@ -29,9 +28,9 @@ class JiraFieldConfigurationTest {
     @Test
     fun forLevel_whenLevelIs2_returnsTaskMergedIntoDefaults() {
         val expected = mapOf(
-            "common" to DynamicElement("task"),
-            "unique0" to DynamicElement("default"),
-            "unique3" to DynamicElement("task"),
+            "common" to "task",
+            "unique0" to "default",
+            "unique3" to "task",
         )
         expect(expected) { jiraFieldConfig.forLevel(2) }
     }

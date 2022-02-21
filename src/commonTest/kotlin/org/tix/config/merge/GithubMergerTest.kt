@@ -1,9 +1,9 @@
 package org.tix.config.merge
 
-import org.tix.config.data.GithubFieldConfiguration
 import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.data.raw.RawGithubConfiguration
+import org.tix.config.data.raw.RawGithubFieldConfiguration
 import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.Test
 import kotlin.test.expect
@@ -14,7 +14,7 @@ class GithubMergerTest {
         owner = "baseOwner",
         repo = "baseRepo",
         noProjects = false,
-        fields = GithubFieldConfiguration(
+        fields = RawGithubFieldConfiguration(
             default = mapOf("base" to DynamicElement("default")),
             project = mapOf("base" to DynamicElement("project")),
             issue = mapOf("base" to DynamicElement("issue"))
@@ -40,7 +40,7 @@ class GithubMergerTest {
             owner = "overlayOwner",
             repo = "overlayRepo",
             noProjects = true,
-            fields = GithubFieldConfiguration(
+            fields = RawGithubFieldConfiguration(
                 default = mapOf("overlay" to DynamicElement("default")),
                 project = mapOf("overlay" to DynamicElement("project")),
                 issue = mapOf("overlay" to DynamicElement("issue"))
@@ -51,7 +51,7 @@ class GithubMergerTest {
             owner = "overlayOwner",
             repo = "overlayRepo",
             noProjects = true,
-            fields = GithubFieldConfiguration(
+            fields = RawGithubFieldConfiguration(
                 default = base.fields.default + mapOf("overlay" to DynamicElement("default")),
                 project = base.fields.project + mapOf("overlay" to DynamicElement("project")),
                 issue = base.fields.issue + mapOf("overlay" to DynamicElement("issue"))

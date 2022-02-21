@@ -14,7 +14,7 @@ class IssueTransitionTest {
             summary = "Transition test",
             description = "This is a test",
             project = Project(key = "TIX"),
-            type = IssueType(name = "Task")
+            type = IssueType(name = "Story")
         )
         val ISSUE = Issue(fields = FIELDS)
     }

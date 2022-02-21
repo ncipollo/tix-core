@@ -4,26 +4,17 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.tix.fixture.integrations.jiraApi
-import org.tix.integrations.jira.issue.IssueFields
-import org.tix.integrations.jira.issue.IssueType
-import org.tix.integrations.jira.project.Project
 import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.expect
 
 class CustomApiTest {
     private companion object {
-        val CREATED_FIELDS = IssueFields(
-            summary = "Created Ticket",
-            description = "This is a test",
-            project = Project(key = "TIX"),
-            type = IssueType(name = "Task")
-        )
         val ISSUE_MAP = mapOf(
             "fields" to mapOf(
                 "summary" to "Custom request ticket",
                 "description" to "Created with custom request",
                 "project" to mapOf("key" to "TIX"),
-                "issuetype" to mapOf("name" to "Task")
+                "issuetype" to mapOf("name" to "Story")
             )
         )
     }
