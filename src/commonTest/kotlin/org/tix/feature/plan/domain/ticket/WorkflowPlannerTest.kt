@@ -1,7 +1,7 @@
 package org.tix.feature.plan.domain.ticket
 
 import org.tix.fixture.config.workflows
-import org.tix.test.runTestForNative
+import org.tix.test.runTestWorkaround
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -21,28 +21,28 @@ class WorkflowPlannerTest {
     private val planner = WorkflowPlanner(system, workflows)
 
     @Test
-    fun afterAll() = runTestForNative {
+    fun afterAll() = runTestWorkaround {
         expect(context.applyResults(afterAllResults)) {
             planner.afterAll(context)
         }
     }
 
     @Test
-    fun afterEach() = runTestForNative {
+    fun afterEach() = runTestWorkaround {
         expect(context.applyResults(afterEachResults)) {
             planner.afterEach(context)
         }
     }
 
     @Test
-    fun beforeAll() = runTestForNative {
+    fun beforeAll() = runTestWorkaround {
         expect(context.applyResults(beforeAllResults)) {
             planner.beforeAll(context)
         }
     }
 
     @Test
-    fun beforeEach() = runTestForNative {
+    fun beforeEach() = runTestWorkaround {
         expect(context.applyResults(beforeEachResults)) {
             planner.beforeEach(context)
         }

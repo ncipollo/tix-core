@@ -1,7 +1,7 @@
 package org.tix.feature.plan.domain.ticket
 
 import org.tix.config.data.Workflow
-import org.tix.test.runTestForNative
+import org.tix.test.runTestWorkaround
 import kotlin.test.Test
 import kotlin.test.expect
 
@@ -19,7 +19,7 @@ class WorkFlowExecutorTest {
     }
 
     @Test
-    fun executeWorkFlows() = runTestForNative {
+    fun executeWorkFlows() = runTestWorkaround {
         val results = mapOf(
             "common" to "commonB",
             "A" to "A",

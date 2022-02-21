@@ -4,7 +4,7 @@ import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
 import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningContext
-import org.tix.test.runTestForNative
+import org.tix.test.runTestWorkaround
 import org.tix.ticket.Ticket
 import org.tix.ticket.body.StrongEmphasisSegment
 import org.tix.ticket.body.TicketBody
@@ -21,7 +21,7 @@ class DryRunPlanningSystemTest {
     private val ticketSystem = DryRunPlanningSystem(renderer, ticketStats)
 
     @Test
-    fun completeInfo() = runTestForNative {
+    fun completeInfo() = runTestWorkaround {
         (0..2).forEach {
             ticketSystem.planTicket(contextForLevel(it), ticket)
             expect(PlanningCompleteInfo(message = ticketStats.render())) {
@@ -31,7 +31,7 @@ class DryRunPlanningSystemTest {
     }
 
     @Test
-    fun planTicket() = runTestForNative {
+    fun planTicket() = runTestWorkaround {
         (0..2).forEach {
             expect(expectedResultForLevel(it)) {
                 ticketSystem.planTicket(contextForLevel(it), ticket)
@@ -40,7 +40,7 @@ class DryRunPlanningSystemTest {
     }
 
     @Test
-    fun validate() = runTestForNative {
+    fun validate() = runTestWorkaround {
         assertFails {
             ticketSystem.validate(listOf(deepTicket()))
         }

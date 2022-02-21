@@ -1,12 +1,12 @@
 package org.tix.feature.plan.domain.stats
 
-import org.tix.test.runTestForNative
+import org.tix.test.runTestWorkaround
 import kotlin.test.Test
 import kotlin.test.expect
 
 class JiraTicketStatsTest {
     @Test
-    fun render_noEpics_empty() = runTestForNative {
+    fun render_noEpics_empty() = runTestWorkaround {
         val stats = jiraTicketStats(noEpics = true)
         val expected = """
             Ticket Stats:
@@ -20,7 +20,7 @@ class JiraTicketStatsTest {
     }
 
     @Test
-    fun render_noEpics_withAllLevels() = runTestForNative {
+    fun render_noEpics_withAllLevels() = runTestWorkaround {
         val stats = jiraTicketStats(noEpics = true)
         stats.countTicket(0)
         stats.countTicket(1)
@@ -38,7 +38,7 @@ class JiraTicketStatsTest {
     }
 
     @Test
-    fun render_withEpics_empty() = runTestForNative {
+    fun render_withEpics_empty() = runTestWorkaround {
         val stats = jiraTicketStats(noEpics = false)
         val expected = """
             Ticket Stats:
@@ -53,7 +53,7 @@ class JiraTicketStatsTest {
     }
 
     @Test
-    fun render_withEpics_withAllLevels() = runTestForNative {
+    fun render_withEpics_withAllLevels() = runTestWorkaround {
         val stats = jiraTicketStats(noEpics = false)
         repeat(2) { stats.countTicket(0) }
         repeat(3) { stats.countTicket(1) }
