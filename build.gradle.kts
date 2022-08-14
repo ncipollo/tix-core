@@ -127,7 +127,6 @@ kotlin {
 
     sourceSets {
         all {
-            languageSettings.optIn("okio.ExperimentalFileSystem")
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
             languageSettings.optIn("kotlinx.coroutines.FlowPreview")
             // This is required for Turbine
@@ -150,6 +149,7 @@ kotlin {
                 implementation(Deps.Ktor.serialization)
                 implementation(Deps.markdown)
                 implementation(Deps.Okio.multiplatform)
+                implementation(Deps.Okio.kotlinTime)
                 implementation(Deps.Serialization.json)
                 implementation(Deps.Serialization.yml)
             }

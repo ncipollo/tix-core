@@ -5,7 +5,7 @@ object Versions {
     const val ktor = "1.6.7"
     const val markdown = "0.2.4"
     const val mockK = "1.11.0"
-    const val okio = "3.0.0-alpha.9"
+    const val okio = "3.2.0"
     const val turbine = "0.7.0"
     const val yml = "0.10.2"
 }
@@ -35,9 +35,11 @@ object Deps {
     }
 
     object Okio {
-        val fakeFilesystem = dep("com.squareup.okio:okio-fakefilesystem-multiplatform", Versions.okio)
-        val multiplatform = dep("com.squareup.okio:okio-multiplatform", Versions.okio)
-        val nodeFilesystem = dep("com.squareup.okio:okio-nodefilesystem-js", Versions.okio)
+        val fakeFilesystem = dep("com.squareup.okio:okio-fakefilesystem", Versions.okio)
+        val multiplatform = dep("com.squareup.okio:okio", Versions.okio)
+        val nodeFilesystem = dep("com.squareup.okio:okio-nodefilesystem", Versions.okio)
+        // Workaround for okio's use of kotlin time
+        val kotlinTime = dep("org.jetbrains.kotlinx:kotlinx-datetime", "0.4.0")
     }
 
     object Serialization {
