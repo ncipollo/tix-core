@@ -1,5 +1,6 @@
 package org.tix.builder
 
+import kotlinx.coroutines.CoroutineScope
 import org.tix.Tix
 import org.tix.config.domain.AuthConfigurationUseCase
 import org.tix.config.domain.ConfigurationBakerUseCase

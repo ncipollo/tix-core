@@ -1,7 +1,11 @@
 package org.tix.test
 
 import kotlinx.coroutines.runBlocking
+import org.tix.coroutines.TestDispatchers
 
 actual fun runTestWorkaround(testBody: suspend () -> Unit) {
-    runBlocking { testBody() }
+    runBlocking {
+        TestDispatchers(coroutineContext)
+        testBody()
+    }
 }

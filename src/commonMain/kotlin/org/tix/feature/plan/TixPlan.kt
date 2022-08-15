@@ -1,5 +1,6 @@
 package org.tix.feature.plan
 
+import kotlinx.coroutines.CoroutineScope
 import org.tix.config.data.TixConfiguration
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.domain.AuthConfigAction
@@ -20,7 +21,7 @@ class TixPlan internal constructor(
     private val markdownSource: FlowTransformer<String, FlowResult<String>>,
     private val parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>
 ) {
-    fun planViewModel() =
+    fun planViewModel(planScope: CoroutineScope) =
         PlanViewModel(
             planSourceCombiner(
                 authConfigUseCase,
@@ -29,6 +30,7 @@ class TixPlan internal constructor(
                 configMergeSource,
                 markdownSource
             ),
-            parserUseCase
+            parserUseCase,
+            planScope
         )
 }

@@ -13,7 +13,7 @@ class TixPlanIntegrationTest {
     @Ignore
     @Test
     fun plan() = runTest {
-        val viewModel = tixForCLI().plan.planViewModel()
+        val viewModel = tixForCLI().plan.planViewModel(this)
 
         coroutineScope {
             var collectJob: Job? = null
