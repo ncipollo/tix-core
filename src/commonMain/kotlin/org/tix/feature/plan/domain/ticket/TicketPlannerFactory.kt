@@ -8,27 +8,29 @@ import org.tix.feature.plan.domain.ticket.dry.DryRunPlanningSystem
 import org.tix.feature.plan.domain.ticket.jira.JiraPlanningSystem
 import org.tix.integrations.jira.JiraApi
 
-class TicketPlannerFactory(
-    private val shouldDryRun: Boolean,
-    private val tixConfiguration: TixConfiguration
-) {
-    fun planners() =
+interface TicketPlannerFactory {
+    fun planners(shouldDryRun: Boolean, tixConfig: TixConfiguration): List<TicketPlanner<*>>
+}
+class RuntimeTicketPlannerFactory: TicketPlannerFactory {
+    override fun planners(shouldDryRun: Boolean, tixConfig: TixConfiguration ) =
         buildList {
-            tixConfiguration.jira?.jiraPlanner()?.let { add(it) }
+            tixConfig.jira?.jiraPlanner(shouldDryRun, tixConfig.variables)?.let { add(it) }
         }
 
-    private fun JiraConfiguration.jiraPlanner() =
+    private fun JiraConfiguration.jiraPlanner(shouldDryRun: Boolean, variables: Map<String, String>) =
         TicketPlanner(
             renderer = jiraBodyRenderer(),
-            system = jiraSystem(),
+            system = jiraSystem(shouldDryRun),
             systemConfig = this,
-            variables = tixConfiguration.variables
+            variables = variables
         )
 
-    private fun JiraConfiguration.jiraSystem() =
+    private fun JiraConfiguration.jiraSystem(shouldDryRun: Boolean) =
         if (shouldDryRun) {
             DryRunPlanningSystem(jiraTicketStats(this.startingLevel))
         } else {
             JiraPlanningSystem(JiraApi(this))
         }
 }
+
+fun ticketPlannerFactory() = RuntimeTicketPlannerFactory()
