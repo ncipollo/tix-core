@@ -1,6 +1,5 @@
 package org.tix.builder
 
-import kotlinx.coroutines.CoroutineScope
 import org.tix.Tix
 import org.tix.config.domain.AuthConfigurationUseCase
 import org.tix.config.domain.ConfigurationBakerUseCase
@@ -13,6 +12,8 @@ import org.tix.config.reader.auth.FileAuthSourceReader
 import org.tix.feature.plan.TixPlan
 import org.tix.feature.plan.domain.parse.TicketParser
 import org.tix.feature.plan.domain.parse.TicketParserUseCase
+import org.tix.feature.plan.domain.ticket.TicketPlannerUseCase
+import org.tix.feature.plan.domain.ticket.ticketPlannerFactory
 import org.tix.platform.io.TextFileIO
 import org.tix.platform.io.domain.TextFileUseCase
 
@@ -27,7 +28,8 @@ private fun planWithFileSystem() =
         configReadSource = configReadSource(),
         configMergeSource = ConfigurationMergeUseCase(),
         markdownSource = TextFileUseCase(TextFileIO()),
-        parserUseCase = TicketParserUseCase(TicketParser())
+        parserUseCase = TicketParserUseCase(TicketParser()),
+        ticketPlannerUseCase = TicketPlannerUseCase(ticketPlannerFactory())
     )
 
 private fun authReader() = AuthReader(FileAuthSourceReader(configFileReader()))

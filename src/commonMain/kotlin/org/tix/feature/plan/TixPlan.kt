@@ -9,6 +9,8 @@ import org.tix.config.domain.TicketSystemAuth
 import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.feature.plan.domain.parse.TicketParserArguments
+import org.tix.feature.plan.domain.ticket.TicketPlanStatus
+import org.tix.feature.plan.domain.ticket.TicketPlannerAction
 import org.tix.feature.plan.presentation.PlanViewModel
 import org.tix.feature.plan.presentation.planSourceCombiner
 import org.tix.ticket.Ticket
@@ -19,18 +21,20 @@ class TixPlan internal constructor(
     private val configReadSource: FlowTransformer<String, List<RawTixConfiguration>>,
     private val configMergeSource: FlowTransformer<List<RawTixConfiguration>, FlowResult<RawTixConfiguration>>,
     private val markdownSource: FlowTransformer<String, FlowResult<String>>,
-    private val parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>
+    private val parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
+    private val ticketPlannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>
 ) {
     fun planViewModel(planScope: CoroutineScope) =
         PlanViewModel(
-            planSourceCombiner(
+            planSourceCombiner = planSourceCombiner(
                 authConfigUseCase,
                 configBakerUseCase,
                 configReadSource,
                 configMergeSource,
-                markdownSource
+                markdownSource,
             ),
-            parserUseCase,
-            planScope
+            parserUseCase = parserUseCase,
+            planScope = planScope,
+            plannerUseCase = ticketPlannerUseCase
         )
 }
