@@ -17,12 +17,13 @@ class TicketTransformerTest {
     private val ticket = Ticket(
         title = "title",
         body = TicketBody(listOf(TextSegment("body"))),
-        fields = DynamicElement(fields)
+        fields = DynamicElement(fields),
+        tixId = "tix_1"
     )
 
     @Test
     fun ticket() {
-        val expected = RenderedTicket("title", "body", fields)
+        val expected = RenderedTicket("title", "body", fields, "tix_1")
         expect(expected) {
             TicketTransformer(context, renderer, ticket).ticket()
         }

@@ -9,10 +9,12 @@ import org.tix.ticket.Ticket
 
 internal class TicketParser(private val markdownParser: MarkdownParser = defaultMarkdownParser()) {
     private val parserMap = NodeParserMap()
+    private val idGenerator = TixIdGenerator()
 
     fun parse(arguments: TicketParserArguments): List<Ticket> {
         val rootNode = parseMarkdown(arguments.markdown)
-        return parseNodes(rootNode, arguments.markdown)
+        val tickets = parseNodes(rootNode, arguments.markdown)
+        return idGenerator.attachIdsToTickets(tickets)
     }
 
     private fun parseMarkdown(markdown: String) = markdownParser.buildMarkdownTreeFromString(markdown)

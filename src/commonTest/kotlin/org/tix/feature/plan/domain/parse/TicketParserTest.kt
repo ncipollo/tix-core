@@ -119,5 +119,9 @@ class TicketParserTest {
         expect("Deeply Nested Ticket") { tickets[2].children[0].children[0].title }
         expect("Nested Ticket 2") { tickets[2].children[1].title }
         expect(DynamicElement(mapOf("project" to 1))) { tickets[0].fields }
+
+        expect("tix_1") { tickets[0].tixId }
+        expect("tix_2") { tickets[1].tixId }
+        expect("tix_3") { tickets[1].children[0].tixId }
     }
 }

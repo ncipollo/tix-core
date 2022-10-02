@@ -13,6 +13,7 @@ class TicketTransformer(
         RenderedTicket(
             title = ticket.title,
             body = renderer.render(ticket.body),
-            fields = ticket.mergedFields(context.config, context.level)
+            fields = ticket.mergedFields(context.config, context.level),
+            tixId = ticket.tixId
         )
 }
