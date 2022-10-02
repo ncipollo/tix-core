@@ -42,7 +42,13 @@ class PlanViewModel(
             .flatMapLatest { source ->
                 flowOf(TicketParserArguments(markdown = source.markdown, configuration = source.configuration))
                     .transform(parserUseCase)
-                    .map { TicketPlannerAction(source.configuration, shouldDryRun = true, it.getOrThrow()) }
+                    .map {
+                        TicketPlannerAction(
+                            source.configuration,
+                            shouldDryRun = event.shouldDryRun,
+                            it.getOrThrow()
+                        )
+                    }
                     .transform(plannerUseCase)
                     .map { PlanViewState(complete = true) }
             }

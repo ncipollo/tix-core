@@ -26,7 +26,7 @@ class TixPlanIntegrationTest {
                 }
             }
             launch {
-                viewModel.sendViewEvent(PlanViewEvent.PlanUsingMarkdown("~/Desktop/tix/story.md"))
+                viewModel.sendViewEvent(PlanViewEvent.PlanUsingMarkdown("~/Desktop/tix/story.md", shouldDryRun = false))
             }
         }
     }
