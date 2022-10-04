@@ -44,4 +44,13 @@ class JiraFieldCacheTest {
         expect(FIELD1) { cache["Field1"] }
         expect(FIELD2) { cache["Field2"] }
     }
+
+    @Test
+    fun get_byID() = runTestWorkaround {
+        coEvery { fieldApi.fields() } returns FIELDS
+        val cache = fieldApi.fieldCache()
+
+        expect(FIELD1) { cache["1"] }
+        expect(FIELD2) { cache["2"] }
+    }
 }

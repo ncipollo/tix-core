@@ -6,8 +6,9 @@ import org.tix.integrations.jira.field.FieldApi
 
 class JiraFieldCache(fields: List<Field>) {
     private val fieldsByName = fields.associateBy { it.name.lowercase() }
+    private val fieldById = fields.associateBy { it.id.lowercase() }
 
-    operator fun get(name: String) = fieldsByName[name.lowercase()]
+    operator fun get(name: String) = fieldsByName[name.lowercase()] ?: fieldById[name]
 }
 
 suspend fun FieldApi.fieldCache() =
