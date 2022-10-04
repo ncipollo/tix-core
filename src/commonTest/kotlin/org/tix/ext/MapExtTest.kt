@@ -21,6 +21,21 @@ class MapExtTest {
     }
 
     @Test
+    fun optionalTransform_valueIsExpectedType() {
+        expect("number=42") { map.optionalTransform<Int, String>("number") { "number=$it" } }
+    }
+
+    @Test
+    fun optionalTransform_valueIsNotExpectedType() {
+        expect(null) { map.optionalTransform<String, String>("number") { "number=$it" } }
+    }
+
+    @Test
+    fun optionalTransform_valueIsMissing() {
+        expect(null) { map.optionalTransform<String, String>("does_not_exist") { "number=$it" } }
+    }
+
+    @Test
     fun transformFilteredList() {
         val expected = listOf("number=2")
         expect(expected) {

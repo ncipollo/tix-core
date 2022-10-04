@@ -1,5 +1,6 @@
 package org.tix.feature.plan.domain.ticket.jira
 
+import org.tix.ext.optionalTransform
 import org.tix.ext.transform
 import org.tix.ext.transformFilteredList
 import org.tix.feature.plan.domain.ticket.PlanningContext
@@ -7,6 +8,7 @@ import org.tix.integrations.jira.issue.Component
 import org.tix.integrations.jira.issue.IssueFields
 import org.tix.integrations.jira.issue.IssueType
 import org.tix.integrations.jira.issue.Parent
+import org.tix.integrations.jira.priority.Priority
 import org.tix.integrations.jira.project.Project
 import org.tix.integrations.jira.version.Version
 
@@ -25,6 +27,7 @@ class JiraIssueFieldsBuilder(
         labels = labels(),
         parent = parent(),
         project = project(),
+        priority = priority(),
         summary = summary,
         type = type(),
         unknowns = unknownsBuilder.unknowns(fields)
@@ -53,6 +56,9 @@ class JiraIssueFieldsBuilder(
             ?.let { Parent(id = it) }
         return explicitParent ?: implicitParent
     }
+
+    private fun priority() =
+        fields.optionalTransform<String, Priority>(JiraTicketSystemFields.priority) { Priority(name = it) }
 
     private fun project() = fields.transform(JiraTicketSystemFields.project, "") { Project(key = it) }
 

@@ -5,6 +5,11 @@ inline fun <reified T, R> Map<String, Any?>.transform(key: String, default: T, t
     return transformer(value)
 }
 
+inline fun <reified T, R> Map<String, Any?>.optionalTransform(key: String, transformer: (T) -> R): R? {
+    val value = this[key] as? T
+    return value?.let(transformer)
+}
+
 inline fun <reified T, R> Map<String, Any?>.transformList(key: String, default: T, transformer: (T) -> R): List<R> {
     val anyList = this[key] as? List<Any?> ?: emptyList()
     return anyList.map {

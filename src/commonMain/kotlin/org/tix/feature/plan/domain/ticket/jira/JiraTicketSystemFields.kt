@@ -8,6 +8,7 @@ object JiraTicketSystemFields: TicketSystemFields() {
     val fixVersions = field("fix_versions")
     val labels = field("labels")
     val parent = field("parent")
+    val priority = field("priority")
     val project = field("project")
     val type = field("type")
     val useParent = field("use_parent")

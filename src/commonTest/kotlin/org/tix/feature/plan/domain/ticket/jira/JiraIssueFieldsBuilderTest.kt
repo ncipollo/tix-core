@@ -3,11 +3,13 @@ package org.tix.feature.plan.domain.ticket.jira
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.tix.feature.plan.domain.ticket.PlanningContext
+import org.tix.feature.plan.domain.ticket.jira.JiraTicketSystemFields.project
 import org.tix.integrations.jira.field.Field
 import org.tix.integrations.jira.issue.Component
 import org.tix.integrations.jira.issue.IssueFields
 import org.tix.integrations.jira.issue.IssueType
 import org.tix.integrations.jira.issue.Parent
+import org.tix.integrations.jira.priority.Priority
 import org.tix.integrations.jira.project.Project
 import org.tix.integrations.jira.version.Version
 import kotlin.test.Test
@@ -215,6 +217,7 @@ class JiraIssueFieldsBuilderTest {
             "components" to listOf("component1", "component2"),
             "fix_versions" to listOf("1.1", "2.1", "3.1"),
             "labels" to listOf("label1", "label2"),
+            "priority" to "P0",
             "project" to "tix",
             "type" to "story",
             "unknown" to "foo"
@@ -228,6 +231,7 @@ class JiraIssueFieldsBuilderTest {
             description = "description",
             fixVersions = listOf(Version(name = "1.1"), Version(name = "2.1"), Version(name = "3.1")),
             labels = listOf("label1", "label2"),
+            priority = Priority(name = "P0"),
             project = Project(key = "tix"),
             summary = "summary",
             type = IssueType(name = "story"),

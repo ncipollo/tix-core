@@ -11,6 +11,7 @@ class JiraTicketSystemFieldsTest {
         "fix_versions",
         "labels",
         "parent",
+        "priority",
         "project",
         "type",
         "use_parent",
