@@ -60,7 +60,8 @@ class JiraPlanningSystemTest {
             body = "body",
             fields = mapOf(
                 "project" to "TIX",
-            )
+            ),
+            tixId = "tixId"
         )
         val issue = Issue(
             fields = IssueFields(
@@ -80,6 +81,7 @@ class JiraPlanningSystemTest {
             expected = JiraPlanResult(
                 id = "id",
                 key = "key",
+                tixId = "tixId",
                 description = "title",
                 results = mapOf(
                     "ticket.jira.key" to "key",
@@ -129,7 +131,8 @@ class JiraPlanningSystemTest {
             body = "body",
             fields = mapOf(
                 "project" to "TIX",
-            )
+            ),
+            tixId = "tixId"
         )
         val issue = Issue(
             key = "key",
@@ -150,6 +153,7 @@ class JiraPlanningSystemTest {
             expected = JiraPlanResult(
                 id = "id",
                 key = "key",
+                tixId = "tixId",
                 description = "title",
                 results = mapOf(
                     "ticket.jira.key" to "key",

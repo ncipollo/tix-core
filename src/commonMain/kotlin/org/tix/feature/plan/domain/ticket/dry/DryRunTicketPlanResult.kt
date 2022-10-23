@@ -6,6 +6,7 @@ import org.tix.feature.plan.domain.ticket.TicketPlanResult
 data class DryRunTicketPlanResult(
     override val id: String = "",
     override val key: String = "",
+    override val tixId: String = "",
     override val level: Int = 0,
     override val results: Map<String, String> = emptyMap(),
     val title: String,
