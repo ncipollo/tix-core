@@ -3,6 +3,7 @@ package org.tix.feature.plan.domain.ticket.jira
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import org.tix.config.data.Workflow
+import org.tix.feature.plan.domain.error.TicketPlanningException
 import org.tix.feature.plan.domain.stats.TicketStats
 import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
@@ -40,8 +41,11 @@ class JiraPlanningSystem(private val jiraApi: JiraApi) : TicketPlanningSystem<Ji
         operation: PlanningOperation
     ): JiraPlanResult {
         val issue = issueBuilder.issue(ticket, context, operation)
-        val resultIssue = jiraApi.issue.performOperation(issue, operation)
-
+        val resultIssue = try {
+            jiraApi.issue.performOperation(issue, operation)
+        } catch (ex: Throwable) {
+            throw TicketPlanningException("Jira: $operation operation failed for ${ticket.title}", ex)
+        }
         ticketStats.countTicket(context.level)
 
         return JiraPlanResult(

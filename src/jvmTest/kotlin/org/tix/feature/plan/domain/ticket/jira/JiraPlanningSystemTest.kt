@@ -6,6 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import org.tix.feature.plan.domain.error.TicketPlanningException
 import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningContext
@@ -18,7 +19,9 @@ import org.tix.integrations.jira.issue.IssueFields
 import org.tix.integrations.jira.issue.IssueType
 import org.tix.integrations.jira.project.Project
 import org.tix.ticket.RenderedTicket
+import java.io.IOException
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class JiraPlanningSystemTest {
     private val issueApi = mockk<IssueApi>()
@@ -90,6 +93,34 @@ class JiraPlanningSystemTest {
             ),
             actual = result
         )
+    }
+
+    @Test
+    fun planTicket_createTicket_error() = runTest {
+        val context = PlanningContext<JiraPlanResult>()
+        val ticket = RenderedTicket(
+            title = "title",
+            body = "body",
+            fields = mapOf(
+                "project" to "TIX",
+            ),
+            tixId = "tixId"
+        )
+        val issue = Issue(
+            fields = IssueFields(
+                summary = "title",
+                description = "body",
+                project = Project(key = "TIX"),
+                type = IssueType(name = "Epic")
+            )
+        )
+        coEvery { issueApi.create(issue) } throws IOException()
+
+        planningSystem.setup(context)
+        assertFailsWith(TicketPlanningException::class) {
+            planningSystem.planTicket(context, ticket, PlanningOperation.CreateTicket)
+        }
+        coVerify { issueApi.create(issue) }
     }
 
     @Test
