@@ -10,4 +10,4 @@ data class TixError(
 
 fun Throwable.toTixError() = TixError(message = this.message ?: "something bad happened", cause = this.cause)
 
-fun FlowResult<*>.toTixError() = exceptionOrNull()?.toTixError()!!
+fun FlowResult<*>.toTixError() = exceptionOrNull()?.toTixError() ?: TixError()
