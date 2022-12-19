@@ -10,9 +10,9 @@ import org.tix.feature.plan.domain.ticket.*
 object PlanStatusMapper {
     fun mapStatus(planStatus: TicketPlanStatus) =
         when(planStatus) {
-            is TicketPlanCompleted -> PlanDomainCompleted(planStatus.info)
-            is TicketPlanFailed -> PlanDomainError(planStatus.throwable.toTixError())
             TicketPlanStarted -> PlanDomainStartingTicketCreation
+            is TicketPlanCompleted -> PlanDomainCompleted(planStatus.info)
             is TicketPlanUpdated -> PlanDomainUpdate(planStatus.result)
+            is TicketPlanFailed -> PlanDomainError(planStatus.throwable.toTixError())
         }
 }

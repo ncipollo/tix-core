@@ -17,7 +17,7 @@ import org.tix.feature.plan.presentation.PlanSourceResult
 import org.tix.ticket.Ticket
 
 class MarkdownPlanDomainCombiner(
-    private val planSourceCombiner: PlanSourceCombiner,
+    private val planSourceCombiner: FlowTransformer<String, PlanSourceResult>,
     private val parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
     private val plannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>
 ) : FlowTransformer<MarkdownPlanAction, PlanDomainState> {
