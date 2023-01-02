@@ -9,6 +9,7 @@ import org.tix.domain.transform
 import org.tix.feature.plan.domain.parse.TicketParserArguments
 import org.tix.feature.plan.domain.ticket.TicketPlanStatus
 import org.tix.feature.plan.domain.ticket.TicketPlannerAction
+import org.tix.feature.plan.presentation.state.CLIPlanViewState
 import org.tix.presentation.TixViewModel
 import org.tix.ticket.Ticket
 
@@ -50,6 +51,6 @@ class PlanViewModel(
                         )
                     }
                     .transform(plannerUseCase)
-                    .map { PlanViewState(complete = true) }
+                    .map { CLIPlanViewState() }
             }
 }

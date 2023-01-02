@@ -20,7 +20,7 @@ class TixPlanIntegrationTest {
             collectJob = launch {
                 viewModel.viewState.collect {
                     println("state: #${it}")
-                    if (it.complete) {
+                    if (it.isComplete) {
                         collectJob?.cancel()
                     }
                 }
