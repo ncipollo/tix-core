@@ -12,7 +12,6 @@ import org.tix.feature.plan.domain.state.PlanDomainParsing
 import org.tix.feature.plan.domain.state.PlanDomainState
 import org.tix.feature.plan.domain.ticket.TicketPlanStatus
 import org.tix.feature.plan.domain.ticket.TicketPlannerAction
-import org.tix.feature.plan.presentation.PlanSourceCombiner
 import org.tix.feature.plan.presentation.PlanSourceResult
 import org.tix.ticket.Ticket
 
@@ -28,13 +27,13 @@ class MarkdownPlanDomainCombiner(
                 .flatMapLatest {
                     when (it) {
                         is PlanSourceResult.Error -> flowOf(PlanDomainError(it.error))
-                        is PlanSourceResult.Success -> it.parseSource(action.shouldDryRun)
+                        is PlanSourceResult.Success -> it.parseSource()
                     }
                 }
                 .onStart { emit(PlanDomainParsing) }
         }
 
-    private fun PlanSourceResult.Success.parseSource(shouldDryRun: Boolean) =
+    private fun PlanSourceResult.Success.parseSource() =
         flowOf(TicketParserArguments(markdown = markdown, configuration = configuration))
             .transform(parserUseCase)
             .flatMapLatest {
