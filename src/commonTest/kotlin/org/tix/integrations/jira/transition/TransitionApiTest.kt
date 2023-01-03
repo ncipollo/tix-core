@@ -10,7 +10,7 @@ class TransitionApiTest {
 
     @Test
     fun transitions() = runTestWorkaround {
-        val transitions = api.transitions("TIX-1")
+        val transitions = api.transitions("TIX-978")
         expect(setOf("To Do", "In Progress", "Done")) {
             transitions.map { it.name }.toSet()
         }

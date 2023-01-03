@@ -145,6 +145,7 @@ kotlin {
                     }
                 }
                 implementation(Deps.Ktor.auth)
+                implementation(Deps.Ktor.contentNegotation)
                 implementation(Deps.Ktor.core)
                 implementation(Deps.Ktor.serialization)
                 implementation(Deps.markdown)

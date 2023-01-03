@@ -1,5 +1,6 @@
 package org.tix.net.http
 
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import kotlinx.serialization.Serializable
 import org.tix.test.runTestWorkaround
@@ -13,7 +14,7 @@ class HttpClientTest {
     @Test
     fun testHttp() = runTestWorkaround {
         val client = httpClient()
-        val response = client.get<TestResponse>("https://cors-test.appspot.com/test")
+        val response = client.get("https://cors-test.appspot.com/test").body<TestResponse>()
         expect("ok") { response.status }
     }
 }

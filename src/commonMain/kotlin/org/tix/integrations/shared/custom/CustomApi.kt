@@ -1,6 +1,7 @@
 package org.tix.integrations.shared.custom
 
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import org.tix.net.BaseUrl
@@ -13,11 +14,11 @@ class CustomApi(private val baseUrl: BaseUrl, private val client: HttpClient) {
             method = request.method.toHttpMethod()
             if (request.body.isNotEmpty()) {
                 contentType(ContentType.Application.Json)
-                body = request.body
+                setBody(request.body)
             }
             request.parameters.forEach { (key, value) ->
                 parameter(key, value)
             }
-        }
+        }.body()
     }
 }

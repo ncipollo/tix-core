@@ -1,29 +1,28 @@
 package org.tix.net.http
 
 import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.features.auth.*
-import io.ktor.client.features.auth.providers.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
+import io.ktor.client.plugins.*
+import io.ktor.client.plugins.auth.*
+import io.ktor.client.plugins.auth.providers.*
+import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import org.tix.serialize.dynamic.DynamicElementJsonSerializer
 
 fun httpClient(authMethod: AuthMethod = AuthMethod.None) = HttpClient {
-    install(JsonFeature) {
-        serializer = KotlinxSerializer(
-            kotlinx.serialization.json.Json {
-                isLenient = false
-                ignoreUnknownKeys = true
-                allowSpecialFloatingPointValues = true
-                useArrayPolymorphism = false
-                serializersModule = SerializersModule {
-                    contextual(DynamicElementJsonSerializer)
-                }
+    install(ContentNegotiation) {
+        json(Json {
+            isLenient = false
+            ignoreUnknownKeys = true
+            allowSpecialFloatingPointValues = true
+            useArrayPolymorphism = false
+            serializersModule = SerializersModule {
+                contextual(DynamicElementJsonSerializer)
             }
-        )
+        })
     }
     configureAuth(authMethod)
 }

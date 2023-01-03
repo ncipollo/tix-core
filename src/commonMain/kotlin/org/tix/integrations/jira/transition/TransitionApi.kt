@@ -1,6 +1,7 @@
 package org.tix.integrations.jira.transition
 
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.Serializable
@@ -11,9 +12,11 @@ import org.tix.serialize.emptyJson
 class TransitionApi(private val baseUrl: BaseUrl, private val client: HttpClient) {
     suspend fun transitions(issueId: String): List<Transition> {
         val url = baseUrl.withPath("rest/api/2/issue/${issueId}/transitions")
-        val result = client.get<TransitionResult>(url) {
-            parameter("expand", "transitions.fields")
-        }
+        val result = client.get(url) {
+            url {
+                parameters.append("expand", "transitions.fields")
+            }
+        }.body<TransitionResult>()
         return result.transitions
     }
 
@@ -24,12 +27,14 @@ class TransitionApi(private val baseUrl: BaseUrl, private val client: HttpClient
         update: JsonObject = emptyJson()
     ) {
         val url = baseUrl.withPath("rest/api/2/issue/${issueId}/transitions")
-        client.post<Unit>(url) {
+        client.post(url) {
             contentType(ContentType.Application.Json)
-            body = IssueTransitionBody(
-                transition = IssueTransition(transitionId),
-                fields = fields,
-                update = update
+            setBody(
+                IssueTransitionBody(
+                    transition = IssueTransition(transitionId),
+                    fields = fields,
+                    update = update
+                )
             )
         }
     }

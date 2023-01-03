@@ -35,13 +35,13 @@ class IssueApiTest {
 
     @Test
     fun get() = runTest {
-        val issue = api.get("TIX-1")
-        expect("First ticket") { issue.fields!!.summary }
+        val issue = api.get("TIX-978")
+        expect("First Ticket") { issue.fields!!.summary }
     }
 
     @Test
     fun search() = runTest {
         val issues = api.search("summary ~ \"first\"")
-        expect("First ticket") { issues.first().fields!!.summary }
+        expect("First Ticket") { issues.first().fields!!.summary }
     }
 }

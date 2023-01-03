@@ -1,5 +1,6 @@
 package org.tix.serialize.dynamic
 
+import io.ktor.util.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer

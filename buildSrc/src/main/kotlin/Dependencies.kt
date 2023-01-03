@@ -2,7 +2,7 @@ object Versions {
     const val coroutines = "1.6.3"
     const val json = "1.3.3"
     const val kotlin = "1.7.20"
-    const val ktor = "1.6.7"
+    const val ktor = "2.2.1"
     const val markdown = "0.2.4"
     const val mockK = "1.11.0"
     const val okio = "3.2.0"
@@ -19,12 +19,13 @@ object Deps {
     object Ktor {
         val android = dep("io.ktor:ktor-client-android", Versions.ktor)
         val auth = dep("io.ktor:ktor-client-auth", Versions.ktor)
+        val contentNegotation = dep("io.ktor:ktor-client-content-negotiation", Versions.ktor)
         val core = dep("io.ktor:ktor-client-core", Versions.ktor)
         val curl = dep("io.ktor:ktor-client-curl", Versions.ktor)
         val iOS = dep("io.ktor:ktor-client-ios", Versions.ktor)
         val js = dep("io.ktor:ktor-client-js", Versions.ktor)
         val jvm = dep("io.ktor:ktor-client-java", Versions.ktor)
-        val serialization = dep("io.ktor:ktor-client-serialization", Versions.ktor)
+        val serialization = dep("io.ktor:ktor-serialization-kotlinx-json", Versions.ktor)
     }
 
     val markdown = dep("org.jetbrains:markdown", Versions.markdown)
