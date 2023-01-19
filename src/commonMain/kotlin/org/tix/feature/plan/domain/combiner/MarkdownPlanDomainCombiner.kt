@@ -30,7 +30,7 @@ class MarkdownPlanDomainCombiner(
                         is PlanSourceResult.Success -> it.parseSource()
                     }
                 }
-                .onStart { emit(PlanDomainParsing) }
+                .onStart { emit(PlanDomainParsing(action.path)) }
         }
 
     private fun PlanSourceResult.Success.parseSource() =
