@@ -8,33 +8,42 @@ import org.tix.config.domain.ConfigBakerAction
 import org.tix.config.domain.TicketSystemAuth
 import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
+import org.tix.feature.plan.domain.combiner.MarkdownPlanDomainCombiner
 import org.tix.feature.plan.domain.parse.TicketParserArguments
 import org.tix.feature.plan.domain.ticket.TicketPlanStatus
 import org.tix.feature.plan.domain.ticket.TicketPlannerAction
 import org.tix.feature.plan.presentation.PlanViewModel
 import org.tix.feature.plan.presentation.planSourceCombiner
+import org.tix.feature.plan.presentation.reducer.PlanViewStateReducer
+import org.tix.feature.plan.presentation.state.PlanViewState
 import org.tix.ticket.Ticket
 
-class TixPlan internal constructor(
-    private val authConfigUseCase: FlowTransformer<AuthConfigAction, TicketSystemAuth>,
-    private val configBakerUseCase: FlowTransformer<ConfigBakerAction, FlowResult<TixConfiguration>>,
-    private val configReadSource: FlowTransformer<String, List<RawTixConfiguration>>,
-    private val configMergeSource: FlowTransformer<List<RawTixConfiguration>, FlowResult<RawTixConfiguration>>,
-    private val markdownSource: FlowTransformer<String, FlowResult<String>>,
-    private val parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
-    private val ticketPlannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>
+class TixPlan<VS: PlanViewState> internal constructor(
+    authConfigUseCase: FlowTransformer<AuthConfigAction, TicketSystemAuth>,
+    configBakerUseCase: FlowTransformer<ConfigBakerAction, FlowResult<TixConfiguration>>,
+    configReadSource: FlowTransformer<String, List<RawTixConfiguration>>,
+    configMergeSource: FlowTransformer<List<RawTixConfiguration>, FlowResult<RawTixConfiguration>>,
+    markdownSource: FlowTransformer<String, FlowResult<String>>,
+    parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
+    ticketPlannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>,
+    private val viewStateReducer: PlanViewStateReducer<VS>,
 ) {
+    private val markdownPlanCombiner = MarkdownPlanDomainCombiner(
+        planSourceCombiner = planSourceCombiner(
+            authConfigUseCase,
+            configBakerUseCase,
+            configReadSource,
+            configMergeSource,
+            markdownSource,
+        ),
+        parserUseCase = parserUseCase,
+        plannerUseCase = ticketPlannerUseCase
+    )
+
     fun planViewModel(planScope: CoroutineScope) =
         PlanViewModel(
-            planSourceCombiner = planSourceCombiner(
-                authConfigUseCase,
-                configBakerUseCase,
-                configReadSource,
-                configMergeSource,
-                markdownSource,
-            ),
-            parserUseCase = parserUseCase,
+            markdownPlanCombiner = markdownPlanCombiner,
             planScope = planScope,
-            plannerUseCase = ticketPlannerUseCase
+            viewStateReducer = viewStateReducer
         )
 }

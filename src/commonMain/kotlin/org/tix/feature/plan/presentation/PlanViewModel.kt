@@ -3,21 +3,18 @@ package org.tix.feature.plan.presentation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.domain.transform
-import org.tix.feature.plan.domain.parse.TicketParserArguments
-import org.tix.feature.plan.domain.ticket.TicketPlanStatus
-import org.tix.feature.plan.domain.ticket.TicketPlannerAction
-import org.tix.feature.plan.presentation.state.CLIPlanViewState
+import org.tix.feature.plan.domain.combiner.MarkdownPlanAction
+import org.tix.feature.plan.domain.state.PlanDomainState
+import org.tix.feature.plan.presentation.reducer.PlanViewStateReducer
+import org.tix.feature.plan.presentation.state.PlanViewState
 import org.tix.presentation.TixViewModel
-import org.tix.ticket.Ticket
 
-class PlanViewModel(
-    private val planSourceCombiner: PlanSourceCombiner,
-    private val parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
+class PlanViewModel<VS: PlanViewState>(
+    private val markdownPlanCombiner: FlowTransformer<MarkdownPlanAction, PlanDomainState>,
     private val planScope: CoroutineScope,
-    private val plannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>
+    private val viewStateReducer: PlanViewStateReducer<VS>
 ) : TixViewModel() {
     private val events = MutableSharedFlow<PlanViewEvent>()
 
@@ -37,20 +34,7 @@ class PlanViewModel(
         }
 
     private fun markdownPlanning(event: PlanViewEvent.PlanUsingMarkdown) =
-        flowOf(event.path)
-            .transform(planSourceCombiner)
-            .filterIsInstance<PlanSourceResult.Success>()
-            .flatMapLatest { source ->
-                flowOf(TicketParserArguments(markdown = source.markdown, configuration = source.configuration))
-                    .transform(parserUseCase)
-                    .map {
-                        TicketPlannerAction(
-                            source.configuration,
-                            shouldDryRun = event.shouldDryRun,
-                            it.getOrThrow()
-                        )
-                    }
-                    .transform(plannerUseCase)
-                    .map { CLIPlanViewState() }
-            }
+        flowOf(MarkdownPlanAction(event.path, event.shouldDryRun))
+            .transform(markdownPlanCombiner)
+            .map { viewStateReducer.reduce(it) }
 }

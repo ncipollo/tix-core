@@ -6,14 +6,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Ignore
 import org.junit.Test
-import org.tix.builder.tixForCLI
+import org.tix.builder.tixPlanForCLI
 import org.tix.feature.plan.presentation.PlanViewEvent
 
 class TixPlanIntegrationTest {
     @Ignore
     @Test
     fun plan() = runTest {
-        val viewModel = tixForCLI().plan.planViewModel(this)
+        val viewModel = tixPlanForCLI().planViewModel(this)
 
         coroutineScope {
             var collectJob: Job? = null
