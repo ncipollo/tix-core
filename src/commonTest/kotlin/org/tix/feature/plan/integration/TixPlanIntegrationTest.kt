@@ -10,8 +10,8 @@ import kotlin.test.Ignore
 import kotlin.test.Test
 
 class TixPlanIntegrationTest {
-    @Ignore
     @Test
+    @Ignore
     fun plan() = runTest {
         val viewModel = tixPlanForCLI().planViewModel(this)
 
@@ -19,7 +19,7 @@ class TixPlanIntegrationTest {
             var collectJob: Job? = null
             collectJob = launch {
                 viewModel.viewState.collect {
-                    println("state: #${it}")
+                    println("state: $it")
                     if (it.isComplete) {
                         collectJob?.cancel()
                     }

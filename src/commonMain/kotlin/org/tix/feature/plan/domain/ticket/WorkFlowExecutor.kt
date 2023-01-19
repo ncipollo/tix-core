@@ -5,6 +5,7 @@ import org.tix.config.data.Workflow
 internal suspend fun <R : TicketPlanResult> List<Workflow>.executeWorkFlows(
     context: PlanningContext<R>,
     system: TicketPlanningSystem<R>
-) = map { system.executeWorkFlow(it, context) }
-    .reduce { acc, results -> acc + results }
-    .let { context.applyResults(it) }
+) = takeIf { isNotEmpty() }
+    ?.map { system.executeWorkFlow(it, context) }
+    ?.reduce { acc, results -> acc + results }
+    ?.let { context.applyResults(it) } ?: context

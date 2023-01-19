@@ -53,7 +53,7 @@ class JiraPlanningSystem(private val jiraApi: JiraApi) : TicketPlanningSystem<Ji
             key = resultIssue.key,
             tixId = ticket.tixId,
             level = context.level,
-            description = resultIssue.fields?.summary ?: "",
+            description = ticket.title,
             results = resultIssue.resultMap(),
             operation = operation
         )

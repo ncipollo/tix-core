@@ -74,7 +74,7 @@ class JiraPlanningSystemTest {
                 type = IssueType(name = "Epic")
             )
         )
-        coEvery { issueApi.create(issue) } returns issue.copy(id = "id", key = "key")
+        coEvery { issueApi.create(issue) } returns issue.copy(id = "id", key = "key", fields = null)
 
         planningSystem.setup(context)
         val result = planningSystem.planTicket(context, ticket, PlanningOperation.CreateTicket)
