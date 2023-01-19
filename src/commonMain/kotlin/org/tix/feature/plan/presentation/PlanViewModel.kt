@@ -34,7 +34,9 @@ class PlanViewModel<VS: PlanViewState>(
         }
 
     private fun markdownPlanning(event: PlanViewEvent.PlanUsingMarkdown) =
-        flowOf(MarkdownPlanAction(event.path, event.shouldDryRun))
+        flowOf(event.toAction())
             .transform(markdownPlanCombiner)
             .map { viewStateReducer.reduce(it) }
+
+    private fun PlanViewEvent.PlanUsingMarkdown.toAction() = MarkdownPlanAction(path, shouldDryRun)
 }
