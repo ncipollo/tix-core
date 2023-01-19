@@ -1,13 +1,13 @@
-package org.tix.feature.plan
+package org.tix.feature.plan.integration
 
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
-import org.junit.Ignore
-import org.junit.Test
 import org.tix.builder.tixPlanForCLI
 import org.tix.feature.plan.presentation.PlanViewEvent
+import kotlin.test.Ignore
+import kotlin.test.Test
 
 class TixPlanIntegrationTest {
     @Ignore
