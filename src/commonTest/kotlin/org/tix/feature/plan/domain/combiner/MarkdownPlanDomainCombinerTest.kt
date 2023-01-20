@@ -52,7 +52,7 @@ class MarkdownPlanDomainCombinerTest {
         flowOf(MARKDOWN_ACTION)
             .transform(MarkdownPlanDomainCombiner(successfulSource, failedParser, successfulPlanner))
             .test {
-                assertEquals(PlanDomainParsing, awaitItem())
+                assertEquals(PlanDomainParsing(PATH), awaitItem())
                 assertEquals(PlanDomainError(PARSER_ERROR.toTixError()), awaitItem())
                 awaitComplete()
             }
@@ -63,7 +63,7 @@ class MarkdownPlanDomainCombinerTest {
         flowOf(MARKDOWN_ACTION)
             .transform(MarkdownPlanDomainCombiner(failedSource, successfulParser, successfulPlanner))
             .test {
-                assertEquals(PlanDomainParsing, awaitItem())
+                assertEquals(PlanDomainParsing(PATH), awaitItem())
                 assertEquals(PlanDomainError(SOURCE_ERROR), awaitItem())
                 awaitComplete()
             }
@@ -74,7 +74,7 @@ class MarkdownPlanDomainCombinerTest {
         flowOf(MARKDOWN_ACTION)
             .transform(MarkdownPlanDomainCombiner(successfulSource, successfulParser, successfulPlanner))
             .test {
-                assertEquals(PlanDomainParsing, awaitItem())
+                assertEquals(PlanDomainParsing(PATH), awaitItem())
                 assertEquals(PlanDomainStartingTicketCreation, awaitItem())
                 awaitComplete()
             }

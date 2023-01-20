@@ -21,7 +21,7 @@ class PlanViewModelTest {
     private val dryRunMarkdownEvent = PlanViewEvent.PlanUsingMarkdown(path = PATH, shouldDryRun = true)
 
     private val combinerUseCase = testTransformer(
-        MarkdownPlanAction(PATH, false) to PlanDomainParsing,
+        MarkdownPlanAction(PATH, false) to PlanDomainParsing(PATH),
         MarkdownPlanAction(PATH, true) to PlanDomainCompleted()
     )
     private val viewStateReducer = TestPlanViewStateReducer()
@@ -44,7 +44,7 @@ class PlanViewModelTest {
         viewModel.sendViewEvent(markdownEvent)
 
         viewModel.viewState.test {
-            assertEquals(TestPlanViewState(PlanDomainParsing), awaitItem())
+            assertEquals(TestPlanViewState(PlanDomainParsing(PATH)), awaitItem())
         }
     }
 
