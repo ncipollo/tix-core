@@ -24,6 +24,7 @@ class TicketPlanner<R : TicketPlanResult>(
                 var context = PlanningContext<R>(
                     config = systemConfig,
                     level = systemConfig.startingLevel,
+                    startingLevel = systemConfig.startingLevel,
                     variables = variables
                 )
                 system.validate(context, tickets)

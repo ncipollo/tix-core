@@ -55,7 +55,8 @@ class JiraPlanningSystem(private val jiraApi: JiraApi) : TicketPlanningSystem<Ji
             level = context.level,
             description = ticket.title,
             results = resultIssue.resultMap(),
-            operation = operation
+            operation = operation,
+            startingLevel = context.startingLevel
         )
     }
 

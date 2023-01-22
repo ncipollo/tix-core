@@ -32,8 +32,10 @@ class CLIPlanViewStateReducer : PlanViewStateReducer<CLIPlanViewState> {
 
     private fun updatingTix(currentResult: TicketPlanResult) =
         CLIPlanViewState(
-            message = "${levelPrefix(currentResult.level)} ${currentResult.key} ${currentResult.description} ✅"
+            message = "${levelPrefix(currentResult.adjustedLevel())} ${currentResult.key} ${currentResult.description} ✅"
         )
 
-    private fun levelPrefix(level: Int) = "-".repeat(level)
+    private fun levelPrefix(level: Int) = "-".repeat(level + 1)
+
+    private fun TicketPlanResult.adjustedLevel() = level - startingLevel
 }

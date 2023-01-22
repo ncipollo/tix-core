@@ -11,4 +11,5 @@ data class JiraPlanResult(
     override val description: String = "",
     override val results: Map<String, String> = emptyMap(),
     override val operation: PlanningOperation = PlanningOperation.CreateTicket,
+    override val startingLevel: Int = 0
 ) : TicketPlanResult

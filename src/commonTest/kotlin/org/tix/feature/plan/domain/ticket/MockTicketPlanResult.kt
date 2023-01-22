@@ -7,5 +7,6 @@ data class MockTicketPlanResult(
     override val level: Int = 0,
     override val description: String = "",
     override val results: Map<String, String> = emptyMap(),
-    override val operation: PlanningOperation = PlanningOperation.CreateTicket
+    override val operation: PlanningOperation = PlanningOperation.CreateTicket,
+    override val startingLevel: Int = 0
 ) : TicketPlanResult

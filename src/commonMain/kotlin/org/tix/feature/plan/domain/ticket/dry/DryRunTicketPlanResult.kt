@@ -13,7 +13,8 @@ data class DryRunTicketPlanResult(
     val ticketType: String,
     val body: String,
     val fields: Map<String, Any?>,
-    override val operation: PlanningOperation
+    override val operation: PlanningOperation,
+    override val startingLevel: Int = 0
 ) : TicketPlanResult {
     override val description: String
         get() {

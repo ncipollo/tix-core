@@ -7,6 +7,7 @@ data class PlanningContext<R : TicketPlanResult>(
     val config: TicketSystemConfiguration = emptyTicketSystemConfig(),
     val level: Int = 0,
     val parentTicket: R? = null,
+    val startingLevel: Int = 0,
     val variables: Map<String, String> = emptyMap()
 ) {
     fun applyResults(results: Map<String, String>) =

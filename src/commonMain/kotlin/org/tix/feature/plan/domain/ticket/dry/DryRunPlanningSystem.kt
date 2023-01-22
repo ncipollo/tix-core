@@ -28,7 +28,8 @@ class DryRunPlanningSystem(
             ticketType = ticketStats.capitalizedLabel(context.level, 1),
             body = ticket.body,
             fields = ticket.fields,
-            operation = operation
+            operation = operation,
+            startingLevel = context.startingLevel
         )
     }
 

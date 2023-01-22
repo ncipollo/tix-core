@@ -8,4 +8,5 @@ interface TicketPlanResult {
     val description: String
     val results: Map<String, String>
     val operation: PlanningOperation
+    val startingLevel: Int
 }
