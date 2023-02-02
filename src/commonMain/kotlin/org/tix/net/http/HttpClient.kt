@@ -13,6 +13,7 @@ import kotlinx.serialization.modules.contextual
 import org.tix.serialize.dynamic.DynamicElementJsonSerializer
 
 fun httpClient(authMethod: AuthMethod = AuthMethod.None) = HttpClient {
+    expectSuccess = true
     install(ContentNegotiation) {
         json(Json {
             isLenient = false
