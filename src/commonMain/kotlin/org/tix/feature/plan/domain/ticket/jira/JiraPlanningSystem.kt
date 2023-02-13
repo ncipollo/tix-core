@@ -10,6 +10,7 @@ import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningContext
 import org.tix.feature.plan.domain.ticket.PlanningOperation
 import org.tix.feature.plan.domain.ticket.TicketPlanningSystem
+import org.tix.feature.plan.domain.ticket.jira.workflow.JiraWorkflowExecutor
 import org.tix.integrations.jira.JiraApi
 import org.tix.integrations.jira.issue.Issue
 import org.tix.integrations.jira.issue.IssueApi
@@ -17,6 +18,7 @@ import org.tix.ticket.RenderedTicket
 
 class JiraPlanningSystem(private val jiraApi: JiraApi) : TicketPlanningSystem<JiraPlanResult> {
     private val setupMutex = Mutex()
+    private val workflowExecutor = JiraWorkflowExecutor(jiraApi)
     private lateinit var issueBuilder: JiraIssueBuilder
     private lateinit var ticketStats: TicketStats
 
@@ -31,7 +33,7 @@ class JiraPlanningSystem(private val jiraApi: JiraApi) : TicketPlanningSystem<Ji
     override suspend fun executeWorkFlow(
         workflow: Workflow,
         context: PlanningContext<*>
-    ) = emptyMap<String, String>()
+    ) = workflowExecutor.execute(workflow, context)
 
     override suspend fun completeInfo() = PlanningCompleteInfo(message = ticketStats.render())
 
