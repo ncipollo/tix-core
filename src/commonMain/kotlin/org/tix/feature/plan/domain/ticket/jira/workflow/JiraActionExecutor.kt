@@ -4,9 +4,11 @@ import org.tix.config.data.Action
 import org.tix.feature.plan.domain.ticket.PlanningContext
 import org.tix.integrations.jira.JiraApi
 
-class JiraActionExecutor(private val api: JiraApi) {
-    suspend fun execute(action: Action, context: PlanningContext<*>) = when (action.type) {
-        "delete_issue" -> JiraDeleteIssueAction(api).execute(action)
-        else -> emptyMap()
-    }
+class JiraActionExecutor(
+    jiraApi: JiraApi,
+    private val actionFactory: JiraActionFactory = JiraActionFactory(jiraApi)
+) {
+    suspend fun execute(action: Action, context: PlanningContext<*>) =
+        actionFactory.jiraAction(action)
+            .execute(action, context)
 }
