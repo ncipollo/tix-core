@@ -23,6 +23,9 @@ class PlanSourceCombiner(
         upstream.flatMapLatest { path ->
             config(path).combine(markdownSource(path)) { configResult, markdownResult ->
                 toResult(configResult, markdownResult)
+            }.catch {
+                // Catch parsing exceptions from config or markdown
+                emit(PlanSourceResult.Error(it.toTixError()))
             }
         }
 

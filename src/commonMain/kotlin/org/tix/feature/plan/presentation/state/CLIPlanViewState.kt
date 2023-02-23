@@ -5,5 +5,5 @@ data class CLIPlanViewState(
     val message: String = "",
     val mood: String = "✅"
 ) : PlanViewState {
-    override fun toString() = if (isComplete) "done" else message
+    override fun toString() = message
 }

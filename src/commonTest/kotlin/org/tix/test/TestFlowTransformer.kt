@@ -13,4 +13,13 @@ class TestFlowTransformer<T, R>(vararg expectations: Pair<T, R>) : FlowTransform
         }
 }
 
+class TestErrorTransformer<T, R>(private val error: Throwable) : FlowTransformer<T, R> {
+    override fun transformFlow(upstream: Flow<T>): Flow<R> =
+        upstream.map {
+            throw error
+        }
+}
+
 fun <T, R> testTransformer(vararg expectations: Pair<T, R>) = TestFlowTransformer(*expectations)
+
+fun <T, R> testErrorTransformer(error: Throwable) = TestErrorTransformer<T, R>(error)
