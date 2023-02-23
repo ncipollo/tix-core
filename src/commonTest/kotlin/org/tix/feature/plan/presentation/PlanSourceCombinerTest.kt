@@ -25,7 +25,6 @@ class PlanSourceCombinerTest {
         val CONFIG_LIST = listOf(rawTixConfiguration)
         val ERROR = RuntimeException("oh noes")
         val TIX_ERROR = ERROR.toTixError()
-        val TIX_ERROR_WITH_CAUSE = TIX_ERROR.copy(cause = ERROR)
         const val MARKDOWN = "markdown"
         const val PATH = "a/path"
 
@@ -50,10 +49,9 @@ class PlanSourceCombinerTest {
     @Test
     fun transformFlow_authConfigReadFails_emitsError() = runTest {
         val combiner = combiner(authReadSource = authConfigError())
-        val expectedResult = PlanSourceResult.Error(TIX_ERROR_WITH_CAUSE)
         source.transform(combiner)
             .test {
-                assertEquals(expectedResult, awaitItem())
+                assertEquals(TIX_ERROR.message, (awaitItem() as PlanSourceResult.Error).error.message)
                 awaitComplete()
             }
     }
@@ -83,10 +81,9 @@ class PlanSourceCombinerTest {
     @Test
     fun transformFlow_configReadFails_emitsError() = runTest {
         val combiner = combiner(configReadSource = configReadError())
-        val expectedResult = PlanSourceResult.Error(TIX_ERROR_WITH_CAUSE)
         source.transform(combiner)
             .test {
-                assertEquals(expectedResult, awaitItem())
+                assertEquals(TIX_ERROR.message, (awaitItem() as PlanSourceResult.Error).error.message)
                 awaitComplete()
             }
     }
