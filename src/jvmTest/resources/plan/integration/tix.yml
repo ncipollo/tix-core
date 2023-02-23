@@ -1,0 +1,12 @@
+jira:
+    no_epics: true
+    url: 'https://tix-test.atlassian.net'
+    tickets: 
+        default:
+            project: TIX
+    workflows:
+        after_each:
+            label: "cleanup"
+            actions:
+                - type: delete_issue
+                  issue: $ticket.key

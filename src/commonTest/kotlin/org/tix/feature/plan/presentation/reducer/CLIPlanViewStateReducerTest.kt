@@ -29,7 +29,10 @@ class CLIPlanViewStateReducerTest {
         val error = TixError()
         val domainState = PlanDomainError(TixError())
 
-        val expected = CLIPlanViewState(message = "\n\n${error.message} ${error.mood}")
+        val expected = CLIPlanViewState(
+            isComplete = true,
+            message = "\n\n${error.message} ${error.mood}"
+        )
         expect(expected) {
             viewStateReducer.reduce(domainState)
         }

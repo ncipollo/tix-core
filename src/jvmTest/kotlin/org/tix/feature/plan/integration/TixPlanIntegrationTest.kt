@@ -6,12 +6,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.tix.builder.tixPlanForCLI
 import org.tix.feature.plan.presentation.PlanViewEvent
-import kotlin.test.Ignore
 import kotlin.test.Test
 
 class TixPlanIntegrationTest {
+    private val path = this::class.java.classLoader.getResource("plan/integration/test.md")!!.path
+
     @Test
-    @Ignore
     fun plan() = runTest {
         val viewModel = tixPlanForCLI().planViewModel(this)
 
@@ -26,7 +26,7 @@ class TixPlanIntegrationTest {
                 }
             }
             launch {
-                viewModel.sendViewEvent(PlanViewEvent.PlanUsingMarkdown("~/Desktop/tix/story.md", shouldDryRun = false))
+                viewModel.sendViewEvent(PlanViewEvent.PlanUsingMarkdown(path, shouldDryRun = true))
             }
         }
     }

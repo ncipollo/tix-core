@@ -21,7 +21,10 @@ class CLIPlanViewStateReducer : PlanViewStateReducer<CLIPlanViewState> {
         message = "tix finished successfully 🎉"
     )
 
-    private fun errorState(ex: TixError) = CLIPlanViewState(message = "\n\n${ex.message} ${ex.mood}")
+    private fun errorState(ex: TixError) = CLIPlanViewState(
+        isComplete = true,
+        message = "\n\n${ex.message} ${ex.mood}"
+    )
 
     private fun parsingState(path: String) = CLIPlanViewState(message = "parsing ${path.filename()} 📕")
 
