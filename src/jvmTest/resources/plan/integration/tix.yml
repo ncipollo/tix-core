@@ -6,7 +6,8 @@ jira:
             project: TIX
     workflows:
         after_each:
-            label: "cleanup"
-            actions:
-                - type: delete_issue
-                  issue: $ticket.key
+            - label: cleanup
+              actions:
+                  - type: delete_issue
+                    arguments:
+                        issue: $ticket.jira.key

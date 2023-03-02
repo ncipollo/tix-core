@@ -27,19 +27,19 @@ class MarkdownPlanDomainCombiner(
                 .flatMapLatest {
                     when (it) {
                         is PlanSourceResult.Error -> flowOf(PlanDomainError(it.error))
-                        is PlanSourceResult.Success -> it.parseSource()
+                        is PlanSourceResult.Success -> it.parseSource(action.shouldDryRun)
                     }
                 }
                 .onStart { emit(PlanDomainParsing(action.path)) }
         }
 
-    private fun PlanSourceResult.Success.parseSource() =
+    private fun PlanSourceResult.Success.parseSource(shouldDryRun: Boolean) =
         flowOf(TicketParserArguments(markdown = markdown, configuration = configuration))
             .transform(parserUseCase)
             .flatMapLatest {
                 when (it) {
                     is FlowResult.Failure -> flowOf(PlanDomainError(it.toTixError()))
-                    is FlowResult.Success -> it.getOrThrow().plan(configuration, shouldDryRun = false)
+                    is FlowResult.Success -> it.getOrThrow().plan(configuration, shouldDryRun = shouldDryRun)
                 }
             }
 
