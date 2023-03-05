@@ -1,5 +1,5 @@
 jira:
-    no_epics: true
+    no_epics: false
     url: 'https://tix-test.atlassian.net'
     tickets: 
         default:
@@ -8,6 +8,6 @@ jira:
         after_each:
             - label: cleanup
               actions:
-                  - type: delete_issue
+                  - type: delete_issuex
                     arguments:
                         issue: $ticket.jira.key
