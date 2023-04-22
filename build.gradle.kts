@@ -19,12 +19,13 @@
  */
 
 plugins {
+    id("maven-publish")
     kotlin("multiplatform") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
     jacoco
 }
 
-group = "org.tix"
+group = "io.github.ncipollo.tix"
 version = "0.0.1"
 
 repositories {
