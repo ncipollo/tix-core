@@ -19,9 +19,9 @@
  */
 
 plugins {
-    id("maven-publish")
     kotlin("multiplatform") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
+    id("publish.publication")
     jacoco
 }
 

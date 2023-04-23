@@ -1,0 +1,66 @@
+plugins {
+    `maven-publish`
+    signing
+}
+
+// Pull in OSSRH credentials from the environement
+ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
+ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
+
+val javadocJar by tasks.registering(Jar::class) {
+    archiveClassifier.set("javadoc")
+}
+
+fun getExtraString(name: String) = ext[name]?.toString()
+
+publishing {
+    // Configure maven central repository
+    repositories {
+        maven {
+            name = "sonatype"
+            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            credentials {
+                username = getExtraString("ossrhUsername")
+                password = getExtraString("ossrhPassword")
+            }
+        }
+    }
+
+    // Configure all publications
+    publications.withType<MavenPublication> {
+        // Stub javadoc.jar artifact
+        artifact(javadocJar.get())
+
+        // Provide artifacts information requited by Maven Central
+        pom {
+            name.set("Tix Core Library")
+            description.set("Kotlin MPP library for authoring, tracking and managing tickets.")
+            url.set("https://github.com/ncipollo/tix-core")
+
+            licenses {
+                license {
+                    name.set("MIT")
+                    url.set("https://opensource.org/licenses/MIT")
+                }
+            }
+            developers {
+                developer {
+                    id.set("ncipollo")
+                    name.set("Nick Cipollo")
+                    email.set("njc115@gmail.com>")
+                }
+            }
+            scm {
+                url.set("https://github.com/ncipollo/tix-core.git")
+            }
+        }
+    }
+}
+
+// Signing artifacts. Signing.* extra properties values will be used
+signing {
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
+}
