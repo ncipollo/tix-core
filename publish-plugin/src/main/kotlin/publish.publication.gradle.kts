@@ -3,6 +3,9 @@ plugins {
     signing
 }
 
+group = "io.github.ncipollo.tix"
+version = System.getenv("TIX_VERSION") ?: "0.1.0-SNAPSHOT"
+
 // Pull in OSSRH credentials from the environement
 ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
 ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
@@ -13,12 +16,19 @@ val javadocJar by tasks.registering(Jar::class) {
 
 fun getExtraString(name: String) = ext[name]?.toString()
 
+val publishingUrl get() =
+    if(version.toString().endsWith("SNAPSHOT")) {
+        "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+    } else {
+        "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+    }
+
 publishing {
     // Configure maven central repository
     repositories {
         maven {
             name = "sonatype"
-            setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+            setUrl(publishingUrl)
             credentials {
                 username = getExtraString("ossrhUsername")
                 password = getExtraString("ossrhPassword")
