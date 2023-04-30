@@ -1,6 +1,8 @@
-name: Release
+name: Snapshot
 
-on: [push]
+on:
+  push:
+    branch: 'main'
 
 jobs:
   release:
@@ -8,6 +10,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest ]
     runs-on: ${{ matrix.os }}
+    environment: Snapshot
     steps:
       - uses: actions/checkout@v2
       - name: set up JDK 1.11
