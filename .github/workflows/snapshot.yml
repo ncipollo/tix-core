@@ -1,0 +1,28 @@
+name: Release
+
+on: [push]
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 1.11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.11
+      - name: Install Curl
+        if: startsWith(matrix.os,'ubuntu')
+        run: sudo apt-get install libcurl4-openssl-dev
+      - name: Maven Central Publish
+        env:
+          OSSRH_USERNAME: ${{secrets.OSSRH_USERNAME}}
+          OSSRH_PASSWORD: ${{secrets.OSSRH_PASSWORD}}
+          ORG_GRADLE_PROJECT_signingKeyId: ${{secrets.ORG_GRADLE_PROJECT_signingKeyId}}
+          ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_signingKey}}
+          ORG_GRADLE_PROJECT_signingPassword: ${{secrets.ORG_GRADLE_PROJECT_signingPassword}}
+          IS_MAIN_PUBLISHER: ${{ startsWith(matrix.os,'ubuntu') }}
+        run: ./gradlew publishAllPublicationsToSonatypeRepository
