@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "io.github.ncipollo.tix"
-version = System.getenv("TIX_VERSION") ?: "0.1.0-SNAPSHOT"
+version = System.getenv("TIX_VERSION") ?: "1.0.0-SNAPSHOT"
 
 // Pull in OSSRH credentials from the environement
 ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
