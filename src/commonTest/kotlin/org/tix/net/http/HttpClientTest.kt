@@ -9,12 +9,15 @@ import kotlin.test.expect
 
 class HttpClientTest {
     @Serializable
-    data class TestResponse(val status: String)
+    data class TestPage(val name: String)
+
+    @Serializable
+    data class TestResponse(val page: TestPage)
 
     @Test
     fun testHttp() = runTestWorkaround {
         val client = httpClient()
-        val response = client.get("https://cors-test.appspot.com/test").body<TestResponse>()
-        expect("ok") { response.status }
+        val response = client.get("https://www.githubstatus.com/api/v2/summary.json").body<TestResponse>()
+        expect("github") { response.page.name.lowercase() }
     }
 }
