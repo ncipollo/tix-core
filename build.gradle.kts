@@ -1,5 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 /**
  * Dependency Hierarchy
  * ```
@@ -22,6 +24,7 @@ plugins {
     kotlin("multiplatform") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
     id("publish.publication")
+    id("com.codingfeline.buildkonfig") version "0.13.3"
     jacoco
 }
 
@@ -230,6 +233,14 @@ kotlin {
         val macosX64Main by getting { dependsOn(desktopMain) }
         val linuxX64Test by getting { dependsOn(desktopTest) }
         val macosX64Test by getting { dependsOn(desktopTest) }
+    }
+}
+
+buildkonfig {
+    packageName = "org.tix.config"
+    exposeObjectWithName = "TixCoreConfig"
+    defaultConfigs {
+        buildConfigField(STRING, "version", version.toString())
     }
 }
 
