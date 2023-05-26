@@ -115,7 +115,8 @@ kotlin {
         iosX64(),
         iosArm64(),
         linuxX64(),
-        macosX64()
+        macosX64(),
+        macosArm64()
     ).forEach {
         it.apply {
             binaries {
@@ -230,9 +231,15 @@ kotlin {
         }
         val desktopTest by creating { dependsOn(nativeTest) }
         val linuxX64Main by getting { dependsOn(desktopMain) }
-        val macosX64Main by getting { dependsOn(desktopMain) }
         val linuxX64Test by getting { dependsOn(desktopTest) }
-        val macosX64Test by getting { dependsOn(desktopTest) }
+
+        val macosMain by creating { dependsOn(desktopMain) }
+        val macosTest by creating { dependsOn(desktopTest) }
+
+        val macosArm64Main by getting { dependsOn(macosMain) }
+        val macosArm64Test by getting { dependsOn(macosTest) }
+        val macosX64Main by getting { dependsOn(macosMain) }
+        val macosX64Test by getting { dependsOn(macosTest) }
     }
 }
 

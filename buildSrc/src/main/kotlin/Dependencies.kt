@@ -3,7 +3,7 @@ object Versions {
     const val json = "1.5.0"
     const val kotlin = "1.8.21"
     const val ktor = "2.2.1"
-    const val markdown = "0.2.4"
+    const val markdown = "0.4.1"
     const val mockK = "1.11.0"
     const val okio = "3.2.0"
     const val turbine = "0.7.0"

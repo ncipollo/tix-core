@@ -8,6 +8,6 @@ jira:
         after_each:
             - label: cleanup
               actions:
-                  - type: delete_issuex
+                  - type: delete_issue
                     arguments:
                         issue: $ticket.jira.key
