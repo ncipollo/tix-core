@@ -3,6 +3,9 @@ package org.tix.feature.plan.presentation.reducer
 import kotlinx.coroutines.test.runTest
 import org.tix.error.TixError
 import org.tix.feature.plan.domain.state.*
+import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
+import org.tix.feature.plan.domain.ticket.PlanningOperation
+import org.tix.feature.plan.domain.ticket.dry.DryRunTicketPlanResult
 import org.tix.feature.plan.domain.ticket.jira.JiraPlanResult
 import org.tix.feature.plan.presentation.state.CLIPlanViewState
 import kotlin.test.Test
@@ -18,6 +21,20 @@ class CLIPlanViewStateReducerTest {
         val expected = CLIPlanViewState(
             isComplete = true,
             message = "tix finished successfully 🎉"
+        )
+        expect(expected) {
+            viewStateReducer.reduce(domainState)
+        }
+    }
+
+    @Test
+    fun reduce_completed_dryRun() = runTest {
+        val completeInfo = PlanningCompleteInfo(message = "complete", wasDryRun = true)
+        val domainState = PlanDomainCompleted(info = completeInfo)
+
+        val expected = CLIPlanViewState(
+            isComplete = true,
+            message = "tix finished successfully 🎉\ncomplete"
         )
         expect(expected) {
             viewStateReducer.reduce(domainState)
@@ -54,6 +71,24 @@ class CLIPlanViewStateReducerTest {
         val domainState = PlanDomainStartingTicketCreation
 
         val expected = CLIPlanViewState(message = "processing tix 🎟️💨")
+        expect(expected) {
+            viewStateReducer.reduce(domainState)
+        }
+    }
+
+    @Test
+    fun reduce_update_dryRun() = runTest {
+        val currentResult = DryRunTicketPlanResult(key = "TIX",
+            level = 0,
+            title = "title",
+            ticketType = "story",
+            body = "body",
+            fields = emptyMap(),
+            operation = PlanningOperation.CreateTicket,
+        )
+        val domainState = PlanDomainUpdate(currentResult)
+
+        val expected = CLIPlanViewState(message = currentResult.description)
         expect(expected) {
             viewStateReducer.reduce(domainState)
         }

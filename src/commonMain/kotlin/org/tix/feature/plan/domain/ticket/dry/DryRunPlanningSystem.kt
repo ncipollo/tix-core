@@ -38,5 +38,6 @@ class DryRunPlanningSystem(
         context: PlanningContext<*>
     ): Map<String, String> = emptyMap()
 
-    override suspend fun completeInfo(): PlanningCompleteInfo = PlanningCompleteInfo(message = ticketStats.render())
+    override suspend fun completeInfo(): PlanningCompleteInfo =
+        PlanningCompleteInfo(message = ticketStats.render(), wasDryRun = true)
 }

@@ -20,18 +20,22 @@ data class DryRunTicketPlanResult(
         get() {
             return """
                 |-----------------
-                |🚀 $ticketType - $title
+                |🚀 $title
                 |$body
-                |-----------------
+                |
+                |```tix_info
                 |Fields:
                 $fieldsDescription
-                |-----------------
+                |Ticket Type: $ticketType
                 |Operation: $operation
-                |-----------------
+                |```
+                |
             """.trimMargin()
         }
 
     private val fieldsDescription =
         fields.keys.sorted()
             .joinToString(separator = "\n") { "|- $it = ${fields[it]}" }
+
+    override val wasDryRun get() = true
 }

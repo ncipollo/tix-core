@@ -21,7 +21,7 @@ class DryRunPlanningSystemTest {
     fun completeInfo() = runTestWorkaround {
         (0..2).forEach {
             ticketSystem.planTicket(contextForLevel(it), ticket, PlanningOperation.CreateTicket)
-            expect(PlanningCompleteInfo(message = ticketStats.render())) {
+            expect(PlanningCompleteInfo(message = ticketStats.render(), wasDryRun = true)) {
                 ticketSystem.completeInfo()
             }
         }

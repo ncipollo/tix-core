@@ -9,17 +9,25 @@ import org.tix.feature.plan.presentation.state.CLIPlanViewState
 class CLIPlanViewStateReducer : PlanViewStateReducer<CLIPlanViewState> {
     override suspend fun reduce(domainState: PlanDomainState) =
         when (domainState) {
-            is PlanDomainCompleted -> completeState()
+            is PlanDomainCompleted -> completeState(domainState)
             is PlanDomainError -> errorState(domainState.ex)
             is PlanDomainParsing -> parsingState(domainState.path)
             PlanDomainStartingTicketCreation -> creatingTixState()
             is PlanDomainUpdate -> updatingTix(domainState.currentResult)
         }
 
-    private fun completeState() = CLIPlanViewState(
-        isComplete = true,
-        message = "tix finished successfully 🎉"
-    )
+    private fun completeState(domainState: PlanDomainCompleted) =
+        CLIPlanViewState(
+            isComplete = true,
+            message = completeMessage(domainState)
+        )
+
+    private fun completeMessage(domainState: PlanDomainCompleted) =
+        if (domainState.info.wasDryRun) {
+            "tix finished successfully 🎉\n${domainState.info.message}"
+        } else {
+            "tix finished successfully 🎉"
+        }
 
     private fun errorState(ex: TixError) = CLIPlanViewState(
         isComplete = true,
@@ -34,9 +42,14 @@ class CLIPlanViewStateReducer : PlanViewStateReducer<CLIPlanViewState> {
     private fun creatingTixState() = CLIPlanViewState(message = "processing tix 🎟️💨")
 
     private fun updatingTix(currentResult: TicketPlanResult) =
-        CLIPlanViewState(
-            message = "${levelPrefix(currentResult.adjustedLevel())} ${currentResult.key} ${currentResult.description} ✅"
-        )
+        CLIPlanViewState(message = updatingMessage(currentResult))
+
+    private fun updatingMessage(currentResult: TicketPlanResult) =
+        if (currentResult.wasDryRun) {
+            currentResult.description
+        } else {
+            "${levelPrefix(currentResult.adjustedLevel())} ${currentResult.key} ${currentResult.description} ✅"
+        }
 
     private fun levelPrefix(level: Int) = "-".repeat(level + 1)
 

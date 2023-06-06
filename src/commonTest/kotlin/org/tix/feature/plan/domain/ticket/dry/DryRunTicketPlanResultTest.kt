@@ -25,10 +25,11 @@ class DryRunTicketPlanResultTest {
     fun description_create() {
         val expected = """
             -----------------
-            🚀 Epic - Title
+            🚀 Title
             Line 1
             Line 2
-            -----------------
+            
+            ```tix_info
             Fields:
             - bool = true
             - float = 3.14
@@ -36,9 +37,10 @@ class DryRunTicketPlanResultTest {
             - map = {foo=bar}
             - null = null
             - string = string
-            -----------------
+            Ticket Type: Epic
             Operation: create
-            -----------------
+            ```
+            
         """.trimIndent()
 
         expect(expected) {
@@ -50,10 +52,11 @@ class DryRunTicketPlanResultTest {
     fun description_delete() {
         val expected = """
             -----------------
-            🚀 Epic - Title
+            🚀 Title
             Line 1
             Line 2
-            -----------------
+            
+            ```tix_info
             Fields:
             - bool = true
             - float = 3.14
@@ -61,9 +64,10 @@ class DryRunTicketPlanResultTest {
             - map = {foo=bar}
             - null = null
             - string = string
-            -----------------
+            Ticket Type: Epic
             Operation: delete id
-            -----------------
+            ```
+            
         """.trimIndent()
 
         expect(expected) {
@@ -75,10 +79,11 @@ class DryRunTicketPlanResultTest {
     fun description_update() {
         val expected = """
             -----------------
-            🚀 Epic - Title
+            🚀 Title
             Line 1
             Line 2
-            -----------------
+            
+            ```tix_info
             Fields:
             - bool = true
             - float = 3.14
@@ -86,13 +91,19 @@ class DryRunTicketPlanResultTest {
             - map = {foo=bar}
             - null = null
             - string = string
-            -----------------
+            Ticket Type: Epic
             Operation: update id
-            -----------------
+            ```
+            
         """.trimIndent()
 
         expect(expected) {
             result.copy(operation = PlanningOperation.UpdateTicket("id")).description
         }
+    }
+
+    @Test
+    fun wasDryRun() {
+        expect(true) { result.wasDryRun }
     }
 }

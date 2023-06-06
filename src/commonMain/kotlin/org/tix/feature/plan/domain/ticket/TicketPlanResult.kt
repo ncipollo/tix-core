@@ -9,4 +9,6 @@ interface TicketPlanResult {
     val results: Map<String, String>
     val operation: PlanningOperation
     val startingLevel: Int
+
+    val wasDryRun get() = false
 }

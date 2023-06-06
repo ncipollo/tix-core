@@ -15,6 +15,14 @@ import kotlin.test.assertEquals
 
 class TixPlanIntegrationTest {
     private val path = this::class.java.classLoader.getResource("plan/integration/test.md")!!.path
+    private val expectedCompletionMessage = """
+        tix finished successfully 🎉
+        Ticket Stats:
+        - Total Tickets: 3
+        - Epic: 1
+        - Story: 1
+        - Task: 1
+    """.trimIndent()
 
     @Test
     fun plan() = runTest {
@@ -29,13 +37,12 @@ class TixPlanIntegrationTest {
 
                         assertEquals(CLIPlanViewState(message = "parsing test.md 📕"), awaitItem())
                         assertEquals(CLIPlanViewState(message = "processing tix 🎟️💨"), awaitItem())
-
-                        assertContains(awaitItem().message, "🚀 Epic - Test Epic")
-                        assertContains(awaitItem().message, "🚀 Story - Test Story")
-                        assertContains(awaitItem().message, "🚀 Task - Test Task")
+                        assertContains(awaitItem().message, "🚀 Test Epic")
+                        assertContains(awaitItem().message, "🚀 Test Story")
+                        assertContains(awaitItem().message, "🚀 Test Task")
 
                         assertEquals(
-                            CLIPlanViewState(message = "tix finished successfully 🎉", isComplete = true),
+                            CLIPlanViewState(message = expectedCompletionMessage, isComplete = true),
                             awaitItem()
                         )
                         collectJob?.cancel()

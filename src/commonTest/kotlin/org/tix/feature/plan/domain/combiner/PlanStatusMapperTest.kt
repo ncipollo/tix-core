@@ -13,7 +13,7 @@ import kotlin.test.expect
 class PlanStatusMapperTest {
     @Test
     fun mapStatus_completed() {
-        val info = PlanningCompleteInfo("done")
+        val info = PlanningCompleteInfo(message = "done")
         expect(PlanDomainCompleted(info)) {
             PlanStatusMapper.mapStatus(TicketPlanCompleted(info))
         }
