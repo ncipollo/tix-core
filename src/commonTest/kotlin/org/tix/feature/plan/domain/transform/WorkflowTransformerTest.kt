@@ -4,10 +4,13 @@ import org.tix.config.data.Action
 import org.tix.config.data.Workflow
 import org.tix.feature.plan.domain.ticket.MockTicketPlanResult
 import org.tix.feature.plan.domain.ticket.PlanningContext
+import org.tix.test.platform.testEnv
 import kotlin.test.Test
 import kotlin.test.expect
 
 class WorkflowTransformerTest {
+    private  val env = testEnv()
+
     @Test
     fun transform() {
         val context = PlanningContext<MockTicketPlanResult>(
@@ -26,7 +29,7 @@ class WorkflowTransformerTest {
             )
         )
         expect(expectedWorkflow) {
-            workflow.transform(context)
+            workflow.transform(TransformVariableMap(env, context.variables))
         }
     }
 }

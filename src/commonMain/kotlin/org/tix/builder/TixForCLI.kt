@@ -16,6 +16,7 @@ import org.tix.feature.plan.domain.ticket.ticketPlannerFactory
 import org.tix.feature.plan.presentation.reducer.CLIPlanViewStateReducer
 import org.tix.feature.plan.presentation.reducer.PlanViewStateReducer
 import org.tix.feature.plan.presentation.state.PlanViewState
+import org.tix.platform.PlatformEnv
 import org.tix.platform.io.TextFileIO
 import org.tix.platform.io.domain.TextFileUseCase
 
@@ -29,7 +30,7 @@ private fun <VS: PlanViewState> planWithFileSystem(viewStateReducer: PlanViewSta
         configMergeSource = ConfigurationMergeUseCase(),
         markdownSource = TextFileUseCase(TextFileIO()),
         parserUseCase = TicketParserUseCase(TicketParser()),
-        ticketPlannerUseCase = TicketPlannerUseCase(ticketPlannerFactory()),
+        ticketPlannerUseCase = TicketPlannerUseCase(ticketPlannerFactory(PlatformEnv)),
         viewStateReducer = viewStateReducer
 
     )

@@ -2,10 +2,12 @@ package org.tix.feature.plan.domain.ticket
 
 import kotlinx.coroutines.test.runTest
 import org.tix.config.data.Workflow
+import org.tix.test.platform.testEnv
 import kotlin.test.Test
 import kotlin.test.expect
 
 class WorkFlowExecutorTest {
+    private val env = testEnv()
     private val resultsA = mapOf("common" to "commonA", "A" to "A")
     private val resultsB = mapOf("common" to "commonB", "B" to "B")
     private val workflowA = Workflow("A")
@@ -26,14 +28,14 @@ class WorkFlowExecutorTest {
             "B" to "B"
         )
         expect(context.applyResults(results)) {
-            workflows.executeWorkFlows(context, system)
+            workflows.executeWorkFlows(context, env, system)
         }
     }
 
     @Test
     fun executeWorkFlows_empty() = runTest {
         expect(context) {
-            emptyList<Workflow>().executeWorkFlows(context, system)
+            emptyList<Workflow>().executeWorkFlows(context, env, system)
         }
     }
 }

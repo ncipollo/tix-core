@@ -7,11 +7,12 @@ import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.dry.DryRunPlanningSystem
 import org.tix.feature.plan.domain.ticket.jira.JiraPlanningSystem
 import org.tix.integrations.jira.JiraApi
+import org.tix.platform.Env
 
 interface TicketPlannerFactory {
     fun planners(shouldDryRun: Boolean, tixConfig: TixConfiguration): List<TicketPlanner<*>>
 }
-class RuntimeTicketPlannerFactory: TicketPlannerFactory {
+class RuntimeTicketPlannerFactory(private val env: Env): TicketPlannerFactory {
     override fun planners(shouldDryRun: Boolean, tixConfig: TixConfiguration ) =
         buildList {
             tixConfig.jira?.jiraPlanner(shouldDryRun, tixConfig.variables)?.let { add(it) }
@@ -19,6 +20,7 @@ class RuntimeTicketPlannerFactory: TicketPlannerFactory {
 
     private fun JiraConfiguration.jiraPlanner(shouldDryRun: Boolean, variables: Map<String, String>) =
         TicketPlanner(
+            env = env,
             renderer = jiraBodyRenderer(),
             system = jiraSystem(shouldDryRun),
             systemConfig = this,
@@ -33,4 +35,4 @@ class RuntimeTicketPlannerFactory: TicketPlannerFactory {
         }
 }
 
-fun ticketPlannerFactory() = RuntimeTicketPlannerFactory()
+fun ticketPlannerFactory(env: Env) = RuntimeTicketPlannerFactory(env)

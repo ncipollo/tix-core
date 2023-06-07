@@ -2,14 +2,18 @@ package org.tix.feature.plan.domain.transform
 
 import org.tix.feature.plan.domain.ticket.MockTicketPlanResult
 import org.tix.feature.plan.domain.ticket.PlanningContext
+import org.tix.feature.plan.domain.ticket.mockPlanningContext
+import org.tix.test.platform.testEnv
 import kotlin.test.Test
 import kotlin.test.expect
 
 class MapTransformerTest {
+    private  val env = testEnv()
+
     @Test
     fun transform_empty() {
         expect(emptyMap()) {
-            emptyMap<String, Any?>().transform(PlanningContext<MockTicketPlanResult>())
+            emptyMap<String, Any?>().transform(TransformVariableMap(env, mockPlanningContext().variables))
         }
     }
 
@@ -35,7 +39,7 @@ class MapTransformerTest {
             "string3" to "value3"
         )
         expect(expectedMap) {
-            inputMap.transform(context)
+            inputMap.transform(TransformVariableMap(env, context.variables))
         }
     }
 }

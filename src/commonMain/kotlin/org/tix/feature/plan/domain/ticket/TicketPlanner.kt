@@ -6,15 +6,17 @@ import kotlinx.coroutines.flow.flow
 import org.tix.config.data.TicketSystemConfiguration
 import org.tix.feature.plan.domain.error.TicketPlanningException
 import org.tix.feature.plan.domain.render.BodyRenderer
+import org.tix.platform.Env
 import org.tix.ticket.Ticket
 
 class TicketPlanner<R : TicketPlanResult>(
+    private val env: Env,
     private val renderer: BodyRenderer,
     private val system: TicketPlanningSystem<R>,
     private val systemConfig: TicketSystemConfiguration,
     private val variables: Map<String, String>
 ) {
-    private val workflowPlanner = WorkflowPlanner(system, systemConfig.workflows)
+    private val workflowPlanner = WorkflowPlanner(env, system, systemConfig.workflows)
 
     fun plan(tickets: List<Ticket>): Flow<TicketPlanStatus> =
         flow {
@@ -59,7 +61,7 @@ class TicketPlanner<R : TicketPlanResult>(
         ticket: Ticket
     ): PlanningContext<R> {
         val beforeContext = workflowPlanner.beforeEach(context)
-        val renderedTicket = TicketTransformer(context, renderer, ticket).ticket()
+        val renderedTicket = TicketTransformer(context, env, renderer, ticket).ticket()
         val operation = PlanningOperationDecider(renderedTicket).operation()
         val result = system.planTicket(beforeContext, renderedTicket, operation)
         val resultContext = beforeContext.createResultContext(result)

@@ -21,8 +21,7 @@ data class DryRunTicketPlanResult(
             return """
                 |-----------------
                 |🚀 $title
-                |$body
-                |
+                |${body.removeSuffix("\n")}
                 |```tix_info
                 |Fields:
                 $fieldsDescription

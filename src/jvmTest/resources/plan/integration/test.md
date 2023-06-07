@@ -2,12 +2,14 @@
 
 This should be an epic.
 
-## Test Story
+## $story_name
 
 - Testing
 - one 
 - two 
 - three
+
+$ticket.parent.id
 
 ### Test Task
 

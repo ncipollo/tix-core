@@ -37,8 +37,14 @@ class TixPlanIntegrationTest {
 
                         assertEquals(CLIPlanViewState(message = "parsing test.md 📕"), awaitItem())
                         assertEquals(CLIPlanViewState(message = "processing tix 🎟️💨"), awaitItem())
-                        assertContains(awaitItem().message, "🚀 Test Epic")
-                        assertContains(awaitItem().message, "🚀 Test Story")
+                        awaitItem().apply {
+                            assertContains(message, "🚀 Test Epic")
+                            assertContains(message, "labels = test")
+                        }
+                        awaitItem().apply {
+                            assertContains(message, "🚀 Test Story")
+                            assertContains(message, "tix_1")
+                        }
                         assertContains(awaitItem().message, "🚀 Test Task")
 
                         assertEquals(

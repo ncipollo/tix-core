@@ -4,6 +4,7 @@ jira:
     tickets: 
         default:
             project: TIX
+            labels: $label
     workflows:
         after_each:
             - label: cleanup
@@ -11,3 +12,7 @@ jira:
                   - type: delete_issue
                     arguments:
                         issue: $ticket.jira.key
+variables:
+    label: test
+    story_name: Test Story
+    story_body: From Transformer

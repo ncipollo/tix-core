@@ -28,7 +28,6 @@ class DryRunTicketPlanResultTest {
             🚀 Title
             Line 1
             Line 2
-            
             ```tix_info
             Fields:
             - bool = true
@@ -55,7 +54,6 @@ class DryRunTicketPlanResultTest {
             🚀 Title
             Line 1
             Line 2
-            
             ```tix_info
             Fields:
             - bool = true
@@ -82,7 +80,6 @@ class DryRunTicketPlanResultTest {
             🚀 Title
             Line 1
             Line 2
-            
             ```tix_info
             Fields:
             - bool = true

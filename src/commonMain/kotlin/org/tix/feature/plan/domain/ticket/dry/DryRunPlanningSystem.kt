@@ -22,6 +22,7 @@ class DryRunPlanningSystem(
         ticketStats.countTicket(context.level)
 
         return DryRunTicketPlanResult(
+            id = ticket.tixId,
             tixId = ticket.tixId,
             level = context.level,
             title = ticket.title,
