@@ -4,11 +4,10 @@ import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.ticket.system.TicketSystemType
-import org.tix.platform.PlatformEnv
 
 class AuthReader(
     private val fileReader: AuthSourceReader,
-    private val envReader: AuthSourceReader = EnvAuthSourceReader(PlatformEnv)
+    private val envReader: AuthSourceReader
 ) : AuthSourceReader {
     override fun read(
         markdownPath: String,
