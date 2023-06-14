@@ -3,7 +3,6 @@ package org.tix.feature.plan.domain.ticket
 import org.tix.config.data.TixConfiguration
 import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
 import org.tix.fixture.config.jiraConfig
-import org.tix.test.platform.TestEnv
 import org.tix.test.platform.testEnv
 import kotlin.test.expect
 
@@ -19,7 +18,8 @@ class MockTicketPlannerFactory(private val count: Int) : TicketPlannerFactory {
                 renderer = jiraBodyRenderer(),
                 system = MockTicketPlanningSystem(),
                 systemConfig = jiraConfig,
-                variables = emptyMap()
+                variables = emptyMap(),
+                variableToken = "$"
             )
         }.also {
             this.shouldDryRun = shouldDryRun

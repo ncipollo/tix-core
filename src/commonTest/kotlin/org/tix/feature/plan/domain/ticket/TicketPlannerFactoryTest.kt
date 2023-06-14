@@ -3,7 +3,6 @@ package org.tix.feature.plan.domain.ticket
 import org.tix.config.data.TixConfiguration
 import org.tix.fixture.config.tixConfiguration
 import org.tix.serialize.dynamic.emptyDynamic
-import org.tix.test.platform.TestEnv
 import org.tix.test.platform.testEnv
 import kotlin.test.Test
 import kotlin.test.expect
@@ -17,7 +16,8 @@ class TicketPlannerFactoryTest {
             include = emptyDynamic(),
             github = null,
             jira = null,
-            variables = emptyMap()
+            variables = emptyMap(),
+            variableToken = "$"
         )
         val factory = ticketPlannerFactory(env)
         expect(emptyList()) {

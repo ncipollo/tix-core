@@ -21,7 +21,8 @@ class ConfigurationBakerUseCase : FlowTransformer<ConfigBakerAction, FlowResult<
                 include = rawConfig.include,
                 github = githubConfig(rawConfig, ticketSystemAuth),
                 jira = jiraConfig(rawConfig, ticketSystemAuth),
-                variables = rawConfig.variables
+                variables = rawConfig.variables,
+                variableToken = rawConfig.variableToken ?: "$"
             )
         }.toFlowResult()
 

@@ -19,7 +19,8 @@ class TixMergerTest {
                     default = mapOf("jira$index" to DynamicElement(index))
                 )
             ).takeIf { index < 3 },
-            variables = mapOf("config$index" to "$index")
+            variables = mapOf("config$index" to "$index"),
+            variableToken = "$index"
         )
     }
 
@@ -47,7 +48,8 @@ class TixMergerTest {
                 "config1" to "1",
                 "config2" to "2",
                 "config3" to "3"
-            )
+            ),
+            variableToken = "3"
         )
 
         expect(expected) { configs.flatten() }

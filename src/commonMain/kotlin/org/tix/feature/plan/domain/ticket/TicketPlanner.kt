@@ -14,7 +14,8 @@ class TicketPlanner<R : TicketPlanResult>(
     private val renderer: BodyRenderer,
     private val system: TicketPlanningSystem<R>,
     private val systemConfig: TicketSystemConfiguration,
-    private val variables: Map<String, String>
+    private val variables: Map<String, String>,
+    private val variableToken: String
 ) {
     private val workflowPlanner = WorkflowPlanner(env, system, systemConfig.workflows)
 
@@ -27,7 +28,8 @@ class TicketPlanner<R : TicketPlanResult>(
                     config = systemConfig,
                     level = systemConfig.startingLevel,
                     startingLevel = systemConfig.startingLevel,
-                    variables = variables
+                    variables = variables,
+                    variableToken = variableToken
                 )
                 system.validate(context, tickets)
 

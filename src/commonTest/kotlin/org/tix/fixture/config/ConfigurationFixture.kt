@@ -93,5 +93,6 @@ val tixConfiguration
         include = DynamicElement("my_tix"),
         github = githubConfig,
         jira = jiraConfig,
-        variables = mapOf("key" to "value")
+        variables = mapOf("key" to "value"),
+        variableToken = "**"
     )

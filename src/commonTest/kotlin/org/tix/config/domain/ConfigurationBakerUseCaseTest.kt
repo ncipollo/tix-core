@@ -27,7 +27,8 @@ class ConfigurationBakerUseCaseTest {
                     include = emptyDynamic(),
                     github = null,
                     jira = null,
-                    variables = emptyMap()
+                    variables = emptyMap(),
+                    variableToken = "$"
                 )
                 assertEquals(expected, awaitItem().getOrThrow())
                 awaitComplete()

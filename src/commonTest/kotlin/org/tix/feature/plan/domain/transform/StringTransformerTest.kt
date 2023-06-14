@@ -34,6 +34,21 @@ class StringTransformerTest {
     }
 
     @Test
+    fun transform_replacesAllVariables_customToken() {
+        val context = PlanningContext<MockTicketPlanResult>(
+            variables = mapOf(
+                "var1" to "value1",
+                "var2" to "value2",
+                "ticket.parent.id" to "parent"
+            )
+        )
+        val inputString = "test **var1 **var2 **ticket.parent.id"
+        expect("test value1 value2 parent") {
+            inputString.transform(TransformVariableMap(env, context.variables, "**"))
+        }
+    }
+
+    @Test
     fun transform_replacesAllVariables_manyVariables() {
         val variables = (0 until 100).associate {
             "var$it" to "value$it"

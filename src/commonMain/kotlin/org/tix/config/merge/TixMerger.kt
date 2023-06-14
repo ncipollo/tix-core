@@ -6,7 +6,8 @@ fun RawTixConfiguration.merge(overlay: RawTixConfiguration) = RawTixConfiguratio
     include = overlay.include,// We always want to take the top include
     github = github?.merge(overlay.github) ?: overlay.github,
     jira = jira?.merge(overlay.jira) ?: overlay.jira,
-    variables = variables + overlay.variables
+    variables = variables + overlay.variables,
+    variableToken = overlay.variableToken ?: variableToken
 )
 
 fun List<RawTixConfiguration>.flatten() = reduce { acc, configuration -> acc.merge(configuration) }

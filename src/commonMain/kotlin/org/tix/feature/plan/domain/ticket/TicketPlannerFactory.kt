@@ -15,16 +15,19 @@ interface TicketPlannerFactory {
 class RuntimeTicketPlannerFactory(private val env: Env): TicketPlannerFactory {
     override fun planners(shouldDryRun: Boolean, tixConfig: TixConfiguration ) =
         buildList {
-            tixConfig.jira?.jiraPlanner(shouldDryRun, tixConfig.variables)?.let { add(it) }
+            tixConfig.jira?.jiraPlanner(shouldDryRun, tixConfig.variables, tixConfig.variableToken)?.let { add(it) }
         }
 
-    private fun JiraConfiguration.jiraPlanner(shouldDryRun: Boolean, variables: Map<String, String>) =
+    private fun JiraConfiguration.jiraPlanner(shouldDryRun: Boolean,
+                                              variables: Map<String, String>,
+                                              variableToken: String) =
         TicketPlanner(
             env = env,
             renderer = jiraBodyRenderer(),
             system = jiraSystem(shouldDryRun),
             systemConfig = this,
-            variables = variables
+            variables = variables,
+            variableToken = variableToken
         )
 
     private fun JiraConfiguration.jiraSystem(shouldDryRun: Boolean) =

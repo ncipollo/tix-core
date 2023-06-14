@@ -7,5 +7,6 @@ data class TixConfiguration(
     @Contextual val include: DynamicElement,
     val github: GithubConfiguration?,
     val jira: JiraConfiguration?,
-    val variables: Map<String, String>
+    val variables: Map<String, String>,
+    val variableToken: String
 )

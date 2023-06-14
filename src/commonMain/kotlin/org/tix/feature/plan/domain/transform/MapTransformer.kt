@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.transform
 
-fun Map<String, Any?>.transform(variableMap: TransformVariableMap) =
+internal fun Map<String, Any?>.transform(variableMap: TransformVariableMap) =
     map {(key, value) ->
         key.transform(variableMap) to value.transform(variableMap)
     }.toMap()

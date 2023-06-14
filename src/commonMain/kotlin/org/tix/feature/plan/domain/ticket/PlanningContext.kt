@@ -8,7 +8,8 @@ data class PlanningContext<R : TicketPlanResult>(
     val level: Int = 0,
     val parentTicket: R? = null,
     val startingLevel: Int = 0,
-    val variables: Map<String, String> = emptyMap()
+    val variables: Map<String, String> = emptyMap(),
+    val variableToken: String = "$",
 ) {
     fun applyResults(results: Map<String, String>) =
         copy(variables = this.variables + results)
