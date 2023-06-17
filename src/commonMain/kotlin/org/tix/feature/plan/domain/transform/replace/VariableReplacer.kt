@@ -44,6 +44,5 @@ internal fun String.replaceVariables(variableMap: TransformVariableMap): String 
             }
         }
     }
-    // use this.indexOf()
     return replacedString
 }
