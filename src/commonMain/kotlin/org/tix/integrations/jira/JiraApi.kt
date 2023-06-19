@@ -6,11 +6,14 @@ import org.tix.integrations.jira.issue.IssueApi
 import org.tix.integrations.jira.transition.TransitionApi
 import org.tix.integrations.shared.custom.CustomApi
 import org.tix.net.BaseUrl
+import org.tix.net.http.configureBasicAuth
 import org.tix.net.http.httpClient
 
 class JiraApi(configuration: JiraConfiguration) {
     private val baseUrl = BaseUrl(configuration.url)
-    private val client = httpClient(jiraAuthMethod(configuration))
+    private val client = httpClient {
+        configureBasicAuth(configuration.auth.username, configuration.auth.password)
+    }
 
     val custom = CustomApi(baseUrl, client)
     val field = FieldApi(baseUrl, client)
