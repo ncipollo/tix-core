@@ -4,7 +4,7 @@ import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningContext
 import org.tix.feature.plan.domain.ticket.PlanningOperation
-import org.tix.fixture.config.jiraConfig
+import org.tix.fixture.config.mockJiraConfig
 import org.tix.test.runTestWorkaround
 import org.tix.ticket.RenderedTicket
 import kotlin.test.Test
@@ -13,7 +13,7 @@ import kotlin.test.expect
 class DryRunPlanningSystemTest {
     private val ticket = RenderedTicket("title", body = "*body*", fields = mapOf("ticket" to "field"))
 
-    private val config = jiraConfig
+    private val config = mockJiraConfig
     private val ticketStats = jiraTicketStats()
     private val ticketSystem = DryRunPlanningSystem(ticketStats)
 

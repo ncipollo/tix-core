@@ -1,19 +1,19 @@
 package org.tix.config.data
 
-import org.tix.fixture.config.githubConfig
+import org.tix.fixture.config.mockGithubConfig
 import kotlin.test.Test
 import kotlin.test.expect
 
 class GithubConfigurationTest {
     @Test
     fun startingLevel_whenProjectsAreDisabled() {
-        val config = githubConfig.copy(noProjects = true)
+        val config = mockGithubConfig.copy(noProjects = true)
         expect(1) { config.startingLevel }
     }
 
     @Test
     fun startingLevel_whenProjectsAreEnabled() {
-        val config = githubConfig.copy(noProjects = false)
+        val config = mockGithubConfig.copy(noProjects = false)
         expect(0) { config.startingLevel }
     }
 
@@ -24,6 +24,6 @@ class GithubConfigurationTest {
             "unique0" to "default",
             "unique1" to "project",
         )
-        expect(expected) { githubConfig.fieldsForLevel(0) }
+        expect(expected) { mockGithubConfig.fieldsForLevel(0) }
     }
 }

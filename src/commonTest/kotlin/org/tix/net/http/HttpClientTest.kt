@@ -16,7 +16,9 @@ class HttpClientTest {
 
     @Test
     fun testHttp() = runTestWorkaround {
-        val client = httpClient()
+        val client = httpClient {
+            installContentNegotiation()
+        }
         val response = client.get("https://www.githubstatus.com/api/v2/summary.json").body<TestResponse>()
         expect("github") { response.page.name.lowercase() }
     }

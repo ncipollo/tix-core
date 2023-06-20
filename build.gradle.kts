@@ -175,6 +175,7 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
                 implementation(Deps.Coroutines.test)
+                implementation(Deps.Ktor.clientMock)
                 implementation(Deps.turbine)
                 implementation(Deps.Okio.fakeFilesystem)
             }

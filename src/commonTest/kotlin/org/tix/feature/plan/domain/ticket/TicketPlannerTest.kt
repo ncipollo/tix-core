@@ -5,7 +5,7 @@ import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import org.tix.feature.plan.domain.error.TicketPlanningException
 import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
-import org.tix.fixture.config.jiraConfig
+import org.tix.fixture.config.mockJiraConfig
 import org.tix.fixture.config.workflows
 import org.tix.serialize.dynamic.DynamicElement
 import org.tix.test.platform.testEnv
@@ -30,7 +30,7 @@ class TicketPlannerTest {
 
     @Test
     fun plan_emptyTickets() = runTest {
-        val planner = TicketPlanner(env, renderer, system, jiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(emptyList())
             .test {
                 system.assertSetupCalled()
@@ -43,7 +43,7 @@ class TicketPlannerTest {
     @Test
     fun plan_flatTicketList() = runTest {
         val tickets = listOf(Ticket("1"), Ticket("2"), Ticket("3"))
-        val planner = TicketPlanner(env, renderer, system, jiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -60,9 +60,9 @@ class TicketPlannerTest {
     fun plan_flatTicketList_withFailure() = runTest {
         val variables = mapOf("var_key" to "var_value")
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(env, renderer, system, jiraConfig, variables, "$")
+        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, variables, "$")
 
-        system.failOnTicket(RenderedTicket("2", fields = tickets[1].mergedFields(jiraConfig, 0)), error)
+        system.failOnTicket(RenderedTicket("2", fields = tickets[1].mergedFields(mockJiraConfig, 0)), error)
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -76,7 +76,7 @@ class TicketPlannerTest {
     @Test
     fun plan_flatTicketList_withUpdateTicket() = runTest {
         val tickets = listOf(Ticket("1", fields = DynamicElement(mapOf(GenericTicketFields.updateTicket to "id"))))
-        val planner = TicketPlanner(env, renderer, system, jiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -91,7 +91,7 @@ class TicketPlannerTest {
     fun plan_flatTicketList_withVariables() = runTest {
         val variables = mapOf("var_key" to "var_value")
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(env, renderer, system, jiraConfig, variables, "$")
+        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, variables, "$")
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -110,7 +110,7 @@ class TicketPlannerTest {
         val children2 = listOf(Ticket("5"), Ticket("6"))
         val parent2 = Ticket("4", children = children2)
 
-        val planner = TicketPlanner(env, renderer, system, jiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(listOf(parent1, parent2))
             .test {
                 system.assertSetupCalled()
@@ -129,7 +129,7 @@ class TicketPlannerTest {
     @Test
     fun plan_validationFails() = runTest {
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(env, renderer, system, jiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
 
         system.failValidation(error)
         planner.plan(tickets)

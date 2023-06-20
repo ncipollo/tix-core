@@ -19,6 +19,7 @@ object Deps {
     object Ktor {
         val android = dep("io.ktor:ktor-client-android", Versions.ktor)
         val auth = dep("io.ktor:ktor-client-auth", Versions.ktor)
+        val clientMock = dep("io.ktor:ktor-client-mock", Versions.ktor)
         val contentNegotation = dep("io.ktor:ktor-client-content-negotiation", Versions.ktor)
         val core = dep("io.ktor:ktor-client-core", Versions.ktor)
         val curl = dep("io.ktor:ktor-client-curl", Versions.ktor)

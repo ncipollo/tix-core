@@ -1,19 +1,19 @@
 package org.tix.config.data
 
-import org.tix.fixture.config.jiraConfig
+import org.tix.fixture.config.mockJiraConfig
 import kotlin.test.Test
 import kotlin.test.expect
 
 class JiraConfigurationTest {
     @Test
     fun startingLevel_whenEpicsAreDisabled() {
-        val config = jiraConfig.copy(noEpics = true)
+        val config = mockJiraConfig.copy(noEpics = true)
         expect(1) { config.startingLevel }
     }
 
     @Test
     fun startingLevel_whenEpicsAreEnabled() {
-        val config = jiraConfig.copy(noEpics = false)
+        val config = mockJiraConfig.copy(noEpics = false)
         expect(0) { config.startingLevel }
     }
 
@@ -24,6 +24,6 @@ class JiraConfigurationTest {
             "unique0" to "default",
             "unique1" to "epic",
         )
-        expect(expected) { jiraConfig.fieldsForLevel(0) }
+        expect(expected) { mockJiraConfig.fieldsForLevel(0) }
     }
 }

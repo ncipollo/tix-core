@@ -52,7 +52,7 @@ val githubFieldConfig = GithubFieldConfiguration(
     )
 )
 
-val githubConfig = GithubConfiguration(
+val mockGithubConfig = GithubConfiguration(
     auth = authConfiguration,
     owner = "owner",
     repo = "repo",
@@ -80,7 +80,7 @@ val jiraFieldConfig = JiraFieldConfiguration(
     )
 )
 
-val jiraConfig = JiraConfiguration(
+val mockJiraConfig = JiraConfiguration(
     auth = authConfiguration,
     noEpics = false,
     fields = jiraFieldConfig,
@@ -91,8 +91,8 @@ val jiraConfig = JiraConfiguration(
 val tixConfiguration
     get() = TixConfiguration(
         include = DynamicElement("my_tix"),
-        github = githubConfig,
-        jira = jiraConfig,
+        github = mockGithubConfig,
+        jira = mockJiraConfig,
         variables = mapOf("key" to "value"),
         variableToken = "**"
     )

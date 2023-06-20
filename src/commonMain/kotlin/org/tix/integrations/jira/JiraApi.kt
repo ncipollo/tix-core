@@ -8,11 +8,13 @@ import org.tix.integrations.shared.custom.CustomApi
 import org.tix.net.BaseUrl
 import org.tix.net.http.configureBasicAuth
 import org.tix.net.http.httpClient
+import org.tix.net.http.installContentNegotiation
 
 class JiraApi(configuration: JiraConfiguration) {
     private val baseUrl = BaseUrl(configuration.url)
     private val client = httpClient {
         configureBasicAuth(configuration.auth.username, configuration.auth.password)
+        installContentNegotiation()
     }
 
     val custom = CustomApi(baseUrl, client)

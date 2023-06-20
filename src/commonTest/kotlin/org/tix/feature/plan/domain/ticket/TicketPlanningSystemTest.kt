@@ -3,14 +3,14 @@ package org.tix.feature.plan.domain.ticket
 import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.dry.DryRunPlanningSystem
 import org.tix.feature.plan.domain.ticket.dry.DryRunTicketPlanResult
-import org.tix.fixture.config.jiraConfig
+import org.tix.fixture.config.mockJiraConfig
 import org.tix.test.runTestWorkaround
 import org.tix.ticket.Ticket
 import kotlin.test.Test
 import kotlin.test.assertFails
 
 class TicketPlanningSystemTest {
-    private val config = jiraConfig
+    private val config = mockJiraConfig
     private val ticketStats = jiraTicketStats()
     private val ticketSystem = DryRunPlanningSystem(ticketStats)
 
