@@ -7,7 +7,9 @@ import org.tix.feature.plan.domain.ticket.PlanningOperation
 import org.tix.fixture.config.mockJiraConfig
 import org.tix.test.runTestWorkaround
 import org.tix.ticket.RenderedTicket
+import org.tix.ticket.Ticket
 import kotlin.test.Test
+import kotlin.test.assertFails
 import kotlin.test.expect
 
 class DryRunPlanningSystemTest {
@@ -36,6 +38,15 @@ class DryRunPlanningSystemTest {
             }
         }
     }
+
+    @Test
+    fun validate() = runTestWorkaround {
+        val context = PlanningContext<DryRunTicketPlanResult>(config = mockJiraConfig)
+        assertFails {
+            ticketSystem.validate(context, listOf(deepTicket()))
+        }
+    }
+
     private fun contextForLevel(level: Int) =
         PlanningContext<DryRunTicketPlanResult>(config = config, level = level)
 
@@ -49,5 +60,12 @@ class DryRunPlanningSystemTest {
             fields = ticket.fields,
             operation = operation
         )
+    }
+
+    private fun deepTicket(currentDepth: Int = 0): Ticket {
+        if (currentDepth >= 3) {
+            return Ticket()
+        }
+        return Ticket(children = listOf(deepTicket(currentDepth + 1)))
     }
 }

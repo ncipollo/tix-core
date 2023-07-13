@@ -25,7 +25,7 @@ class MilestoneApiTest {
             title = "title",
             description = "description"
         )
-        val milestoneResult = MilestoneCreateResponse(number = 1)
+        val milestoneResult = Milestone(number = 1)
         val mockEngine = MockEngine { request ->
             val textBody = request.body as TextContent
 

@@ -1,25 +1,17 @@
-package org.tix.feature.plan.domain.ticket
+package org.tix.feature.plan.domain.ticket.github
 
-import org.tix.config.data.TixConfiguration
 import org.tix.fixture.config.tixConfiguration
-import org.tix.serialize.dynamic.emptyDynamic
 import org.tix.test.platform.testEnv
 import kotlin.test.Test
 import kotlin.test.expect
 
-class TicketPlannerFactoryTest {
+class GithubPlannerFactoryTest {
     private val env = testEnv()
 
     @Test
-    fun planners_noSystemConfigs_returnsNoPlanners() {
-        val tixConfig = TixConfiguration(
-            include = emptyDynamic(),
-            github = null,
-            jira = null,
-            variables = emptyMap(),
-            variableToken = "$"
-        )
-        val factory = ticketPlannerFactory(env)
+    fun planners_noJiraConfig() {
+        val tixConfig = tixConfiguration.copy(github = null)
+        val factory = GithubPlannerFactory(env)
         expect(emptyList()) {
             factory.planners(
                 shouldDryRun = false,
@@ -30,15 +22,15 @@ class TicketPlannerFactoryTest {
 
     @Test
     fun planners_returnsDryRunPlanners() {
-        val factory = ticketPlannerFactory(env)
+        val factory = GithubPlannerFactory(env)
         val planners = factory.planners(shouldDryRun = true, tixConfig = tixConfiguration)
-        expect(2) { planners.size }
+        expect(1) { planners.size }
     }
 
     @Test
     fun planners_returnsNormalPlanners() {
-        val factory = ticketPlannerFactory(env)
+        val factory = GithubPlannerFactory(env)
         val planners = factory.planners(shouldDryRun = false, tixConfig = tixConfiguration)
-        expect(2) { planners.size }
+        expect(1) { planners.size }
     }
 }

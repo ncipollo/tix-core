@@ -11,6 +11,7 @@ import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningContext
 import org.tix.feature.plan.domain.ticket.PlanningOperation
+import org.tix.fixture.config.mockJiraConfig
 import org.tix.integrations.jira.JiraApi
 import org.tix.integrations.jira.field.FieldApi
 import org.tix.integrations.jira.issue.Issue
@@ -18,9 +19,12 @@ import org.tix.integrations.jira.issue.IssueApi
 import org.tix.integrations.jira.issue.IssueFields
 import org.tix.integrations.jira.issue.IssueType
 import org.tix.integrations.jira.project.Project
+import org.tix.test.runTestWorkaround
 import org.tix.ticket.RenderedTicket
+import org.tix.ticket.Ticket
 import java.io.IOException
 import kotlin.test.assertEquals
+import kotlin.test.assertFails
 import kotlin.test.assertFailsWith
 
 class JiraPlanningSystemTest {
@@ -194,5 +198,20 @@ class JiraPlanningSystemTest {
             ),
             actual = result
         )
+    }
+
+    @Test
+    fun validate() = runTestWorkaround {
+        val context = PlanningContext<JiraPlanResult>(config = mockJiraConfig)
+        assertFails {
+            planningSystem.validate(context, listOf(deepTicket()))
+        }
+    }
+
+    private fun deepTicket(currentDepth: Int = 0): Ticket {
+        if (currentDepth >= 3) {
+            return Ticket()
+        }
+        return Ticket(children = listOf(deepTicket(currentDepth + 1)))
     }
 }

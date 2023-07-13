@@ -73,6 +73,12 @@ class GithubApiTest {
     }
 
     @Test
+    fun repoProject() = runTest {
+        val project = githubApi.queries.projects.repoProject(1).data.repository.projectV2
+        println(project)
+    }
+
+    @Test
     fun projectItems() = runTest {
         val items = githubApi.queries.projects.repoProjectItems(1).data.repository.projectV2.content.nodes
         println("Items: $items")

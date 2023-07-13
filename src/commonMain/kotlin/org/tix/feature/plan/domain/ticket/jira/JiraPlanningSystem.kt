@@ -11,10 +11,12 @@ import org.tix.feature.plan.domain.ticket.PlanningContext
 import org.tix.feature.plan.domain.ticket.PlanningOperation
 import org.tix.feature.plan.domain.ticket.TicketPlanningSystem
 import org.tix.feature.plan.domain.ticket.jira.workflow.JiraWorkflowExecutor
+import org.tix.feature.plan.domain.validation.planValidators
 import org.tix.integrations.jira.JiraApi
 import org.tix.integrations.jira.issue.Issue
 import org.tix.integrations.jira.issue.IssueApi
 import org.tix.ticket.RenderedTicket
+import org.tix.ticket.Ticket
 
 class JiraPlanningSystem(private val jiraApi: JiraApi) : TicketPlanningSystem<JiraPlanResult> {
     private val setupMutex = Mutex()
@@ -71,4 +73,10 @@ class JiraPlanningSystem(private val jiraApi: JiraApi) : TicketPlanningSystem<Ji
             }
             is PlanningOperation.UpdateTicket -> update(issue)
         }
+
+    override suspend fun validate(context: PlanningContext<JiraPlanResult>, tickets: List<Ticket>) {
+        val ticketStats = jiraTicketStats(startingLevel = context.config.startingLevel)
+        planValidators(ticketStats)
+            .forEach { it.validate(tickets) }
+    }
 }

@@ -25,7 +25,7 @@ class DryRunTicketPlanResultTest {
     fun description_create() {
         val expected = """
             -----------------
-            🚀 Title
+            Title
             Line 1
             Line 2
             ```tix_info
@@ -51,7 +51,7 @@ class DryRunTicketPlanResultTest {
     fun description_delete() {
         val expected = """
             -----------------
-            🚀 Title
+            Title
             Line 1
             Line 2
             ```tix_info
@@ -77,7 +77,7 @@ class DryRunTicketPlanResultTest {
     fun description_update() {
         val expected = """
             -----------------
-            🚀 Title
+            Title
             Line 1
             Line 2
             ```tix_info

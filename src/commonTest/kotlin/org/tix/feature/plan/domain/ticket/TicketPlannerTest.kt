@@ -1,6 +1,6 @@
 package org.tix.feature.plan.domain.ticket
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import org.tix.feature.plan.domain.error.TicketPlanningException
@@ -140,7 +140,7 @@ class TicketPlannerTest {
             }
     }
 
-    private suspend fun FlowTurbine<TicketPlanStatus>.assertTicketResult(
+    private suspend fun TurbineTestContext<TicketPlanStatus>.assertTicketResult(
         ticket: Ticket,
         expectedId: Int,
         expectedPreviousId: Int? = null,
@@ -175,7 +175,7 @@ class TicketPlannerTest {
         }
     }
 
-    private suspend fun FlowTurbine<TicketPlanStatus>.assertPlanningComplete() {
+    private suspend fun TurbineTestContext<TicketPlanStatus>.assertPlanningComplete() {
         expect(TicketPlanCompleted(system.completeInfo())) {
             awaitItem()
         }

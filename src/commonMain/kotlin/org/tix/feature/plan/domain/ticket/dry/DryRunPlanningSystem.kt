@@ -6,7 +6,9 @@ import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningContext
 import org.tix.feature.plan.domain.ticket.PlanningOperation
 import org.tix.feature.plan.domain.ticket.TicketPlanningSystem
+import org.tix.feature.plan.domain.validation.planValidators
 import org.tix.ticket.RenderedTicket
+import org.tix.ticket.Ticket
 
 class DryRunPlanningSystem(
     private val ticketStats: TicketStats
@@ -41,4 +43,9 @@ class DryRunPlanningSystem(
 
     override suspend fun completeInfo(): PlanningCompleteInfo =
         PlanningCompleteInfo(message = ticketStats.render(), wasDryRun = true)
+
+    override suspend fun validate(context: PlanningContext<DryRunTicketPlanResult>, tickets: List<Ticket>) {
+        planValidators(ticketStats)
+            .forEach { it.validate(tickets) }
+    }
 }

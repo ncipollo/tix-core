@@ -17,7 +17,8 @@ data class PlanningContext<R : TicketPlanResult>(
     fun createChildContext(parent: R): PlanningContext<R> {
         val filteredVariables = variables.filterKeys { !it.startsWith("ticket") }
         val ticketVariables = mapOf(
-            "ticket.parent.id" to parent.id
+            "ticket.parent.id" to parent.id,
+            "ticket.parent.key" to parent.key,
         )
         return copy(
             level = level + 1,

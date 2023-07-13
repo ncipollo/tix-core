@@ -10,7 +10,7 @@ import org.tix.integrations.github.rest.paging.pagedContent
 import org.tix.integrations.github.state.StateQuery
 
 class MilestoneApi(private val urls: GithubUrls, private val client: HttpClient) {
-    suspend fun create(createRequest: MilestoneCreateRequest): MilestoneCreateResponse {
+    suspend fun create(createRequest: MilestoneCreateRequest): Milestone {
         val url = urls.repos.withPath("milestones")
         return client.post(url) {
             contentType(ContentType.Application.Json)

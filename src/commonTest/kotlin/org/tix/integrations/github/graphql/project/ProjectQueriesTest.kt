@@ -125,6 +125,31 @@ class ProjectQueriesTest {
     }
 
     @Test
+    fun repoProject() = runTest {
+        val expectedResponse = GithubQueryResponse(ProjectResponse(ProjectV2Wrapper(ProjectV2Node(number = 1))))
+        queryApi.prepareResponse(expectedResponse)
+
+        val response = projectQueries.repoProject(1)
+        assertEquals(expectedResponse, response)
+        queryApi.assertReturnType<GithubQueryResponse<ProjectResponse>>()
+        queryApi.assertQuery(
+            """
+                query GetProject {
+                  repository(owner: "owner", name: "repo") {
+                    projectV2(number: 1) {
+                      id
+                      number
+                      title
+                      shortDescription
+                      closed
+                    }
+                  }
+                }
+            """.trimIndent()
+        )
+    }
+
+    @Test
     fun repoProjectItems() = runTest {
         val expectedResponse = GithubQueryResponse(
             ProjectItemsResponse(

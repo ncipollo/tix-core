@@ -95,6 +95,23 @@ class ProjectQueries(config: GithubConfiguration, private val queryApi: GithubQu
         return queryApi.query(mutation)
     }
 
+    suspend fun repoProject(projectNumber: Long): GithubQueryResponse<ProjectResponse> {
+        val query = """
+            query GetProject {
+              repository(owner: "$owner", name: "$repo") {
+                projectV2(number: $projectNumber) {
+                  id
+                  number
+                  title
+                  shortDescription
+                  closed
+                }
+              }
+            }
+        """.trimIndent()
+        return queryApi.query(query)
+    }
+
     suspend fun repoProjectItems(
         projectNumber: Long,
         cursor: String? = null,

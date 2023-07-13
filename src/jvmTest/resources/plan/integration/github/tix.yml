@@ -1,0 +1,16 @@
+github:
+    no_projects: false
+    owner: ncipollo
+    repo: tix-core
+    fields:
+        default:
+            labels: $label
+    workflows:
+        after_each:
+            - label: cleanup
+              actions:
+                  - type: delete_issue
+                    arguments:
+                        issue: $ticket.github.key
+variables:
+    label: test

@@ -1,9 +1,8 @@
 package org.tix.feature.plan.domain.ticket
 
-import app.cash.turbine.FlowTurbine
+import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.test.runTest
 import org.tix.domain.transform
 import org.tix.fixture.config.tixConfiguration
@@ -23,7 +22,6 @@ class TicketPlannerUseCaseTest {
         val action = TicketPlannerAction(config, shouldDryRun = true, tickets)
         flowOf(action)
             .transform(useCase)
-            .onEach { println(it) }
             .test {
                 repeat(2) {
                     expect(TicketPlanStarted) { awaitItem() }
@@ -36,7 +34,7 @@ class TicketPlannerUseCaseTest {
             }
     }
 
-    private suspend fun FlowTurbine<TicketPlanStatus>.expectTicketCreated(ticketTitle: String) =
+    private suspend fun TurbineTestContext<TicketPlanStatus>.expectTicketCreated(ticketTitle: String) =
         expect(ticketTitle) {
             val status =  this.awaitItem() as TicketPlanUpdated
             status.result.description
