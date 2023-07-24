@@ -13,6 +13,7 @@ import org.tix.feature.plan.domain.ticket.github.creator.IssueCreator
 import org.tix.feature.plan.domain.ticket.github.creator.IssueLinker
 import org.tix.feature.plan.domain.ticket.github.creator.IssueRequestBuilder
 import org.tix.feature.plan.domain.ticket.github.creator.ProjectCreator
+import org.tix.feature.plan.domain.ticket.github.workflow.GithubWorkflowExecutor
 import org.tix.feature.plan.domain.validation.planValidators
 import org.tix.integrations.github.GithubApi
 import org.tix.ticket.RenderedTicket
@@ -29,7 +30,8 @@ class GithubPlanningSystem(
         milestoneCache,
         IssueRequestBuilder(milestoneCache)
     ),
-    private val projectCreator: ProjectCreator = ProjectCreator(githubApi, projectCache)
+    private val projectCreator: ProjectCreator = ProjectCreator(githubApi, projectCache),
+    private val workflowExecutor: GithubWorkflowExecutor = GithubWorkflowExecutor(githubApi, projectCache)
 ) : TicketPlanningSystem<GithubPlanResult> {
 
     override suspend fun setup(context: PlanningContext<GithubPlanResult>) {
@@ -41,7 +43,7 @@ class GithubPlanningSystem(
         ticket: RenderedTicket,
         operation: PlanningOperation
     ): GithubPlanResult {
-        val result =  if (context.level == 0) {
+        val result = if (context.level == 0) {
             projectCreator.planTicket(context, ticket, operation)
         } else {
             issueCreator.planTicket(context, ticket, operation)
@@ -50,7 +52,10 @@ class GithubPlanningSystem(
         return result
     }
 
-    override suspend fun executeWorkFlow(workflow: Workflow, context: PlanningContext<*>) = emptyMap<String, String>()
+    override suspend fun executeWorkFlow(
+        workflow: Workflow,
+        context: PlanningContext<*>
+    ) = workflowExecutor.execute(workflow, context)
 
     override suspend fun completeInfo() = PlanningCompleteInfo(message = ticketStats.render())
 
