@@ -18,6 +18,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
+      - name: Update apt packages
+        if: startsWith(matrix.os,'ubuntu')
+        run: sudo apt-get update
       - name: Install Curl
         if: startsWith(matrix.os,'ubuntu')
         run: sudo apt-get install libcurl4-openssl-dev
