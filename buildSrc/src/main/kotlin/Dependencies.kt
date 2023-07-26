@@ -2,7 +2,7 @@ object Versions {
     const val coroutines = "1.7.2"
     const val json = "1.5.0"
     const val kotlin = "1.8.21"
-    const val ktor = "2.2.1"
+    const val ktor = "2.3.2"
     const val markdown = "0.4.1"
     const val mockK = "1.11.0"
     const val okio = "3.2.0"
