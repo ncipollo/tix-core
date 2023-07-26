@@ -21,8 +21,9 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
  */
 
 plugins {
-    kotlin("multiplatform") version Versions.kotlin
-    kotlin("plugin.serialization") version Versions.kotlin
+    val kotlinVersion = "1.8.21"
+    kotlin("multiplatform") version kotlinVersion
+    kotlin("plugin.serialization") version kotlinVersion
     id("publish.publication")
     id("com.codingfeline.buildkonfig") version "0.13.3"
     jacoco
@@ -153,20 +154,16 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                api(Deps.Coroutines.core) {
-                    version {
-                        strictly(Versions.coroutines)
-                    }
-                }
-                implementation(Deps.Ktor.auth)
-                implementation(Deps.Ktor.contentNegotation)
-                implementation(Deps.Ktor.core)
-                implementation(Deps.Ktor.serialization)
-                implementation(Deps.markdown)
-                implementation(Deps.Okio.multiplatform)
-                implementation(Deps.Okio.kotlinTime)
-                implementation(Deps.Serialization.json)
-                implementation(Deps.Serialization.yml)
+                api(libs.coroutine.core)
+                implementation(libs.kotlin.time)
+                implementation(libs.ktor.auth)
+                implementation(libs.ktor.content.negotation)
+                implementation(libs.ktor.core)
+                implementation(libs.ktor.serialization)
+                implementation(libs.markdown)
+                implementation(libs.okio.multiplatform)
+                implementation(libs.serialization.json)
+                implementation(libs.serialization.yml)
             }
         }
         val commonTest by getting {
@@ -174,10 +171,10 @@ kotlin {
                 implementation(kotlin("reflect"))
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-                implementation(Deps.Coroutines.test)
-                implementation(Deps.Ktor.clientMock)
-                implementation(Deps.turbine)
-                implementation(Deps.Okio.fakeFilesystem)
+                implementation(libs.coroutine.test)
+                implementation(libs.ktor.client.mock)
+                implementation(libs.turbine)
+                implementation(libs.okio.fake.filesystem)
             }
         }
 
@@ -187,8 +184,8 @@ kotlin {
         val jsMain by getting {
             dependsOn(commonMain)
             dependencies {
-                implementation(Deps.Ktor.js)
-                implementation(Deps.Okio.nodeFilesystem)
+                implementation(libs.ktor.js)
+                implementation(libs.okio.node)
             }
         }
         val jsTest by getting {
@@ -201,21 +198,21 @@ kotlin {
         val jvmMain by getting {
             dependsOn(commonMain)
             dependencies {
-                implementation(Deps.Ktor.jvm)
+                implementation(libs.ktor.jvm)
             }
         }
         val jvmTest by getting {
             dependencies {
                 dependsOn(commonTest)
                 implementation(kotlin("test-junit"))
-                implementation(Deps.MockK.jvm)
+                implementation(libs.mockk.jvm)
             }
         }
 
         val iosMain by creating {
             dependsOn(nativeMain)
             dependencies {
-                implementation(Deps.Ktor.iOS)
+                implementation(libs.ktor.ios)
             }
         }
         val iosTest by creating { dependsOn(nativeTest) }
@@ -227,7 +224,7 @@ kotlin {
         val desktopMain by creating {
             dependsOn(nativeMain)
             dependencies {
-                implementation(Deps.Ktor.curl)
+                implementation(libs.ktor.curl)
             }
         }
         val desktopTest by creating { dependsOn(nativeTest) }

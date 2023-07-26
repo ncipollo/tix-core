@@ -1,0 +1,43 @@
+[versions]
+coroutines = "1.7.2"
+json = "1.5.0"
+kotlin = "1.8.21"
+ktor = "2.3.2"
+markdown = "0.4.1"
+mockk = "1.11.0"
+okio = "3.2.0"
+turbine = "1.0.0"
+yml = "0.13.0"
+
+[libraries]
+coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+
+kotlin-time = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.0" }
+
+ktor-androind = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
+ktor-content-negotation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor" }
+ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
+ktor-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-jvm = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+markdown = { module = "org.jetbrains:markdown", version.ref = "markdown" }
+
+mockk-common = { module = "io.mockk:mockk-common", version.ref = "mockk" }
+mockk-jvm = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+okio-fake-filesystem = { module = "com.squareup.okio:okio-fakefilesystem", version.ref = "okio" }
+okio-multiplatform = { module = "com.squareup.okio:okio", version.ref = "okio" }
+okio-node = { module = "com.squareup.okio:okio-nodefilesystem", version.ref = "okio" }
+
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "json" }
+serialization-yml = { module = "net.mamoe.yamlkt:yamlkt", version.ref = "yml" }
+
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+
+[plugins]
