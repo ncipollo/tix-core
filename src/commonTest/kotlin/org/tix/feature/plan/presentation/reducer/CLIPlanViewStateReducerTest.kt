@@ -42,13 +42,28 @@ class CLIPlanViewStateReducerTest {
     }
 
     @Test
-    fun reduce_error() = runTest {
+    fun reduce_error_noCause() = runTest {
         val error = TixError()
-        val domainState = PlanDomainError(TixError())
+        val domainState = PlanDomainError(error)
 
         val expected = CLIPlanViewState(
             isComplete = true,
             message = "\n\n${error.message} ${error.mood}"
+        )
+        expect(expected) {
+            viewStateReducer.reduce(domainState)
+        }
+    }
+
+    @Test
+    fun reduce_error_withCause() = runTest {
+        val causeError = RuntimeException("no reason really")
+        val error = TixError(cause = causeError)
+        val domainState = PlanDomainError(error)
+
+        val expected = CLIPlanViewState(
+            isComplete = true,
+            message = "\n\n${error.message} ${error.mood}\nCause: ${causeError.message}"
         )
         expect(expected) {
             viewStateReducer.reduce(domainState)
