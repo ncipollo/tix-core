@@ -34,6 +34,7 @@ class TixPlanJiraIntegrationTest {
                 assertEquals(CLIPlanViewState(message = "processing tix 🎟️💨"), awaitItem())
                 awaitItem().apply {
                     assertContains(message, "Test Epic")
+                    assertContains(message, "should be empty - ( )")
                     assertContains(message, "labels = test")
                 }
                 awaitItem().apply {

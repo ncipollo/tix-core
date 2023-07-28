@@ -2,6 +2,8 @@
 
 This should be an epic.
 
+should be empty - ($jira_name $jira_token)
+
 ## $story_name
 
 - Testing

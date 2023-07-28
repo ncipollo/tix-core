@@ -16,3 +16,5 @@ variables:
     label: test
     story_name: Test Story
     story_body: From Transformer
+    jira_name: $JIRA_USERNAME
+    jira_token: $JIRA_API_TOKEN

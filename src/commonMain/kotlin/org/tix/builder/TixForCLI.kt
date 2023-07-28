@@ -21,6 +21,7 @@ import org.tix.platform.PlatformEnv
 import org.tix.platform.SandboxEnv
 import org.tix.platform.io.TextFileIO
 import org.tix.platform.io.domain.TextFileUseCase
+import org.tix.platform.sanitizedEnv
 
 fun tixPlanForCLI() = planWithFileSystem(CLIPlanViewStateReducer())
 
@@ -39,11 +40,12 @@ private fun <VS : PlanViewState> planWithFileSystem(viewStateReducer: PlanViewSt
 
 private fun authReader() = AuthReader(
     fileReader = FileAuthSourceReader(configFileReader()),
-    envReader = EnvAuthSourceReader(cliEnv())
+    envReader = EnvAuthSourceReader(authEnv())
 )
 
 private fun configReadSource() = ConfigurationReadUseCase(RawTixConfigurationReader(configFileReader()))
 
 private fun configFileReader() = ConfigurationFileReader(TextFileIO())
 
-private fun cliEnv() = SandboxEnv(PlatformEnv) { true }
+private fun authEnv() = SandboxEnv(PlatformEnv) { true }
+private fun cliEnv() = sanitizedEnv(PlatformEnv)
