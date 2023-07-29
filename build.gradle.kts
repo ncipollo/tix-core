@@ -1,6 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import com.vanniktech.maven.publish.SonatypeHost
 
 /**
  * Dependency Hierarchy
@@ -24,8 +25,8 @@ plugins {
     val kotlinVersion = "1.8.21"
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
-    id("publish.publication")
     id("com.codingfeline.buildkonfig") version "0.13.3"
+    id("com.vanniktech.maven.publish") version "0.25.3"
     jacoco
 }
 
@@ -278,4 +279,39 @@ tasks.register("jvmTestCoverage") {
     finalizedBy("jacocoTestReport")
     finalizedBy("jacocoTestCoverageVerification")
     finalizedBy("printCoverageLocation")
+}
+
+// Publishing
+group = "io.github.ncipollo.tix"
+version = System.getenv("TIX_VERSION") ?: "1.0.0-SNAPSHOT"
+
+mavenPublishing {
+    publishToMavenCentral(SonatypeHost.S01)
+    signAllPublications()
+
+    coordinates(group.toString(), name, version.toString())
+
+    // Provide artifacts information requited by Maven Central
+    pom {
+        name.set("Tix Core Library")
+        description.set("Kotlin MPP library for authoring, tracking and managing tickets.")
+        url.set("https://github.com/ncipollo/tix-core")
+
+        licenses {
+            license {
+                name.set("MIT")
+                url.set("https://opensource.org/licenses/MIT")
+            }
+        }
+        developers {
+            developer {
+                id.set("ncipollo")
+                name.set("Nick Cipollo")
+                email.set("njc115@gmail.com>")
+            }
+        }
+        scm {
+            url.set("https://github.com/ncipollo/tix-core.git")
+        }
+    }
 }
