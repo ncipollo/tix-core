@@ -226,6 +226,10 @@ kotlin {
     }
 }
 
+// Publishing
+group = "io.github.ncipollo.tix"
+version = System.getenv("TIX_VERSION") ?: "1.0.0-SNAPSHOT"
+
 buildkonfig {
     packageName = "org.tix.config"
     exposeObjectWithName = "TixCoreConfig"
@@ -264,10 +268,6 @@ tasks.register("jvmTestCoverage") {
     finalizedBy("jacocoTestCoverageVerification")
     finalizedBy("printCoverageLocation")
 }
-
-// Publishing
-group = "io.github.ncipollo.tix"
-version = System.getenv("TIX_VERSION") ?: "1.0.0-SNAPSHOT"
 
 mavenPublishing {
     publishToMavenCentral(SonatypeHost.S01, true)
