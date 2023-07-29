@@ -5,7 +5,7 @@ kotlin = "1.8.21"
 ktor = "2.3.2"
 markdown = "0.4.1"
 mockk = "1.11.0"
-okio = "3.2.0"
+okio = "3.4.0"
 turbine = "1.0.0"
 yml = "0.13.0"
 
