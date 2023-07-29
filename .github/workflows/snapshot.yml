@@ -7,10 +7,7 @@ on:
 
 jobs:
   release:
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, macos-latest ]
-    runs-on: ${{ matrix.os }}
+    runs-on: macos-latest
     environment: Snapshot
     steps:
       - uses: actions/checkout@v2
@@ -18,17 +15,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
-      - name: Update apt packages
-        if: startsWith(matrix.os,'ubuntu')
-        run: sudo apt-get update
-      - name: Install Curl
-        if: startsWith(matrix.os,'ubuntu')
-        run: sudo apt-get install libcurl4-openssl-dev
       - name: Maven Central Publish
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{secrets.OSSRH_USERNAME}}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{secrets.OSSRH_PASSWORD}}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{secrets.ORG_GRADLE_PROJECT_signingKey}}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{secrets.ORG_GRADLE_PROJECT_signingPassword}}
-          IS_MAIN_PUBLISHER: ${{ startsWith(matrix.os,'ubuntu') }}
         run: ./gradlew publishAllPublicationsToMavenCentralRepository

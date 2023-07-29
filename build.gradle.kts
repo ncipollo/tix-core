@@ -128,23 +128,7 @@ kotlin {
             }
         }
     }
-
-    // Avoid publishing duplicate artifacts on CI
-    // (since we need to run in a matrix to publish different platforms).
-    val publicationsFromMainHost =
-        listOf(jvm(), js()).map { it.name } + "kotlinMultiplatform"
-
-    publishing {
-        publications {
-            matching { it.name in publicationsFromMainHost }.all {
-                val targetPublication = this@all
-                tasks.withType<AbstractPublishToMaven>()
-                    .matching { it.publication == targetPublication }
-                    .configureEach { onlyIf {  System.getenv("IS_MAIN_PUBLISHER") == "true" } }
-            }
-        }
-    }
-
+    
     sourceSets {
         all {
             languageSettings.optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
