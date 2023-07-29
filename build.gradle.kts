@@ -286,7 +286,7 @@ group = "io.github.ncipollo.tix"
 version = System.getenv("TIX_VERSION") ?: "1.0.0-SNAPSHOT"
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.S01)
+    publishToMavenCentral(SonatypeHost.S01, true)
     signAllPublications()
 
     coordinates(group.toString(), name, version.toString())
