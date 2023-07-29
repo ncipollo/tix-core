@@ -2,7 +2,7 @@ package org.tix.feature.plan.domain.ticket.github
 
 import org.tix.config.data.GithubConfiguration
 import org.tix.config.data.TixConfiguration
-import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
+import org.tix.feature.plan.domain.render.github.githubBodyRenderer
 import org.tix.feature.plan.domain.stats.githubTicketStats
 import org.tix.feature.plan.domain.ticket.TicketPlanner
 import org.tix.feature.plan.domain.ticket.TicketPlannerFactory
@@ -29,7 +29,7 @@ class GithubPlannerFactory(private val env: Env) : TicketPlannerFactory {
     ) =
         TicketPlanner(
             env = env,
-            renderer = jiraBodyRenderer(),
+            renderer = githubBodyRenderer(),
             system = githubSystem(shouldDryRun),
             systemConfig = this,
             variables = variables,

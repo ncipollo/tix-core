@@ -3,13 +3,15 @@ package org.tix.feature.plan.domain.stats
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class TicketStats(private val labels: TicketLabels) : LevelLabels by labels {
+class TicketStats(private val labels: TicketLabels,
+                  private val startingLevel: Int) : LevelLabels by labels {
     private val mutex = Mutex()
     private val countByLevel = MutableList(labels.levelCount) { 0 }
 
     suspend fun countTicket(level: Int) {
+        val adjustedLevel = level - startingLevel
         mutex.withLock {
-            countByLevel[level]++
+            countByLevel[adjustedLevel]++
         }
     }
 

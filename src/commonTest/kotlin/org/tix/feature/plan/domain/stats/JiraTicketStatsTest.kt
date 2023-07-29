@@ -22,9 +22,9 @@ class JiraTicketStatsTest {
     @Test
     fun render_withStartingLevel1_withAllLevels() = runTestWorkaround {
         val stats = jiraTicketStats(startingLevel = 1)
-        stats.countTicket(0)
         stats.countTicket(1)
-        stats.countTicket(1)
+        stats.countTicket(2)
+        stats.countTicket(2)
 
         val expected = """
             Ticket Stats:

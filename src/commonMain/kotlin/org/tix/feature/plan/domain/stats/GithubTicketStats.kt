@@ -9,5 +9,5 @@ fun githubTicketStats(startingLevel: Int = 0): TicketStats {
             TicketLevelLabel("issue", "issues")
         )
     }
-    return TicketStats(labels)
+    return TicketStats(labels, startingLevel)
 }

@@ -14,5 +14,5 @@ fun jiraTicketStats(startingLevel: Int = 0): TicketStats {
         )
     }
 
-    return TicketStats(labels)
+    return TicketStats(labels, startingLevel)
 }

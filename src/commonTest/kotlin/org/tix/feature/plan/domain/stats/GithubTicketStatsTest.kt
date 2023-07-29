@@ -21,8 +21,8 @@ class GithubTicketStatsTest {
     @Test
     fun render_withStartingLevel1_withAllLevels() = runTestWorkaround {
         val stats = githubTicketStats(startingLevel = 1)
-        stats.countTicket(0)
-        stats.countTicket(0)
+        stats.countTicket(1)
+        stats.countTicket(1)
 
         val expected = """
             Ticket Stats:

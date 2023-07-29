@@ -9,7 +9,7 @@ class GithubPlannerFactoryTest {
     private val env = testEnv()
 
     @Test
-    fun planners_noJiraConfig() {
+    fun planners_noGithubConfig() {
         val tixConfig = tixConfiguration.copy(github = null)
         val factory = GithubPlannerFactory(env)
         expect(emptyList()) {
