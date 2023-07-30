@@ -1,0 +1,15 @@
+exclude:
+  - gradle
+  - kotlin-js-store
+  - src
+highlighter: rouge
+incremental: false
+lsi: false
+gist:
+  noscript: false
+kramdown:
+  math_engine: mathjax
+  syntax_highlighter: rouge
+safe: true
+theme: jekyll-theme-slate
+title: Tix
