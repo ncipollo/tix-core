@@ -1,4 +1,9 @@
-Tix is a tool for creating, tracking and managing tickets across a variety ticketing platforms.
+Tix is a tool for creating and managing tickets across a variety ticketing platforms.
+
+Tix supports the following ticketing platforms:
+
+- Jira
+- GitHub Projects
 
 # Why Tix? 🤔
 
@@ -8,9 +13,9 @@ might look something like this:
 1. Come up with the idea.
 2. Write out a design document.
 3. Open your ticketing platform of your choice (or more realistically, your company's choice).
-4. Jump around between tabs, wait for the web UX to load, and input your tickets one-by-one.
+4. Jump around between tabs, wait for the web UI to load, and input your tickets one-by-one.
 
-Tix lets you do all your planning offline, in a single document. Tix can then take this document and mass product
+Tix lets you do all your planning offline, in a single document. Tix can then take this document and mass produce
 tickets for you.
 
 # Installation 💾
@@ -26,8 +31,8 @@ brew install kotlin-tix
 
 At a high level tix planning requires three inputs:
 
-1. A configuration which informs tix how and where it should create tickets for your.
-2. Authentication information for your target ticketing systems.
+1. A configuration which informs tix how and where it should create tickets for you.
+2. Authentication information for your target ticketing platforms.
 3. A markdown file which contains your tickets.
 
 Running tix from the command line will typically look something like this:
@@ -42,12 +47,23 @@ tix my_tickets.md
 
 Tix configuration may be specified in either json or yaml. Tix will look for configuration in the following locations:
 
-- In the same directory as the markdown file. The configuration file is expected to be named `tix.yml` or `tix.json`
+- The workspace configuration located in the same directory as the markdown file. The configuration file is expected to
+  be named `tix.yml` or `tix.json`
 - Via an included configuration from `~/.tix/configs` (more on this later)
 - In `~/.tix/config.yml` or `~/.tix/config.json`
 
 If multiple configurations from the above list are found, they are merged in the order defined above. If there are
-property conflicts the higher configuration will take precedence.
+property conflicts the higher configuration will take precedence (i.e. the config in the same directory as the markdown
+file overrides all others).
+
+If the configuration file is in the same directory as the markdown file(s), your directory structure might look
+something like this:
+
+```
+- tickets1.md
+- ticketa2.md
+- tix.yml
+```
 
 ### Config Format
 
@@ -57,8 +73,8 @@ The following is the expected format of the settings file (in yaml):
 include: my_saved_config # Optional saved configuration which will be overlaid on top of this configuration.
 github:
   no_projects: true # Indicates if tix should use projects or treat root tickets as issues. Defaults to false.
-  owner: owner # The owner of the github repo (ex - ncipollo)
-  repo: repo  # The github repo (ex - tix)
+  owner: owner # The owner of the GitHub repo (ex - ncipollo)
+  repo: repo  # The GitHub repo (ex - tix-core)
   fields:
     default:
       default: default # Fields to be added to both projects and issues
@@ -70,7 +86,7 @@ jira:
   no_epics: false # Indicates if tix should use epics or treat root tickets as stories / issues. Defaults to false. 
   url: # https://url.to.your.jira.instance.com
   fields:
-    # All fields should be lower case. Field name spaces should be included (ex- epic name)
+    # All fields should be lowercase. Field name spaces should be included (ex- epic name)
     default:
       field: value # Fields to be added to any kind of jira issue
     epic:
@@ -82,21 +98,30 @@ jira:
 variables:
   key: value
   envKey: $ENVIRONMENT_VARIABLE
-  # tix will parse the markdown document and replace each occurance of "key" with it's value (or environment variable
-  # when a '$' preceeds the value)  
+  # tix will parse the Markdown document and replace each occurrence of "key" with its value (or environment variable
+  # when a '$' precedes the value).  
 ```
 
 #### Included Configuration
 
-The include property allows you to reference a previously saved configuration in `~/.tix/configs`. This allows you to
+The `include` property allows you to reference a previously saved configuration in `~/.tix/configs`. This allows you to
 save your commonly used configurations in a single location and reuse them.
+
+The value of the include property should be the name of a saved configuration, minus the extension. In other words,
+if `include` is set to `my_config`, tix will look for either `~/.tix/configs/my_config.json`
+or `~/.tix/configs/my_config.yml`.
 
 Note that it is completely valid for your workspace configuration to have just a single `include` entry in it.
 
 #### Jira
 
 You can use this section to define fields which should be included in all generated tickets (or all tickets of a certain
-type). There are many jira fields, and tix supports custom fields. Here are some of the more common ones:
+type).
+
+Fields can be referenced by field name, or field id. It is possible to have multiple fields with the same name in Jira,
+in which case you need to use the field ID to select the correct one.
+
+There are many jira fields, and tix supports custom fields. Here are some of the more common ones:
 
 - `affects_versions`: Jira's affects versions field.
 - `components`: Jira's components field.
@@ -114,23 +139,23 @@ type). There are many jira fields, and tix supports custom fields. Here are some
 #### Github
 
 You can use this section to define fields which should be included in all generated tickets (or all tickets of a certain
-type). Tix supports the following github fields:
+type). Tix supports the following GitHub fields:
 
 - `assignees`: Assignees to attach to the ticket.
-- `delete_ticket`: The Github ticket to delete. When this is present the rest of the ticket specification is ignored.
-  Should be a github number (ex - `#42`).
-- `milestone`: A github milestone to apply to the ticket. Will create a milestone if one doesn't already exist.
-- `labels`: The github labels to apply to the ticket.
-- `parent`: An explicit parent to attach the ticket to. Should be a github number (ex - `#42`).
-- `update_ticket`: The Github ticket number to update. When present, tix will update an existing ticket rather than
-  creating a new one. Should be a github number (ex - `#42`).
+- `delete_ticket`: The GitHub ticket to delete. When this is present the rest of the ticket specification is ignored.
+  Should be a GitHub number (ex - `#42`).
+- `milestone`: A GitHub milestone to apply to the ticket. Will create a milestone if one doesn't already exist.
+- `labels`: The GitHub labels to apply to the ticket.
+- `parent`: An explicit parent to attach the ticket to. Should be a GitHub number (ex - `#42`).
+- `update_ticket`: The GitHub ticket number to update. When present, tix will update an existing ticket rather than
+  creating a new one. Should be a GitHub number (ex - `#42`).
 
 #### Variables
 
-Variables defined in this section may be referenced in your markdown document. Within the markdown document, all
+Variables defined in this section may be referenced in your Markdown document. Within the Markdown document, all
 variables must be preceded by a `$`.
 
-Variables which have a value preceeded by a `$` are pulled in from the environment. Please note that some environment
+Variables which have a value preceded by a `$` are pulled in from the environment. Please note that some environment
 variables are filtered out for security reasons (for example all known ticket system auth tokens).
 
 Note: Tix automatically creates some variables for you. For example:
@@ -157,15 +182,15 @@ Once you have the access token, add the following two properties to your environ
 
 ### Github
 
-To use Github as a ticketing system you will need a perosnal access token. You can obtain one by following the
+To use GitHub as a ticketing system you will need a personal access token. You can obtain one by following the
 instructions
-here: [Github API Tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+here: [GitHub API Tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 
 The token you create above will need to have access to the repositories you plan to create issues and projects in.
 
 Once you have the access token, add the following two property to your environment:
 
-- `GITHUB_API_TOKEN`: This should be set to your github access token.
+- `GITHUB_API_TOKEN`: This should be set to your GitHub access token.
     - Note you can use `GITHUB_PASSWORD` here instead (tix looks in both variables for the API key).
 
 ## Markdown ✍️
@@ -232,7 +257,7 @@ Jira tickets have the following relationship with heading indent levels:
 
 #### Github
 
-Github tickets have the following relationship with heading indent levels:
+GitHub tickets have the following relationship with heading indent levels:
 
 - `#`: Project, if projects are allowed via settings. Issue otherwise.
 - `##`: Issue
@@ -247,6 +272,7 @@ If you provide the `-d` option to tix it will perform a dry run of the ticket cr
 check your tickets before mass-producing them.
 
 Example:
+
 ```bash
 tix -d my_tickets.md
 ```
