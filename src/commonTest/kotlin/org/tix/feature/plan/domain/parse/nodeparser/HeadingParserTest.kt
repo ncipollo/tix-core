@@ -100,4 +100,17 @@ class HeadingParserTest {
             parser.parse(arguments)
         }
     }
+
+    @Test
+    fun parse_validateTicketTitleParsing() {
+        validateTitle("Ticket: With Colon")
+        validateTitle("Ticket's")
+        validateTitle("Ticket with [brackets]")
+    }
+
+    private fun validateTitle(title: String) {
+        val arguments = "# $title".toParserArguments()
+        parser.parse(arguments)
+        expect(title) { arguments.state.currentTicket!!.title }
+    }
 }

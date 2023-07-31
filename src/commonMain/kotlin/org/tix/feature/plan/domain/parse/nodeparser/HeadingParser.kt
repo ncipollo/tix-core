@@ -48,7 +48,9 @@ internal class HeadingParser : NodeParser {
     private fun ticketTitle(arguments: ParserArguments) =
         arguments.currentNode.run {
             val contentNode = findContentNode(this)
-            contentNode?.getTextInNode(arguments.markdownText)?.toString()
+            contentNode?.getTextInNode(arguments.markdownText)
+                ?.toString()
+                ?.trim()
                 ?: parseError(
                     "header is missing content",
                     this,
@@ -57,7 +59,7 @@ internal class HeadingParser : NodeParser {
         }
 
     private fun findContentNode(node: ASTNode) =
-        node.findChildOfType(MarkdownTokenTypes.ATX_CONTENT)?.findChildOfType(MarkdownTokenTypes.TEXT)
+        node.findChildOfType(MarkdownTokenTypes.ATX_CONTENT)
 
     private fun results(arguments: ParserArguments): ParserResult {
         val nextType = arguments.nextNode?.type?.name
