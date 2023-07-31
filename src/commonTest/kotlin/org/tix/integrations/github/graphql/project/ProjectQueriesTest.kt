@@ -78,6 +78,8 @@ class ProjectQueriesTest {
 
         val response = projectQueries.updateProject(projectId = "id", title = "title", description = "description")
         assertEquals(expectedResponse, response)
+
+        val description = "\"\"\"description\"\"\""
         queryApi.assertReturnType<GithubQueryResponse<UpdateProjectResult>>()
         queryApi.assertQuery(
             """
@@ -85,7 +87,7 @@ class ProjectQueriesTest {
               updateProjectV2(
                 input: {projectId: "id",
                         title: "title",
-                        shortDescription: "description",
+                        shortDescription: $description,
                         closed: false}
               ) {
                 content: projectV2 {

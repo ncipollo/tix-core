@@ -64,12 +64,13 @@ class ProjectQueries(config: GithubConfiguration, private val queryApi: GithubQu
         close: Boolean = false
     ): GithubQueryResponse<UpdateProjectResult> {
         val closeStr = close.toString().lowercase()
+        val shortDescription = "\"\"\"${description.escapeTripleQuotes()}\"\"\""
         val mutation = """
             mutation UpdateProject {
               updateProjectV2(
                 input: {projectId: "$projectId",
                         title: "$title",
-                        shortDescription: "${description.escapeTripleQuotes()}",
+                        shortDescription: $shortDescription,
                         closed: $closeStr}
               ) {
                 content: projectV2 {
