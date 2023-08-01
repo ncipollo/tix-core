@@ -42,16 +42,16 @@ class AuthReaderTest {
     }
 
     private class TestAuthReader : AuthSourceReader {
-        private var markdownPath: String? = null
+        private var workspacePath: String? = null
         private var rawAuthConfig: RawAuthConfiguration? = null
         private var ticketSystemType: TicketSystemType? = null
 
         override fun read(
-            markdownPath: String,
+            workspacePath: String?,
             rawAuthConfig: RawAuthConfiguration,
             ticketSystemType: TicketSystemType
         ): AuthConfiguration {
-            this.markdownPath = markdownPath
+            this.workspacePath = workspacePath
             this.rawAuthConfig = rawAuthConfig
             this.ticketSystemType = ticketSystemType
 
@@ -59,7 +59,7 @@ class AuthReaderTest {
         }
 
         fun assertCalled(authSource: AuthSource) {
-            assertEquals(PATH, markdownPath)
+            assertEquals(PATH, workspacePath)
             assertEquals(RawAuthConfiguration(source = authSource), rawAuthConfig)
             assertEquals(SYSTEM_TYPE, this.ticketSystemType)
         }

@@ -54,7 +54,7 @@ class AuthConfigurationUseCaseTest {
 
     private class TestAuthReader(private val emptyAuthConfigs: Boolean) : AuthSourceReader {
         override fun read(
-            markdownPath: String,
+            workspacePath: String?,
             rawAuthConfig: RawAuthConfiguration,
             ticketSystemType: TicketSystemType
         ): AuthConfiguration {

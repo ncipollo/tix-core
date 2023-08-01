@@ -2,6 +2,7 @@ package org.tix.feature.plan.presentation.reducer
 
 import kotlinx.coroutines.test.runTest
 import org.tix.error.TixError
+import org.tix.feature.plan.domain.parse.MarkdownFileSource
 import org.tix.feature.plan.domain.state.*
 import org.tix.feature.plan.domain.ticket.PlanningCompleteInfo
 import org.tix.feature.plan.domain.ticket.PlanningOperation
@@ -73,7 +74,7 @@ class CLIPlanViewStateReducerTest {
     @Test
     fun reduce_parsing() = runTest {
         val path = "/tix.md"
-        val domainState = PlanDomainParsing(path)
+        val domainState = PlanDomainParsing(MarkdownFileSource(path))
 
         val expected = CLIPlanViewState(message = "parsing tix.md 📕")
         expect(expected) {

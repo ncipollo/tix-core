@@ -1,11 +1,13 @@
 package org.tix.builder
 
+import org.tix.config.ConfigurationPaths
 import org.tix.config.domain.AuthConfigurationUseCase
 import org.tix.config.domain.ConfigurationBakerUseCase
 import org.tix.config.domain.ConfigurationMergeUseCase
 import org.tix.config.domain.ConfigurationReadUseCase
 import org.tix.config.reader.ConfigurationFileReader
 import org.tix.config.reader.RawTixConfigurationReader
+import org.tix.config.reader.auth.AuthConfigurationPaths
 import org.tix.config.reader.auth.AuthReader
 import org.tix.config.reader.auth.EnvAuthSourceReader
 import org.tix.config.reader.auth.FileAuthSourceReader
@@ -29,9 +31,9 @@ private fun <VS : PlanViewState> planWithFileSystem(viewStateReducer: PlanViewSt
     TixPlan(
         authConfigUseCase = AuthConfigurationUseCase(authReader()),
         configBakerUseCase = ConfigurationBakerUseCase(),
-        configReadSource = configReadSource(),
-        configMergeSource = ConfigurationMergeUseCase(),
-        markdownSource = TextFileUseCase(TextFileIO()),
+        configReadUseCase = configReadSource(),
+        configMergeUseCase = ConfigurationMergeUseCase(),
+        markdownFileUseCase = TextFileUseCase(TextFileIO()),
         parserUseCase = TicketParserUseCase(TicketParser()),
         ticketPlannerUseCase = TicketPlannerUseCase(ticketPlannerFactory(cliEnv())),
         viewStateReducer = viewStateReducer
@@ -39,11 +41,14 @@ private fun <VS : PlanViewState> planWithFileSystem(viewStateReducer: PlanViewSt
     )
 
 private fun authReader() = AuthReader(
-    fileReader = FileAuthSourceReader(configFileReader()),
+    fileReader = FileAuthSourceReader(AuthConfigurationPaths(), configFileReader()),
     envReader = EnvAuthSourceReader(authEnv())
 )
 
-private fun configReadSource() = ConfigurationReadUseCase(RawTixConfigurationReader(configFileReader()))
+private fun configReadSource() = ConfigurationReadUseCase(
+    configPaths = ConfigurationPaths(),
+    reader = RawTixConfigurationReader(configFileReader())
+)
 
 private fun configFileReader() = ConfigurationFileReader(TextFileIO())
 

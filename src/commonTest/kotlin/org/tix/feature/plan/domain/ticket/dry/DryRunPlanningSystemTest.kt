@@ -40,6 +40,16 @@ class DryRunPlanningSystemTest {
     }
 
     @Test
+    fun planTicket_nonZeroStartingLevel() = runTestWorkaround {
+        val operation = PlanningOperation.CreateTicket
+        (0..2).forEach {
+            expect(expectedResultForLevel(it, operation, 1)) {
+                ticketSystem.planTicket(contextForLevel(it, 1), ticket, operation)
+            }
+        }
+    }
+
+    @Test
     fun validate() = runTestWorkaround {
         val context = PlanningContext<DryRunTicketPlanResult>(config = mockJiraConfig)
         assertFails {
@@ -47,18 +57,27 @@ class DryRunPlanningSystemTest {
         }
     }
 
-    private fun contextForLevel(level: Int) =
-        PlanningContext<DryRunTicketPlanResult>(config = config, level = level)
+    private fun contextForLevel(level: Int, startingLevel: Int = 0) =
+        PlanningContext<DryRunTicketPlanResult>(
+            config = config,
+            level = level,
+            startingLevel = startingLevel
+        )
 
-    private fun expectedResultForLevel(level: Int, operation: PlanningOperation): DryRunTicketPlanResult {
-        val ticketType = ticketStats.capitalizedLabel(level, 1)
+    private fun expectedResultForLevel(
+        level: Int,
+        operation: PlanningOperation,
+        startingLevel: Int = 0
+    ): DryRunTicketPlanResult {
+        val ticketType = ticketStats.capitalizedLabel(level - startingLevel, 1)
         return DryRunTicketPlanResult(
             level = level,
             title = ticket.title,
             ticketType = ticketType,
             body = "*body*",
             fields = ticket.fields,
-            operation = operation
+            operation = operation,
+            startingLevel = startingLevel
         )
     }
 

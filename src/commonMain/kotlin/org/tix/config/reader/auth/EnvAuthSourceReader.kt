@@ -2,12 +2,12 @@ package org.tix.config.reader.auth
 
 import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.raw.RawAuthConfiguration
-import org.tix.ticket.system.TicketSystemType
 import org.tix.platform.Env
+import org.tix.ticket.system.TicketSystemType
 
 class EnvAuthSourceReader(private val env: Env) : AuthSourceReader {
     override fun read(
-        markdownPath: String,
+        workspacePath: String?,
         rawAuthConfig: RawAuthConfiguration,
         ticketSystemType: TicketSystemType
     ): AuthConfiguration {

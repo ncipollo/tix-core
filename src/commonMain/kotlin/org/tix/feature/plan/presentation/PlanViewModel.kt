@@ -11,7 +11,7 @@ import org.tix.feature.plan.presentation.reducer.PlanViewStateReducer
 import org.tix.feature.plan.presentation.state.PlanViewState
 import org.tix.presentation.TixViewModel
 
-class PlanViewModel<VS: PlanViewState>(
+class PlanViewModel<VS : PlanViewState>(
     private val markdownPlanCombiner: FlowTransformer<MarkdownPlanAction, PlanDomainState>,
     private val planScope: CoroutineScope,
     private val viewStateReducer: PlanViewStateReducer<VS>
@@ -38,5 +38,9 @@ class PlanViewModel<VS: PlanViewState>(
             .transform(markdownPlanCombiner)
             .map { viewStateReducer.reduce(it) }
 
-    private fun PlanViewEvent.PlanUsingMarkdown.toAction() = MarkdownPlanAction(path, shouldDryRun)
+    private fun PlanViewEvent.PlanUsingMarkdown.toAction() = MarkdownPlanAction(
+        markdownSource,
+        configSourceOptions,
+        shouldDryRun
+    )
 }

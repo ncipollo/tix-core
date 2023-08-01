@@ -16,13 +16,13 @@ import org.tix.feature.plan.presentation.PlanSourceResult
 import org.tix.ticket.Ticket
 
 class MarkdownPlanDomainCombiner(
-    private val planSourceCombiner: FlowTransformer<String, PlanSourceResult>,
+    private val planSourceCombiner: FlowTransformer<MarkdownPlanAction, PlanSourceResult>,
     private val parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
     private val plannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>
 ) : FlowTransformer<MarkdownPlanAction, PlanDomainState> {
     override fun transformFlow(upstream: Flow<MarkdownPlanAction>): Flow<PlanDomainState> =
         upstream.flatMapLatest { action ->
-            flowOf(action.path)
+            flowOf(action)
                 .transform(planSourceCombiner)
                 .flatMapLatest {
                     when (it) {
@@ -30,7 +30,7 @@ class MarkdownPlanDomainCombiner(
                         is PlanSourceResult.Success -> it.parseSource(action.shouldDryRun)
                     }
                 }
-                .onStart { emit(PlanDomainParsing(action.path)) }
+                .onStart { emit(PlanDomainParsing(action.markdownSource)) }
         }
 
     private fun PlanSourceResult.Success.parseSource(shouldDryRun: Boolean) =

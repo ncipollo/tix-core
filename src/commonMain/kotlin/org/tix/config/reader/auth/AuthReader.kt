@@ -10,14 +10,14 @@ class AuthReader(
     private val envReader: AuthSourceReader
 ) : AuthSourceReader {
     override fun read(
-        markdownPath: String,
+        workspacePath: String?,
         rawAuthConfig: RawAuthConfiguration,
         ticketSystemType: TicketSystemType
     ): AuthConfiguration =
         when(authSource(rawAuthConfig)) {
-            AuthSource.ENV -> envReader.read(markdownPath, rawAuthConfig, ticketSystemType)
+            AuthSource.ENV -> envReader.read(workspacePath, rawAuthConfig, ticketSystemType)
             AuthSource.LOCAL_FILE, AuthSource.TIX_FILE ->
-                fileReader.read(markdownPath, rawAuthConfig, ticketSystemType)
+                fileReader.read(workspacePath, rawAuthConfig, ticketSystemType)
         }
 
     private fun authSource(rawAuthConfig: RawAuthConfiguration) = rawAuthConfig.source ?: AuthSource.ENV

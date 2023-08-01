@@ -10,13 +10,13 @@ import org.tix.integrations.github.GithubApi
 import org.tix.platform.PlatformEnv
 import org.tix.ticket.system.TicketSystemType
 
-fun mockGithubApi(mockEngine: MockEngine, owner: String = "ncipollo", repo: String = "tix-core") =
+fun mockGithubApi(mockEngine: MockEngine, owner: String = "ncipollo", repo: String = "tix-playground") =
     GithubApi(githubConfig(owner, repo), engine = mockEngine)
 
-fun githubApi(owner: String = "ncipollo", repo: String = "tix-core") =
+fun githubApi(owner: String = "ncipollo", repo: String = "tix-playground") =
     GithubApi(githubConfig(owner, repo))
 
-fun githubConfig(owner: String = "ncipollo", repo: String = "tix-core") =
+fun githubConfig(owner: String = "ncipollo", repo: String = "tix-playground") =
     GithubConfiguration(
         auth = githubAuth(),
         owner = owner,

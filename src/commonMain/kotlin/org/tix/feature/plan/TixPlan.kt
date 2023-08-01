@@ -5,10 +5,12 @@ import org.tix.config.data.TixConfiguration
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.config.domain.AuthConfigAction
 import org.tix.config.domain.ConfigBakerAction
+import org.tix.config.domain.ConfigurationSourceOptions
 import org.tix.config.domain.TicketSystemAuth
 import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.feature.plan.domain.combiner.MarkdownPlanDomainCombiner
+import org.tix.feature.plan.domain.parse.MarkdownSourceValidator
 import org.tix.feature.plan.domain.parse.TicketParserArguments
 import org.tix.feature.plan.domain.ticket.TicketPlanStatus
 import org.tix.feature.plan.domain.ticket.TicketPlannerAction
@@ -21,9 +23,9 @@ import org.tix.ticket.Ticket
 class TixPlan<VS: PlanViewState> internal constructor(
     authConfigUseCase: FlowTransformer<AuthConfigAction, TicketSystemAuth>,
     configBakerUseCase: FlowTransformer<ConfigBakerAction, FlowResult<TixConfiguration>>,
-    configReadSource: FlowTransformer<String, List<RawTixConfiguration>>,
-    configMergeSource: FlowTransformer<List<RawTixConfiguration>, FlowResult<RawTixConfiguration>>,
-    markdownSource: FlowTransformer<String, FlowResult<String>>,
+    configReadUseCase: FlowTransformer<ConfigurationSourceOptions, List<RawTixConfiguration>>,
+    configMergeUseCase: FlowTransformer<List<RawTixConfiguration>, FlowResult<RawTixConfiguration>>,
+    markdownFileUseCase: FlowTransformer<String, FlowResult<String>>,
     parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
     ticketPlannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>,
     private val viewStateReducer: PlanViewStateReducer<VS>,
@@ -32,9 +34,10 @@ class TixPlan<VS: PlanViewState> internal constructor(
         planSourceCombiner = planSourceCombiner(
             authConfigUseCase,
             configBakerUseCase,
-            configReadSource,
-            configMergeSource,
-            markdownSource,
+            configReadUseCase,
+            configMergeUseCase,
+            markdownFileUseCase,
+            MarkdownSourceValidator()
         ),
         parserUseCase = parserUseCase,
         plannerUseCase = ticketPlannerUseCase

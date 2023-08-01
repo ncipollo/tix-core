@@ -7,6 +7,7 @@ import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.domain.transform
 import org.tix.error.toTixError
+import org.tix.feature.plan.domain.parse.MarkdownFileSource
 import org.tix.feature.plan.domain.parse.TicketParserArguments
 import org.tix.feature.plan.domain.state.PlanDomainError
 import org.tix.feature.plan.domain.state.PlanDomainParsing
@@ -35,10 +36,10 @@ class MarkdownPlanDomainCombinerTest {
         val PLANNER_ACTION = TicketPlannerAction(CONFIG, false, TICKETS)
     }
 
-    private val failedSource: FlowTransformer<String, PlanSourceResult> =
-        testTransformer(PATH to PlanSourceResult.Error(SOURCE_ERROR))
-    private val successfulSource: FlowTransformer<String, PlanSourceResult> =
-        testTransformer(PATH to PlanSourceResult.Success(CONFIG, MARKDOWN))
+    private val failedSource: FlowTransformer<MarkdownPlanAction, PlanSourceResult> =
+        testTransformer(MARKDOWN_ACTION to PlanSourceResult.Error(SOURCE_ERROR))
+    private val successfulSource: FlowTransformer<MarkdownPlanAction, PlanSourceResult> =
+        testTransformer(MARKDOWN_ACTION to PlanSourceResult.Success(CONFIG, MARKDOWN))
 
     private val failedParser =
         testTransformer(PARSER_ARGS to FlowResult.failure<List<Ticket>>(PARSER_ERROR.toTixError()))
@@ -52,7 +53,7 @@ class MarkdownPlanDomainCombinerTest {
         flowOf(MARKDOWN_ACTION)
             .transform(MarkdownPlanDomainCombiner(successfulSource, failedParser, successfulPlanner))
             .test {
-                assertEquals(PlanDomainParsing(PATH), awaitItem())
+                assertEquals(PlanDomainParsing(MarkdownFileSource(PATH)), awaitItem())
                 assertEquals(PlanDomainError(PARSER_ERROR.toTixError()), awaitItem())
                 awaitComplete()
             }
@@ -63,7 +64,7 @@ class MarkdownPlanDomainCombinerTest {
         flowOf(MARKDOWN_ACTION)
             .transform(MarkdownPlanDomainCombiner(failedSource, successfulParser, successfulPlanner))
             .test {
-                assertEquals(PlanDomainParsing(PATH), awaitItem())
+                assertEquals(PlanDomainParsing(MarkdownFileSource(PATH)), awaitItem())
                 assertEquals(PlanDomainError(SOURCE_ERROR), awaitItem())
                 awaitComplete()
             }
@@ -74,7 +75,7 @@ class MarkdownPlanDomainCombinerTest {
         flowOf(MARKDOWN_ACTION)
             .transform(MarkdownPlanDomainCombiner(successfulSource, successfulParser, successfulPlanner))
             .test {
-                assertEquals(PlanDomainParsing(PATH), awaitItem())
+                assertEquals(PlanDomainParsing(MarkdownFileSource(PATH)), awaitItem())
                 assertEquals(PlanDomainStartingTicketCreation, awaitItem())
                 awaitComplete()
             }

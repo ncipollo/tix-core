@@ -8,10 +8,10 @@ import org.tix.config.data.auth.AuthConfiguration
 import org.tix.config.data.auth.AuthSource
 import org.tix.config.data.raw.RawAuthConfiguration
 import org.tix.config.reader.ConfigurationFileReader
-import org.tix.ticket.system.TicketSystemType
 import org.tix.platform.io.FileIO
 import org.tix.platform.path.pathByExpandingTilde
 import org.tix.serialize.TixSerializers
+import org.tix.ticket.system.TicketSystemType
 import java.io.IOException
 import kotlin.test.expect
 
@@ -22,10 +22,11 @@ class FileAuthSourceReaderTest {
         val YML_PATH = "~/.tix/auth/auth.yml".pathByExpandingTilde().toString()
     }
 
+    private val authConfigPaths: AuthConfigurationPaths = AuthConfigurationPaths()
     private val config = AuthConfiguration(username = "user")
     private val fileIO = mockk<FileIO<String>>()
     private val jsonString = TixSerializers.json().encodeToString(config)
-    private val reader = FileAuthSourceReader(ConfigurationFileReader(fileIO))
+    private val reader = FileAuthSourceReader(authConfigPaths, ConfigurationFileReader(fileIO))
 
     @Test
     fun read() {

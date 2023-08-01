@@ -2,6 +2,9 @@ package org.tix.feature.plan.presentation.reducer
 
 import okio.Path.Companion.toPath
 import org.tix.error.TixError
+import org.tix.feature.plan.domain.parse.MarkdownFileSource
+import org.tix.feature.plan.domain.parse.MarkdownSource
+import org.tix.feature.plan.domain.parse.MarkdownTextSource
 import org.tix.feature.plan.domain.state.*
 import org.tix.feature.plan.domain.ticket.TicketPlanResult
 import org.tix.feature.plan.presentation.state.CLIPlanViewState
@@ -11,7 +14,7 @@ class CLIPlanViewStateReducer : PlanViewStateReducer<CLIPlanViewState> {
         when (domainState) {
             is PlanDomainCompleted -> completeState(domainState)
             is PlanDomainError -> errorState(domainState.ex)
-            is PlanDomainParsing -> parsingState(domainState.path)
+            is PlanDomainParsing -> parsingState(domainState.markdownSource)
             PlanDomainStartingTicketCreation -> creatingTixState()
             is PlanDomainUpdate -> updatingTix(domainState.currentResult)
         }
@@ -37,7 +40,11 @@ class CLIPlanViewStateReducer : PlanViewStateReducer<CLIPlanViewState> {
     private fun errorCauseMessage(ex: TixError) =
         ex.cause?.message?.let { "\nCause: $it" } ?: ""
 
-    private fun parsingState(path: String) = CLIPlanViewState(message = "parsing ${path.filename()} 📕")
+    private fun parsingState(markdownSource: MarkdownSource) =
+        when(markdownSource) {
+            is MarkdownFileSource -> CLIPlanViewState(message = "parsing ${markdownSource.path.filename()} 📕")
+            is MarkdownTextSource ->  CLIPlanViewState(message = "parsing markdown 📕")
+        }
 
     private fun String.filename() = toPath().name
 

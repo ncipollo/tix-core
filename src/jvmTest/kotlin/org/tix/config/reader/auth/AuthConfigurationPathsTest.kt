@@ -8,13 +8,21 @@ import org.tix.platform.path.pathByExpandingTilde
 import kotlin.test.expect
 
 class AuthConfigurationPathsTest {
+    private val authConfigPaths = AuthConfigurationPaths()
+
+    @Test
+    fun searchPaths_nullPath() {
+        val auth = RawAuthConfiguration(source = AuthSource.LOCAL_FILE,)
+        expect(emptyList()) { authConfigPaths.searchPaths(null, auth) }
+    }
+
     @Test
     fun searchPaths_whenAuthSourceIsLocalAndFileIsOmitted_returnsLocalSearchPaths() {
         val auth = RawAuthConfiguration(source = AuthSource.LOCAL_FILE,)
         val expectedPaths = listOf("/path/tix_auth.yml", "/path/tix_auth.json")
             .map { it.pathByExpandingTilde() }
 
-        expect(expectedPaths) { AuthConfigurationPaths.searchPaths("/path/tix.md".toPath(), auth) }
+        expect(expectedPaths) { authConfigPaths.searchPaths("/path".toPath(), auth) }
     }
 
     @Test
@@ -23,7 +31,7 @@ class AuthConfigurationPathsTest {
         val expectedPaths = listOf("/path/auth.json")
             .map { it.pathByExpandingTilde() }
 
-        expect(expectedPaths) { AuthConfigurationPaths.searchPaths("/path/tix.md".toPath(), auth) }
+        expect(expectedPaths) { authConfigPaths.searchPaths("/path".toPath(), auth) }
     }
 
     @Test
@@ -32,7 +40,7 @@ class AuthConfigurationPathsTest {
         val expectedPaths = listOf("/path/auth.yml", "/path/auth.json")
             .map { it.pathByExpandingTilde() }
 
-        expect(expectedPaths) { AuthConfigurationPaths.searchPaths("/path/tix.md".toPath(), auth) }
+        expect(expectedPaths) { authConfigPaths.searchPaths("/path".toPath(), auth) }
     }
 
     @Test
@@ -41,7 +49,7 @@ class AuthConfigurationPathsTest {
         val expectedPaths = listOf("~/.tix/auth/tix_auth.yml", "~/.tix/auth/tix_auth.json")
             .map { it.pathByExpandingTilde() }
 
-        expect(expectedPaths) { AuthConfigurationPaths.searchPaths("/path/tix.md".toPath(), auth) }
+        expect(expectedPaths) { authConfigPaths.searchPaths("/path/tix.md".toPath(), auth) }
     }
 
     @Test
@@ -50,7 +58,7 @@ class AuthConfigurationPathsTest {
         val expectedPaths = listOf("~/.tix/auth/auth.json")
             .map { it.pathByExpandingTilde() }
 
-        expect(expectedPaths) { AuthConfigurationPaths.searchPaths("/path/tix.md".toPath(), auth) }
+        expect(expectedPaths) { authConfigPaths.searchPaths("/path/tix.md".toPath(), auth) }
     }
 
     @Test
@@ -59,6 +67,6 @@ class AuthConfigurationPathsTest {
         val expectedPaths = listOf("~/.tix/auth/auth.yml", "~/.tix/auth/auth.json")
             .map { it.pathByExpandingTilde() }
 
-        expect(expectedPaths) { AuthConfigurationPaths.searchPaths("/path/tix.md".toPath(), auth) }
+        expect(expectedPaths) { authConfigPaths.searchPaths("/path/tix.md".toPath(), auth) }
     }
 }

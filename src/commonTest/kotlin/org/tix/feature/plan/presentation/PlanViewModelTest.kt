@@ -3,6 +3,7 @@ package org.tix.feature.plan.presentation
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
 import org.tix.feature.plan.domain.combiner.MarkdownPlanAction
+import org.tix.feature.plan.domain.parse.MarkdownFileSource
 import org.tix.feature.plan.domain.state.PlanDomainCompleted
 import org.tix.feature.plan.domain.state.PlanDomainParsing
 import org.tix.feature.plan.domain.state.PlanDomainState
@@ -17,11 +18,11 @@ class PlanViewModelTest {
         const val PATH = "path"
     }
 
-    private val markdownEvent = PlanViewEvent.PlanUsingMarkdown(path = PATH, shouldDryRun = false)
-    private val dryRunMarkdownEvent = PlanViewEvent.PlanUsingMarkdown(path = PATH, shouldDryRun = true)
+    private val markdownEvent = PlanViewEvent.PlanUsingMarkdown(markdownPath = PATH, shouldDryRun = false)
+    private val dryRunMarkdownEvent = PlanViewEvent.PlanUsingMarkdown(markdownPath = PATH, shouldDryRun = true)
 
     private val combinerUseCase = testTransformer(
-        MarkdownPlanAction(PATH, false) to PlanDomainParsing(PATH),
+        MarkdownPlanAction(PATH, false) to PlanDomainParsing(MarkdownFileSource(PATH)),
         MarkdownPlanAction(PATH, true) to PlanDomainCompleted()
     )
     private val viewStateReducer = TestPlanViewStateReducer()
@@ -44,7 +45,7 @@ class PlanViewModelTest {
         viewModel.sendViewEvent(markdownEvent)
 
         viewModel.viewState.test {
-            assertEquals(TestPlanViewState(PlanDomainParsing(PATH)), awaitItem())
+            assertEquals(TestPlanViewState(PlanDomainParsing(MarkdownFileSource(PATH))), awaitItem())
         }
     }
 

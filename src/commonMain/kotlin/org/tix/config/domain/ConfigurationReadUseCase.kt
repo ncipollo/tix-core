@@ -3,42 +3,37 @@ package org.tix.config.domain
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
-import okio.Path
 import org.tix.config.ConfigurationPaths
 import org.tix.config.data.raw.RawTixConfiguration
+import org.tix.config.domain.reader.RootConfigurationReader
+import org.tix.config.domain.reader.SavedConfigurationReader
+import org.tix.config.domain.reader.WorkspaceConfigurationReader
 import org.tix.config.reader.RawTixConfigurationReader
 import org.tix.domain.FlowTransformer
-import org.tix.platform.path.pathByExpandingTilde
 
 internal class ConfigurationReadUseCase(
-    private val reader: RawTixConfigurationReader
-) : FlowTransformer<String, List<RawTixConfiguration>> {
-    override fun transformFlow(upstream: Flow<String>): Flow<List<RawTixConfiguration>> =
+    private val configPaths: ConfigurationPaths,
+    private val reader: RawTixConfigurationReader,
+    private val rootConfigReader: RootConfigurationReader = RootConfigurationReader(configPaths, reader),
+    private val savedConfigReader: SavedConfigurationReader = SavedConfigurationReader(configPaths, reader),
+    private val workspaceConfigReader: WorkspaceConfigurationReader = WorkspaceConfigurationReader(configPaths, reader)
+) : FlowTransformer<ConfigurationSourceOptions, List<RawTixConfiguration>> {
+    override fun transformFlow(upstream: Flow<ConfigurationSourceOptions>): Flow<List<RawTixConfiguration>> =
         upstream
-            .map { it.pathByExpandingTilde() }
-            .transform { markdownPath ->
+            .transform { configOptions ->
                 coroutineScope {
-                    val rootDeferred = async { readRootConfig() }
-                    val workspaceDeferred = async { readWorkspaceConfig(markdownPath) }
+                    val rootDeferred = async { rootConfigReader.readRootConfig(configOptions) }
+                    val workspaceDeferred = async { workspaceConfigReader.readWorkspaceConfig(configOptions) }
                     val workspace = workspaceDeferred.await()
-                    val savedDeferred = async { readSavedConfig(workspace) }
+                    val savedDeferred = async { savedConfigReader.readSavedConfigs(configOptions, workspace) }
 
-                    val configs = listOfNotNull(rootDeferred.await(), savedDeferred.await(), workspace)
+                    val configs = listOfNotNull(
+                        rootDeferred.await(),
+                        *savedDeferred.await().toTypedArray(),
+                        workspace
+                    )
                     emit(configs)
                 }
             }
-
-    private fun readRootConfig() = reader.firstConfigFile(ConfigurationPaths.RootConfig.searchPaths)
-
-    private fun readWorkspaceConfig(markdownPath: Path) =
-        ConfigurationPaths.workspaceSearchPaths(markdownPath)?.let {
-            reader.firstConfigFile(it)
-        }
-
-    private fun readSavedConfig(workspaceConfig: RawTixConfiguration?) =
-        ConfigurationPaths.savedConfigSearchPaths(workspaceConfig)?.let {
-            reader.firstConfigFile(it)
-        }
 }

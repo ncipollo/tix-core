@@ -32,4 +32,4 @@ class AuthConfigurationUseCase(
             TicketSystemType.JIRA)
 }
 
-data class AuthConfigAction(val path: String = "", val tixConfig: RawTixConfiguration)
+data class AuthConfigAction(val path: String? = null, val tixConfig: RawTixConfiguration)

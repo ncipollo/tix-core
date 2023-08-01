@@ -8,23 +8,25 @@ import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.expect
 
 class ConfigurationPathsTest {
+    private val configPaths = ConfigurationPaths()
+
     @Test
     fun rootConfig() {
         val expectedPaths = listOf("~/.tix/config.yml", "~/.tix/config.json")
             .map { it.pathByExpandingTilde() }
-        expect(expectedPaths) { ConfigurationPaths.RootConfig.searchPaths }
+        expect(expectedPaths) { configPaths.rootConfigSearchPaths}
     }
 
     @Test
-    fun savedConfigSearchPaths_whenConfigIsString_returnsNull() {
+    fun workspaceIncludedConfigSearchPaths_whenConfigIsString_returnsNull() {
         val config = RawTixConfiguration(include = DynamicElement("saved"))
         val expectedPaths = listOf("~/.tix/configs/saved.yml", "~/.tix/configs/saved.json")
             .map { it.pathByExpandingTilde() }
-        expect(expectedPaths) { ConfigurationPaths.savedConfigSearchPaths(config) }
+        expect(expectedPaths) { configPaths.workspaceIncludedConfigSearchPaths(config) }
     }
 
     @Test
-    fun savedConfigSearchPaths_whenConfigIsStringList_returnsNull() {
+    fun workspaceIncludedConfigSearchPaths_whenConfigIsStringList_returnsNull() {
         val config = RawTixConfiguration(include = DynamicElement(listOf("saved1", "saved2")))
         val expectedPaths = listOf(
             "~/.tix/configs/saved1.yml",
@@ -32,19 +34,19 @@ class ConfigurationPathsTest {
             "~/.tix/configs/saved2.yml",
             "~/.tix/configs/saved2.json")
             .map { it.pathByExpandingTilde() }
-        expect(expectedPaths) { ConfigurationPaths.savedConfigSearchPaths(config) }
+        expect(expectedPaths) { configPaths.workspaceIncludedConfigSearchPaths(config) }
     }
 
     @Test
-    fun savedConfigSearchPaths_whenConfigIsNull_returnsNull() {
-        expect(null) { ConfigurationPaths.savedConfigSearchPaths(null) }
+    fun workspaceIncludedConfigSearchPaths_whenConfigIsNull_returnsEmptyList() {
+        expect(listOf()) { configPaths.workspaceIncludedConfigSearchPaths(null) }
     }
 
     @Test
     fun workspaceSearchPaths() {
-        val markdownPath = "/path/tix.md"
+        val workspaceDir = "/path"
         val expectedPaths = listOf("/path/tix.yml", "/path/tix.json")
             .map { it.pathByExpandingTilde() }
-        expect(expectedPaths) { ConfigurationPaths.workspaceSearchPaths(markdownPath.toPath()) }
+        expect(expectedPaths) { configPaths.workspaceSearchPaths(workspaceDir.toPath()) }
     }
 }

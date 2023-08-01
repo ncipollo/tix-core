@@ -6,7 +6,7 @@ import org.tix.ticket.system.TicketSystemType
 
 interface AuthSourceReader {
     fun read(
-        markdownPath: String,
+        workspacePath: String?,
         rawAuthConfig: RawAuthConfiguration,
         ticketSystemType: TicketSystemType
     ): AuthConfiguration
