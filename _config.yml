@@ -11,5 +11,29 @@ kramdown:
   math_engine: mathjax
   syntax_highlighter: rouge
 safe: true
-theme: jekyll-theme-slate
 title: Tix
+plugins:
+  - jekyll-include-cache
+
+# Minimal Mistakes Setup
+# A sample configuration file can be found here -
+# https://github.com/mmistakes/minimal-mistakes/blob/master/_config.yml
+remote_theme: "mmistakes/minimal-mistakes@4.24.0"
+
+atom_feed:
+  hide: true
+defaults:
+  # _pages
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: single
+# Site Footer
+footer:
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/ncipollo/tix-core"
+minimal_mistakes_skin: dark
+repository: "ncipollo/tix-core"
