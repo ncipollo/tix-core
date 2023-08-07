@@ -29,6 +29,7 @@ defaults:
       type: pages
     values:
       layout: single
+      toc: true
 # Site Footer
 footer:
   links:
