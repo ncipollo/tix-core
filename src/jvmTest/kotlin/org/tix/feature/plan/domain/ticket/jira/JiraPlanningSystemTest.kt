@@ -39,10 +39,10 @@ class JiraPlanningSystemTest {
     private val planningSystem = JiraPlanningSystem(api)
 
     @Test
-    fun completeInfo() =  runTest {
+    fun completeInfo() = runTest {
         val context = PlanningContext<JiraPlanResult>()
         val ticket = RenderedTicket()
-        val issue = Issue(fields = IssueFields(type = IssueType(name = "Epic")))
+        val issue = Issue(fields = IssueFields(description = "", type = IssueType(name = "Epic")))
 
         coEvery { issueApi.create(issue) } returns issue
 

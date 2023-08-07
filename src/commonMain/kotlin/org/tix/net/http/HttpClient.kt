@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNamingStrategy
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
+import org.tix.integrations.jira.issue.json.IssueFieldSerializer
 import org.tix.serialize.dynamic.DynamicElementJsonSerializer
 
 fun httpClient(engine: HttpClientEngine? = null, block: HttpClientConfig<*>.() -> Unit = {}) =
@@ -39,6 +40,7 @@ fun httpJson(useSnakeCase: Boolean = false) = Json {
     allowSpecialFloatingPointValues = true
     serializersModule = SerializersModule {
         contextual(DynamicElementJsonSerializer)
+        contextual(IssueFieldSerializer)
     }
     if (useSnakeCase) {
         namingStrategy = JsonNamingStrategy.SnakeCase

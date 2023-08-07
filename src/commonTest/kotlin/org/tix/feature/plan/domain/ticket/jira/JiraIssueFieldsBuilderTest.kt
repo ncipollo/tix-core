@@ -2,8 +2,8 @@ package org.tix.feature.plan.domain.ticket.jira
 
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import org.tix.ext.toJsonPrimitive
 import org.tix.feature.plan.domain.ticket.PlanningContext
-import org.tix.feature.plan.domain.ticket.jira.JiraTicketSystemFields.project
 import org.tix.integrations.jira.field.Field
 import org.tix.integrations.jira.issue.Component
 import org.tix.integrations.jira.issue.IssueFields
@@ -120,6 +120,36 @@ class JiraIssueFieldsBuilderTest {
             project = Project(key = ""),
             summary = "summary",
             type = IssueType(name = "Epic")
+        )
+        expect(expected) { issueBuilder.issueFields() }
+    }
+
+    @Test
+    fun issueFields_whenBodyFieldIsPresent() {
+        val context = PlanningContext<JiraPlanResult>()
+        val fields = mapOf(
+            "affects_versions" to "bad_list",
+            "body_field" to "custom_description",
+            "components" to 42,
+            "fix_versions" to listOf(1, "2.1", 3),
+            "labels" to 1.0f,
+            "parent" to 42f,
+            "project" to 42,
+            "type" to listOf("foo")
+        )
+
+        val issueBuilder = JiraIssueFieldsBuilder(context, summary, description, fields, unknownsBuilder)
+
+        val expected = IssueFields(
+            affectsVersions = emptyList(),
+            components = emptyList(),
+            description = null,
+            fixVersions = listOf(Version(name = "2.1")),
+            labels = emptyList(),
+            project = Project(key = ""),
+            summary = "summary",
+            type = IssueType(name = "Epic"),
+            unknowns = JsonObject(mapOf("custom_description" to "description".toJsonPrimitive()))
         )
         expect(expected) { issueBuilder.issueFields() }
     }

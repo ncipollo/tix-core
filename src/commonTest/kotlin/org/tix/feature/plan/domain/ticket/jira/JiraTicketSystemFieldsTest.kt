@@ -6,6 +6,7 @@ import kotlin.test.expect
 class JiraTicketSystemFieldsTest {
     private val expectedFields = setOf(
         "affects_versions",
+        "body_field",
         "components",
         "delete_ticket",
         "fix_versions",
@@ -21,6 +22,7 @@ class JiraTicketSystemFieldsTest {
     @Test
     fun fields() {
         expect("affects_versions") { JiraTicketSystemFields.affectsVersions }
+        expect("body_field") { JiraTicketSystemFields.bodyField }
         expect("components") { JiraTicketSystemFields.components }
         expect("fix_versions") { JiraTicketSystemFields.fixVersions }
         expect("labels") { JiraTicketSystemFields.labels }

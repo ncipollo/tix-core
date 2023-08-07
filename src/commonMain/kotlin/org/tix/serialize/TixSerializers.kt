@@ -4,6 +4,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 import net.mamoe.yamlkt.Yaml
+import org.tix.integrations.jira.issue.json.IssueFieldSerializer
 import org.tix.serialize.dynamic.DynamicElement
 import org.tix.serialize.dynamic.DynamicElementJsonSerializer
 import org.tix.serialize.dynamic.DynamicElementYamlSerializer
@@ -14,6 +15,7 @@ object TixSerializers {
         prettyPrint = true
         serializersModule = SerializersModule {
             contextual(DynamicElementJsonSerializer)
+            contextual(IssueFieldSerializer)
         }
     }
 

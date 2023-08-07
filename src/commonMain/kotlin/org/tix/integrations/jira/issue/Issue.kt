@@ -1,5 +1,6 @@
 package org.tix.integrations.jira.issue
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import org.tix.integrations.jira.transition.Transition
 
@@ -9,7 +10,7 @@ data class Issue(
     val id: String = "",
     val self: String = "",
     val key: String = "",
-    val fields: IssueFields? = null,
+    @Contextual val fields: IssueFields? = null,
     val transitions: List<Transition> = emptyList()
 ) {
     val keyOrId = key.ifBlank { id }

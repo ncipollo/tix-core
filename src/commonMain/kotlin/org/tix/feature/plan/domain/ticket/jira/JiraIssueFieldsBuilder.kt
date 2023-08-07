@@ -19,10 +19,17 @@ class JiraIssueFieldsBuilder(
     private val fields: Map<String, Any?>,
     private val unknownsBuilder: JiraUnknownsBuilder,
 ) {
+    private val bodyField = fields.transform<String?, String?>(JiraTicketSystemFields.bodyField, null) { it }
+    private val modifiedFields = if (!bodyField.isNullOrBlank()) {
+        fields + mapOf(bodyField to description)
+    } else {
+        fields
+    }
+
     fun issueFields() = IssueFields(
         affectsVersions = affectsVersions(),
         components = components(),
-        description = description,
+        description = description.takeIf { bodyField.isNullOrBlank() },
         fixVersions = fixVersions(),
         labels = labels(),
         parent = parent(),
@@ -30,7 +37,7 @@ class JiraIssueFieldsBuilder(
         priority = priority(),
         summary = summary,
         type = type(),
-        unknowns = unknownsBuilder.unknowns(fields)
+        unknowns = unknownsBuilder.unknowns(modifiedFields)
     )
 
     private fun affectsVersions() =
