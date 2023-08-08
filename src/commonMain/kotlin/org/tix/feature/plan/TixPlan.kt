@@ -2,11 +2,7 @@ package org.tix.feature.plan
 
 import kotlinx.coroutines.CoroutineScope
 import org.tix.config.data.TixConfiguration
-import org.tix.config.data.raw.RawTixConfiguration
-import org.tix.config.domain.AuthConfigAction
-import org.tix.config.domain.ConfigBakerAction
 import org.tix.config.domain.ConfigurationSourceOptions
-import org.tix.config.domain.TicketSystemAuth
 import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.feature.plan.domain.combiner.MarkdownPlanDomainCombiner
@@ -20,11 +16,8 @@ import org.tix.feature.plan.presentation.reducer.PlanViewStateReducer
 import org.tix.feature.plan.presentation.state.PlanViewState
 import org.tix.ticket.Ticket
 
-class TixPlan<VS: PlanViewState> internal constructor(
-    authConfigUseCase: FlowTransformer<AuthConfigAction, TicketSystemAuth>,
-    configBakerUseCase: FlowTransformer<ConfigBakerAction, FlowResult<TixConfiguration>>,
-    configReadUseCase: FlowTransformer<ConfigurationSourceOptions, List<RawTixConfiguration>>,
-    configMergeUseCase: FlowTransformer<List<RawTixConfiguration>, FlowResult<RawTixConfiguration>>,
+class TixPlan<VS : PlanViewState> internal constructor(
+    configUseCase: FlowTransformer<ConfigurationSourceOptions, FlowResult<TixConfiguration>>,
     markdownFileUseCase: FlowTransformer<String, FlowResult<String>>,
     parserUseCase: FlowTransformer<TicketParserArguments, FlowResult<List<Ticket>>>,
     ticketPlannerUseCase: FlowTransformer<TicketPlannerAction, TicketPlanStatus>,
@@ -32,10 +25,7 @@ class TixPlan<VS: PlanViewState> internal constructor(
 ) {
     private val markdownPlanCombiner = MarkdownPlanDomainCombiner(
         planSourceCombiner = planSourceCombiner(
-            authConfigUseCase,
-            configBakerUseCase,
-            configReadUseCase,
-            configMergeUseCase,
+            configUseCase = configUseCase,
             markdownFileUseCase,
             MarkdownSourceValidator()
         ),

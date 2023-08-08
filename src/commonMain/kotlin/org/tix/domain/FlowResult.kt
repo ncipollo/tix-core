@@ -22,6 +22,16 @@ sealed class FlowResult<T>(open val value: T?, open val throwable: Throwable?) {
     val isFailure get() = this is Failure
 
     val isSuccess get() = this is Success
+
+    inline fun <R> map(transform: (value: T) -> R): FlowResult<R> =
+        when(this) {
+            is Failure -> failure(throwable)
+            is Success -> try {
+                success(transform(getOrThrow()))
+            } catch (ex: Throwable) {
+                failure(ex)
+            }
+        }
 }
 
 /**

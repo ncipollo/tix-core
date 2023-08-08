@@ -30,4 +30,31 @@ class FlowResultTest {
             result.getOrNull()!!
         }
     }
+
+    @Test
+    fun map_failure() {
+        val exception = IllegalStateException("oh no")
+        val result = FlowResult.failure<Int>(exception)
+            .map { "the answer is not the play the game" }
+        expect(exception) {
+            result.exceptionOrNull()
+        }
+    }
+
+    @Test
+    fun map_success() {
+        val result = FlowResult.success(42).map { "the answer is $it" }
+        expect("the answer is 42") {
+            result.getOrThrow()
+        }
+    }
+
+    @Test
+    fun map_thrownException() {
+        val exception = RuntimeException("oh no")
+        val result = FlowResult.success(42).map { throw exception }
+        expect(exception) {
+            result.exceptionOrNull()
+        }
+    }
 }

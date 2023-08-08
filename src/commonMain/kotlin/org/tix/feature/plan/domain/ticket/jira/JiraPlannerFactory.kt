@@ -7,10 +7,13 @@ import org.tix.feature.plan.domain.stats.jiraTicketStats
 import org.tix.feature.plan.domain.ticket.TicketPlanner
 import org.tix.feature.plan.domain.ticket.TicketPlannerFactory
 import org.tix.feature.plan.domain.ticket.dry.DryRunPlanningSystem
-import org.tix.integrations.jira.JiraApi
+import org.tix.integrations.jira.JiraApiFactory
 import org.tix.platform.Env
 
-class JiraPlannerFactory(private val env: Env) : TicketPlannerFactory {
+class JiraPlannerFactory(
+    private val env: Env,
+    private val apiFactory: JiraApiFactory = JiraApiFactory()
+) : TicketPlannerFactory {
     override fun planners(
         shouldDryRun: Boolean,
         tixConfig: TixConfiguration
@@ -40,6 +43,6 @@ class JiraPlannerFactory(private val env: Env) : TicketPlannerFactory {
         if (shouldDryRun) {
             DryRunPlanningSystem(jiraTicketStats(this.startingLevel))
         } else {
-            JiraPlanningSystem(JiraApi(this))
+            JiraPlanningSystem(apiFactory.api(this))
         }
 }

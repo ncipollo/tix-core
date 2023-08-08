@@ -8,10 +8,7 @@ import okio.Path.Companion.toPath
 import okio.fakefilesystem.FakeFileSystem
 import org.tix.config.data.TixConfiguration
 import org.tix.config.data.raw.RawTixConfiguration
-import org.tix.config.domain.AuthConfigAction
-import org.tix.config.domain.ConfigBakerAction
-import org.tix.config.domain.ConfigurationSourceOptions
-import org.tix.config.domain.TicketSystemAuth
+import org.tix.config.domain.*
 import org.tix.domain.FlowResult
 import org.tix.domain.FlowTransformer
 import org.tix.domain.transform
@@ -159,12 +156,14 @@ class PlanSourceCombinerTest {
         configMergeUseCase: FlowTransformer<List<RawTixConfiguration>, FlowResult<RawTixConfiguration>> = configMergeSuccessUseCase(),
         markdownFileUseCase: FlowTransformer<String, FlowResult<String>> = markdownSuccessFileUseCase()
     ) = planSourceCombiner(
-        authReadSource,
-        configBakerUseCase,
-        configReadUseCase,
-        configMergeUseCase,
-        markdownFileUseCase,
-        markdownValidator
+        configUseCase = configurationUseCase(
+            authReadSource,
+            configBakerUseCase,
+            configReadUseCase,
+            configMergeUseCase,
+        ),
+        markdownFileUseCase = markdownFileUseCase,
+        markdownValidator = markdownValidator
     )
 
     private fun authConfigUseCase() = testTransformer(AUTH_ACTION to ticketSystemAuth)

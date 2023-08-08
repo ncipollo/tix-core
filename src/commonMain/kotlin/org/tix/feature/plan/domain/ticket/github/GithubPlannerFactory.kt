@@ -7,10 +7,14 @@ import org.tix.feature.plan.domain.stats.githubTicketStats
 import org.tix.feature.plan.domain.ticket.TicketPlanner
 import org.tix.feature.plan.domain.ticket.TicketPlannerFactory
 import org.tix.feature.plan.domain.ticket.dry.DryRunPlanningSystem
-import org.tix.integrations.github.GithubApi
+import org.tix.integrations.github.GithubApiFactory
 import org.tix.platform.Env
 
-class GithubPlannerFactory(private val env: Env) : TicketPlannerFactory {
+class GithubPlannerFactory(
+    private val env: Env,
+    private val apiFactory: GithubApiFactory = GithubApiFactory()
+) :
+    TicketPlannerFactory {
     override fun planners(
         shouldDryRun: Boolean,
         tixConfig: TixConfiguration
@@ -40,6 +44,6 @@ class GithubPlannerFactory(private val env: Env) : TicketPlannerFactory {
         if (shouldDryRun) {
             DryRunPlanningSystem(githubTicketStats(this.startingLevel))
         } else {
-            GithubPlanningSystem(GithubApi(this), githubTicketStats(this.startingLevel))
+            GithubPlanningSystem(apiFactory.api(this), githubTicketStats(this.startingLevel))
         }
 }

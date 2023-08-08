@@ -1,10 +1,7 @@
 package org.tix.builder
 
 import org.tix.config.ConfigurationPaths
-import org.tix.config.domain.AuthConfigurationUseCase
-import org.tix.config.domain.ConfigurationBakerUseCase
-import org.tix.config.domain.ConfigurationMergeUseCase
-import org.tix.config.domain.ConfigurationReadUseCase
+import org.tix.config.domain.*
 import org.tix.config.reader.ConfigurationFileReader
 import org.tix.config.reader.RawTixConfigurationReader
 import org.tix.config.reader.auth.AuthConfigurationPaths
@@ -29,16 +26,20 @@ fun tixPlanForCLI() = planWithFileSystem(CLIPlanViewStateReducer())
 
 private fun <VS : PlanViewState> planWithFileSystem(viewStateReducer: PlanViewStateReducer<VS>) =
     TixPlan(
-        authConfigUseCase = AuthConfigurationUseCase(authReader()),
-        configBakerUseCase = ConfigurationBakerUseCase(),
-        configReadUseCase = configReadSource(),
-        configMergeUseCase = ConfigurationMergeUseCase(),
+        configUseCase = configUseCaseForCLI(),
         markdownFileUseCase = TextFileUseCase(TextFileIO()),
         parserUseCase = TicketParserUseCase(TicketParser()),
         ticketPlannerUseCase = TicketPlannerUseCase(ticketPlannerFactory(cliEnv())),
         viewStateReducer = viewStateReducer
 
     )
+
+internal fun configUseCaseForCLI() = configurationUseCase(
+    AuthConfigurationUseCase(authReader()),
+    ConfigurationBakerUseCase(),
+    configReadSource(),
+    ConfigurationMergeUseCase(),
+)
 
 private fun authReader() = AuthReader(
     fileReader = FileAuthSourceReader(AuthConfigurationPaths(), configFileReader()),
