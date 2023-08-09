@@ -10,11 +10,13 @@ sealed class PlanViewEvent {
         fun quickTicket(
             ticketTitle: String,
             includedConfig: String? = null,
+            workspaceDirectory: String? = null,
             shouldDryRun: Boolean = false
         ) = PlanUsingMarkdown(
             markdownSource = MarkdownTextSource("# $ticketTitle"),
             configSourceOptions = ConfigurationSourceOptions(
-               savedConfigName = includedConfig
+                workspaceDirectory = workspaceDirectory,
+                savedConfigName = includedConfig
             ),
             shouldDryRun = shouldDryRun
         )
