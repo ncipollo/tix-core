@@ -2,7 +2,7 @@
 coroutines = "1.7.2"
 json = "1.5.0"
 kotlin = "1.8.21"
-ktor = "2.3.2"
+ktor = "2.3.3"
 markdown = "0.4.1"
 mockk = "1.11.0"
 okio = "3.4.0"
