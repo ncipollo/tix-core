@@ -8,6 +8,11 @@ data class TixError(
     override val cause: Throwable? = null
 ) : RuntimeException("$mood: $message", cause)
 
-fun Throwable.toTixError() = TixError(message = this.message ?: "something bad happened", cause = this.cause)
+fun Throwable.toTixError() =
+    if (this is TixError) {
+        copy()
+    } else {
+        TixError(message = this.message ?: "something bad happened", cause = this.cause)
+    }
 
 fun FlowResult<*>.toTixError() = exceptionOrNull()?.toTixError() ?: TixError()
