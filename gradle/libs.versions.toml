@@ -1,6 +1,6 @@
 [versions]
 coroutines = "1.7.2"
-json = "1.5.0"
+json = "1.5.1"
 kotlin = "1.8.21"
 ktor = "2.3.2"
 markdown = "0.4.1"
