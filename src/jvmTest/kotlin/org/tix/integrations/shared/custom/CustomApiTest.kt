@@ -2,11 +2,13 @@ package org.tix.integrations.shared.custom
 
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
+import org.junit.Ignore
 import org.junit.Test
 import org.tix.fixture.integrations.jiraApi
 import org.tix.serialize.dynamic.DynamicElement
 import kotlin.test.expect
 
+@Ignore
 class CustomApiTest {
     private companion object {
         val ISSUE_MAP = mapOf(

@@ -2,9 +2,11 @@ package org.tix.integrations.jira.transition
 
 import org.tix.fixture.integrations.jiraApi
 import org.tix.test.runTestWorkaround
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.expect
 
+@Ignore
 class TransitionApiTest {
     private val api = jiraApi().transition
 

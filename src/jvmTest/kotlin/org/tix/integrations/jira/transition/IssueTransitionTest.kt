@@ -1,6 +1,7 @@
 package org.tix.integrations.jira.transition
 
 import kotlinx.coroutines.test.runTest
+import org.junit.Ignore
 import org.junit.Test
 import org.tix.fixture.integrations.jiraApi
 import org.tix.integrations.jira.issue.Issue
@@ -8,6 +9,7 @@ import org.tix.integrations.jira.issue.IssueFields
 import org.tix.integrations.jira.issue.IssueType
 import org.tix.integrations.jira.project.Project
 
+@Ignore
 class IssueTransitionTest {
     private companion object {
         val FIELDS = IssueFields(

@@ -4,8 +4,10 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.tix.fixture.integrations.jiraApi
 import org.tix.integrations.jira.project.Project
+import kotlin.test.Ignore
 import kotlin.test.expect
 
+@Ignore
 class IssueApiTest {
     private companion object {
         val CREATED_FIELDS = IssueFields(

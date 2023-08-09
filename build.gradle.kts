@@ -22,7 +22,7 @@ import com.vanniktech.maven.publish.SonatypeHost
  */
 
 plugins {
-    val kotlinVersion = "1.8.21"
+    val kotlinVersion = "1.9.0"
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.codingfeline.buildkonfig") version "0.13.3"
