@@ -61,7 +61,7 @@ something like this:
 
 ```
 - tickets1.md
-- ticketa2.md
+- tickets2.md
 - tix.yml
 ```
 
