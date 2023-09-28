@@ -12,7 +12,7 @@ yml = "0.13.0"
 coroutine-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutine-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 
-kotlin-time = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.0" }
+kotlin-time = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version = "0.4.1" }
 
 ktor-androind = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
 ktor-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
