@@ -1,5 +1,5 @@
 [versions]
-coroutines = "1.7.2"
+coroutines = "1.7.3"
 json = "1.5.1"
 ktor = "2.3.3"
 markdown = "0.4.1"
