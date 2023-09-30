@@ -36,32 +36,39 @@ class TicketTransformerTest {
     fun ticket_transforms() {
         val fields = mapOf(
             "\$var1" to "\$var2",
-            "env" to "\$env"
+            "env" to "\$env",
+            "ticket_override" to "\$ticket_override"
         )
         val ticket = Ticket(
             title = "title \$var1",
-            body = TicketBody(listOf(CodeSpanSegment("\$var1"))),
+            body = TicketBody(listOf(CodeSpanSegment("\$var1 \$ticket_var"))),
             fields = DynamicElement(fields),
-            tixId = "tix_1"
+            tixId = "tix_1",
+            variables = mapOf(
+                "ticket_var" to "ticket_value",
+                "ticket_override" to "from_ticket"
+            )
         )
         val env = testEnv("env" to "value3")
         val context = PlanningContext<JiraPlanResult>(
             variables = mapOf(
                 "var1" to "value1",
                 "var2" to "value2",
-                "env" to "\$env"
+                "env" to "\$env",
+                "ticket_override" to "from_context"
             )
         )
 
         val transformedFields = mapOf(
             "value1" to "value2",
-            "env" to "value3"
+            "env" to "value3",
+            "ticket_override" to "from_ticket"
         )
         val expected = RenderedTicket(
-            "title value1",
-            "{{value1}}",
-            transformedFields,
-            "tix_1"
+            title = "title value1",
+            body = "{{value1 ticket_value}}",
+            fields = transformedFields,
+            tixId = "tix_1"
         )
         expect(expected) {
             TicketTransformer(context, env, renderer, ticket).ticket()

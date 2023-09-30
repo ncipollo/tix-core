@@ -1,9 +1,11 @@
 package org.tix.feature.plan.domain.ticket.github
 
 import org.tix.config.data.GithubConfiguration
+import org.tix.config.data.MatrixEntryConfiguration
 import org.tix.config.data.TixConfiguration
 import org.tix.feature.plan.domain.render.github.githubBodyRenderer
 import org.tix.feature.plan.domain.stats.githubTicketStats
+import org.tix.feature.plan.domain.ticket.MatrixPlanner
 import org.tix.feature.plan.domain.ticket.TicketPlanner
 import org.tix.feature.plan.domain.ticket.TicketPlannerFactory
 import org.tix.feature.plan.domain.ticket.dry.DryRunPlanningSystem
@@ -20,6 +22,7 @@ class GithubPlannerFactory(
         tixConfig: TixConfiguration
     ): List<TicketPlanner<*>> = buildList {
         tixConfig.github?.githubPlanner(
+            tixConfig.matrix,
             shouldDryRun,
             tixConfig.variables,
             tixConfig.variableToken
@@ -27,12 +30,14 @@ class GithubPlannerFactory(
     }
 
     private fun GithubConfiguration.githubPlanner(
+        matrix: Map<String, List<MatrixEntryConfiguration>>,
         shouldDryRun: Boolean,
         variables: Map<String, String>,
         variableToken: String
     ) =
         TicketPlanner(
             env = env,
+            matrixPlanner = MatrixPlanner(matrix, variableToken),
             renderer = githubBodyRenderer(),
             system = githubSystem(shouldDryRun),
             systemConfig = this,

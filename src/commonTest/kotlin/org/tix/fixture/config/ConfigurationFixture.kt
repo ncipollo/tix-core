@@ -93,6 +93,9 @@ val tixConfiguration
         include = DynamicElement("my_tix"),
         github = mockGithubConfig,
         jira = mockJiraConfig,
+        matrix = mapOf(
+            "matrix" to listOf(MatrixEntryConfiguration(mapOf("matrix" to "value_1")))
+        ),
         variables = mapOf("key" to "value"),
         variableToken = "**"
     )

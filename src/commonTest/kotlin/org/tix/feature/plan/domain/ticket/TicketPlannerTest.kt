@@ -3,6 +3,7 @@ package org.tix.feature.plan.domain.ticket
 import app.cash.turbine.TurbineTestContext
 import app.cash.turbine.test
 import kotlinx.coroutines.test.runTest
+import org.tix.config.data.MatrixEntryConfiguration
 import org.tix.feature.plan.domain.error.TicketPlanningException
 import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
 import org.tix.fixture.config.mockJiraConfig
@@ -20,6 +21,7 @@ class TicketPlannerTest {
     private val env = testEnv()
 
     private val error = TicketPlanningException("fail")
+    private val emptyMatrixPlanner = MatrixPlanner(emptyMap(), "$")
     private val renderer = jiraBodyRenderer()
     private val system = MockTicketPlanningSystem().also {
         it.setResultsForWorkflow(workflows.beforeAll.first(), mapOf("before_all" to "before_all"))
@@ -30,7 +32,7 @@ class TicketPlannerTest {
 
     @Test
     fun plan_emptyTickets() = runTest {
-        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, emptyMatrixPlanner, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(emptyList())
             .test {
                 system.assertSetupCalled()
@@ -43,7 +45,7 @@ class TicketPlannerTest {
     @Test
     fun plan_flatTicketList() = runTest {
         val tickets = listOf(Ticket("1"), Ticket("2"), Ticket("3"))
-        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, emptyMatrixPlanner, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -60,7 +62,7 @@ class TicketPlannerTest {
     fun plan_flatTicketList_withFailure() = runTest {
         val variables = mapOf("var_key" to "var_value")
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, variables, "$")
+        val planner = TicketPlanner(env, emptyMatrixPlanner, renderer, system, mockJiraConfig, variables, "$")
 
         system.failOnTicket(RenderedTicket("2", fields = tickets[1].mergedFields(mockJiraConfig, 0)), error)
         planner.plan(tickets)
@@ -76,7 +78,7 @@ class TicketPlannerTest {
     @Test
     fun plan_flatTicketList_withUpdateTicket() = runTest {
         val tickets = listOf(Ticket("1", fields = DynamicElement(mapOf(GenericTicketFields.updateTicket to "id"))))
-        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, emptyMatrixPlanner, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -91,7 +93,7 @@ class TicketPlannerTest {
     fun plan_flatTicketList_withVariables() = runTest {
         val variables = mapOf("var_key" to "var_value")
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, variables, "$")
+        val planner = TicketPlanner(env, emptyMatrixPlanner, renderer, system, mockJiraConfig, variables, "$")
         planner.plan(tickets)
             .test {
                 system.assertSetupCalled()
@@ -110,7 +112,7 @@ class TicketPlannerTest {
         val children2 = listOf(Ticket("5"), Ticket("6"))
         val parent2 = Ticket("4", children = children2)
 
-        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, emptyMatrixPlanner, renderer, system, mockJiraConfig, emptyMap(), "$")
         planner.plan(listOf(parent1, parent2))
             .test {
                 system.assertSetupCalled()
@@ -127,9 +129,41 @@ class TicketPlannerTest {
     }
 
     @Test
+    fun plan_nestedTicketList_matrix() = runTest {
+        val matrix = mapOf(
+            "matrix" to listOf(
+                MatrixEntryConfiguration(mapOf("matrix" to "value_1")),
+                MatrixEntryConfiguration(mapOf("matrix" to "value_2"))
+            )
+        )
+        val matrixPlanner = MatrixPlanner(matrix, "$")
+        val children1 = listOf(Ticket("2"), Ticket("3"))
+        val parent1 = Ticket("1", children = children1)
+        val children2 = listOf(Ticket("5"), Ticket("\$matrix"))
+        val parent2 = Ticket("4", children = children2)
+
+        val planner = TicketPlanner(env, matrixPlanner, renderer, system, mockJiraConfig, emptyMap(), "$")
+        planner.plan(listOf(parent1, parent2))
+            .test {
+                system.assertSetupCalled()
+                assertEquals(TicketPlanStarted, awaitItem())
+                assertTicketResult(parent1, 1)
+                assertTicketResult(children1[0], 2, parentTicketId = 1)
+                assertTicketResult(children1[1], 3, expectedPreviousId = 2, parentTicketId = 1)
+                assertTicketResult(parent2, 4, expectedPreviousId = 1)
+                assertTicketResult(children2[0], 5, parentTicketId = 4)
+
+                assertTicketResult(children2[1].copy(title = "value_1"), 6, expectedPreviousId = 5, parentTicketId = 4)
+                assertTicketResult(children2[1].copy(title = "value_2"), 7, expectedPreviousId = 6, parentTicketId = 4)
+                assertPlanningComplete()
+                awaitComplete()
+            }
+    }
+
+    @Test
     fun plan_validationFails() = runTest {
         val tickets = listOf(Ticket("1"), Ticket("2"))
-        val planner = TicketPlanner(env, renderer, system, mockJiraConfig, emptyMap(), "$")
+        val planner = TicketPlanner(env, emptyMatrixPlanner, renderer, system, mockJiraConfig, emptyMap(), "$")
 
         system.failValidation(error)
         planner.plan(tickets)

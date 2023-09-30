@@ -13,7 +13,8 @@ class TicketTransformer(
     private val renderer: BodyRenderer,
     private val ticket: Ticket
 ) {
-    private val variableMap = TransformVariableMap(env, context.variables, context.variableToken)
+    private val variables = context.variables + ticket.variables
+    private val variableMap = TransformVariableMap(env, variables, context.variableToken)
 
     fun ticket() =
         RenderedTicket(

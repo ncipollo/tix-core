@@ -14,6 +14,7 @@ data class Ticket(
     val fields: DynamicElement = emptyDynamic(),
     val children: List<Ticket> = emptyList(),
     val tixId: String = "",
+    val variables: Map<String, String> = emptyMap(),
 ) {
     val maxDepth by lazy { findMaxDepth(0) }
 

@@ -1,9 +1,11 @@
 package org.tix.feature.plan.domain.ticket.jira
 
 import org.tix.config.data.JiraConfiguration
+import org.tix.config.data.MatrixEntryConfiguration
 import org.tix.config.data.TixConfiguration
 import org.tix.feature.plan.domain.render.jira.jiraBodyRenderer
 import org.tix.feature.plan.domain.stats.jiraTicketStats
+import org.tix.feature.plan.domain.ticket.MatrixPlanner
 import org.tix.feature.plan.domain.ticket.TicketPlanner
 import org.tix.feature.plan.domain.ticket.TicketPlannerFactory
 import org.tix.feature.plan.domain.ticket.dry.DryRunPlanningSystem
@@ -19,6 +21,7 @@ class JiraPlannerFactory(
         tixConfig: TixConfiguration
     ): List<TicketPlanner<*>> = buildList {
         tixConfig.jira?.jiraPlanner(
+            tixConfig.matrix,
             shouldDryRun,
             tixConfig.variables,
             tixConfig.variableToken
@@ -26,12 +29,14 @@ class JiraPlannerFactory(
     }
 
     private fun JiraConfiguration.jiraPlanner(
+        matrix: Map<String, List<MatrixEntryConfiguration>>,
         shouldDryRun: Boolean,
         variables: Map<String, String>,
         variableToken: String
     ) =
         TicketPlanner(
             env = env,
+            matrixPlanner = MatrixPlanner(matrix, variableToken),
             renderer = jiraBodyRenderer(),
             system = jiraSystem(shouldDryRun),
             systemConfig = this,

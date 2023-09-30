@@ -16,6 +16,7 @@ class TicketPlannerFactoryTest {
             include = emptyDynamic(),
             github = null,
             jira = null,
+            matrix = emptyMap(),
             variables = emptyMap(),
             variableToken = "$"
         )

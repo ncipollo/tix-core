@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.tix.config.bake.GithubConfigurationBaker
 import org.tix.config.bake.JiraConfigurationBaker
+import org.tix.config.bake.MatrixBaker
 import org.tix.config.data.TixConfiguration
 import org.tix.config.data.raw.RawTixConfiguration
 import org.tix.domain.FlowResult
@@ -21,6 +22,7 @@ class ConfigurationBakerUseCase : FlowTransformer<ConfigBakerAction, FlowResult<
                 include = rawConfig.include,
                 github = githubConfig(rawConfig, ticketSystemAuth),
                 jira = jiraConfig(rawConfig, ticketSystemAuth),
+                matrix = MatrixBaker.bake(rawConfig.matrix),
                 variables = rawConfig.variables,
                 variableToken = rawConfig.variableToken ?: "$"
             )

@@ -11,6 +11,7 @@ data class RawTixConfiguration(
     @Contextual val include: DynamicElement = emptyDynamic(),
     val github: RawGithubConfiguration? = null,
     val jira: RawJiraConfiguration? = null,
+    val matrix: Map<String, List<@Contextual DynamicElement>> = emptyMap(),
     val variables: Map<String, String> = emptyMap(),
     @SerialName("variable_token") val variableToken: String? = null
 )

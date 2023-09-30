@@ -60,6 +60,20 @@ class DynamicElementTest {
     fun asMap_valueIsNull() = expect(emptyMap()) { DynamicElement(null).asMap() }
 
     @Test
+    fun asStringMap_valueIsAMap() =
+        expect(mapOf("key" to "value")) { DynamicElement(mapOf("key" to "value")).asStringMap() }
+
+    @Test
+    fun asStringMap_valueIsNotAMap_defaultKeyIsSet() =
+        expect(mapOf("key" to "value")) { DynamicElement("value").asStringMap(defaultKey = "key") }
+
+    @Test
+    fun asStringMap_valueIsNotAMap_defaultKeyIsNotSet() = expect(emptyMap()) { DynamicElement("key").asStringMap() }
+
+    @Test
+    fun aStringsMap_valueIsNull() = expect(emptyMap()) { DynamicElement(null).asStringMap() }
+
+    @Test
     fun isNotEmpty_valueIsNull() = expect(false) { DynamicElement(null).isNotEmpty() }
 
     @Test

@@ -40,6 +40,14 @@ data class DynamicElement(@Contextual val value: Any? = null) {
             else -> emptyMap()
         }
 
+    @Suppress("UNCHECKED_CAST")
+    fun asStringMap(defaultKey: String? = null) : Map<String, String> =
+        when {
+            value is Map<*, *> -> value as Map<String, String>
+            defaultKey != null && value != null -> mapOf(defaultKey to asString())
+            else -> emptyMap()
+        }
+
     fun isNotEmpty() = value != null
 }
 

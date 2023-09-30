@@ -11,6 +11,7 @@ import org.tix.ticket.Ticket
 
 class TicketPlanner<R : TicketPlanResult>(
     private val env: Env,
+    private val matrixPlanner: MatrixPlanner,
     private val renderer: BodyRenderer,
     private val system: TicketPlanningSystem<R>,
     private val systemConfig: TicketSystemConfiguration,
@@ -51,8 +52,9 @@ class TicketPlanner<R : TicketPlanResult>(
         context: PlanningContext<R>,
         tickets: List<Ticket>
     ): PlanningContext<R> {
+        val matrixTickets = matrixPlanner.matrixPlan(tickets)
         var currentContext = context
-        tickets.forEach {
+        matrixTickets.forEach {
             currentContext = planTicket(currentContext, it)
         }
         return currentContext

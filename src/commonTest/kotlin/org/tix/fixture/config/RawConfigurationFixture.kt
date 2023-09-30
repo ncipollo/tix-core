@@ -79,6 +79,7 @@ val rawTixConfiguration
         include = DynamicElement("my_tix"),
         github = rawGithubConfiguration,
         jira = rawJiraConfiguration,
+        matrix = mapOf("matrix" to listOf(DynamicElement("value_1"))),
         variables = mapOf("key" to "value"),
         variableToken = "**"
     )

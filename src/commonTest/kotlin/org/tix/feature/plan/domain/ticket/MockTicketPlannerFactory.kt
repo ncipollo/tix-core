@@ -15,6 +15,7 @@ class MockTicketPlannerFactory(private val count: Int) : TicketPlannerFactory {
         List(count) {
             TicketPlanner(
                 env = env,
+                matrixPlanner = MatrixPlanner(emptyMap(), "$"),
                 renderer = jiraBodyRenderer(),
                 system = MockTicketPlanningSystem(),
                 systemConfig = mockJiraConfig,

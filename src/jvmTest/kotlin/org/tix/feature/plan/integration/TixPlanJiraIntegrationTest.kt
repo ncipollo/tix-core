@@ -15,10 +15,10 @@ class TixPlanJiraIntegrationTest {
     private val expectedCompletionMessage = """
         tix finished successfully 🎉
         Ticket Stats:
-        - Total Tickets: 3
+        - Total Tickets: 4
         - Epic: 1
         - Story: 1
-        - Task: 1
+        - Tasks: 2
     """.trimIndent()
 
     @Test
@@ -41,7 +41,8 @@ class TixPlanJiraIntegrationTest {
                     assertContains(message, "Test Story")
                     assertContains(message, "tix_1")
                 }
-                assertContains(awaitItem().message, "Test Task")
+                assertContains(awaitItem().message, "android: Test Task")
+                assertContains(awaitItem().message, "iOS: Test Task")
 
                 assertEquals(
                     CLIPlanViewState(message = expectedCompletionMessage, isComplete = true),

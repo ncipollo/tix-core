@@ -12,6 +12,8 @@ jira:
                   - type: delete_issue
                     arguments:
                         issue: $ticket.jira.key
+matrix:
+    mobile: [android, iOS]
 variables:
     label: test
     story_name: Test Story
