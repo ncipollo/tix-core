@@ -20,6 +20,7 @@ ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "ktor" }
 ktor-content-negotation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-curl = { module = "io.ktor:ktor-client-curl", version.ref = "ktor" }
+ktor-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 ktor-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
 ktor-jvm = { module = "io.ktor:ktor-client-java", version.ref = "ktor" }

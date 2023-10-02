@@ -208,15 +208,22 @@ kotlin {
 
         val desktopMain by creating {
             dependsOn(nativeMain)
+        }
+        val desktopTest by creating { dependsOn(nativeTest) }
+        val linuxX64Main by getting {
+            dependsOn(desktopMain)
             dependencies {
                 implementation(libs.ktor.curl)
             }
         }
-        val desktopTest by creating { dependsOn(nativeTest) }
-        val linuxX64Main by getting { dependsOn(desktopMain) }
         val linuxX64Test by getting { dependsOn(desktopTest) }
 
-        val macosMain by creating { dependsOn(desktopMain) }
+        val macosMain by creating {
+            dependsOn(desktopMain)
+            dependencies {
+                implementation(libs.ktor.darwin)
+            }
+        }
         val macosTest by creating { dependsOn(desktopTest) }
 
         val macosArm64Main by getting { dependsOn(macosMain) }
