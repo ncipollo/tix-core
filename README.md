@@ -95,6 +95,9 @@ jira:
       field: value # Fields to be added to issues
     task:
       field: value # Fields to be added to tasks (sub-issues of issues)
+matrix:
+  # Each entry here defines a matrix.
+  Mobile: [ Android, iOS ]
 variables:
   key: value
   envKey: $ENVIRONMENT_VARIABLE
@@ -168,6 +171,40 @@ Note: Tix automatically creates some variables for you. For example:
 - `ticket.parent.id`: The ID of the parent ticket (if one exists)
 - `ticket.parent.key`: The key of the parent ticket (if one exists). For jira this would be the human facing ticket
   name (ex- `TIX-123`)
+
+#### Matrix
+
+You can use this section to define matrix expansions for tickets. Matrix expansion works as follows:
+
+- In the tix configuration you define one or more matrices.
+- The name of the matrix will be the key used to define it.
+- Each matrix has a list of values associated with it.
+- If a ticket has the matrix name in its title as a variable, we will duplicate that ticket N times (where N is the
+  number of values associated with the matrix).
+- For each duplicated ticket, we will add the matrix name as a variable, so it can be used in multiple places in the
+  ticket (title, body, fields, etc).
+
+For example, assuming we have the following matrix:
+```yaml
+matrix:
+  Mobile: [ Android, iOS ]
+```
+
+And the following markdown:
+```markdown
+# $Mobile Ticket 1
+
+# $Mobile Ticket 2
+
+# Some other ticket
+```
+
+We would end up with the following tickets:
+- Android Ticket 1
+- iOS Ticket 1
+- Android Ticket 2
+- iOS Ticket 2
+- Some other ticket
 
 ## Authentication 🎫
 
@@ -300,6 +337,7 @@ similarly to the `include` option in the configuration files. It will be overlai
 the workspace configuration will be overlaid on top of that.
 
 Examples:
+
 ```bash
 tix --include=my_config_name my_file.md
 tix quick --include=my_config_name "My Ticket Title"
