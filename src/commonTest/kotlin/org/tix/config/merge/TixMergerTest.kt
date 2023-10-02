@@ -19,6 +19,7 @@ class TixMergerTest {
                     default = mapOf("jira$index" to DynamicElement(index))
                 )
             ).takeIf { index < 3 },
+            matrix = mapOf("matrix_$index" to listOf(DynamicElement("value_$index"))),
             variables = mapOf("config$index" to "$index"),
             variableToken = "$index"
         )
@@ -43,6 +44,11 @@ class TixMergerTest {
                         "jira2" to DynamicElement(2)
                     )
                 )
+            ),
+            matrix = mapOf(
+                "matrix_1" to listOf(DynamicElement("value_1")),
+                "matrix_2" to listOf(DynamicElement("value_2")),
+                "matrix_3" to listOf(DynamicElement("value_3"))
             ),
             variables = mapOf(
                 "config1" to "1",

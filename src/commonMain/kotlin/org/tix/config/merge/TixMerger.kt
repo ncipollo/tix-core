@@ -6,6 +6,7 @@ fun RawTixConfiguration.merge(overlay: RawTixConfiguration) = RawTixConfiguratio
     include = overlay.include,// We always want to take the top include
     github = github?.merge(overlay.github) ?: overlay.github,
     jira = jira?.merge(overlay.jira) ?: overlay.jira,
+    matrix = matrix + overlay.matrix,
     variables = variables + overlay.variables,
     variableToken = overlay.variableToken ?: variableToken
 )
