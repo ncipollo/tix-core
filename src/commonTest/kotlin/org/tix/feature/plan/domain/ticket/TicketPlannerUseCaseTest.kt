@@ -5,6 +5,7 @@ import app.cash.turbine.test
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.tix.domain.transform
+import org.tix.feature.plan.domain.error.TicketPlanningException
 import org.tix.fixture.config.tixConfiguration
 import org.tix.ticket.Ticket
 import kotlin.test.Test
@@ -12,13 +13,15 @@ import kotlin.test.expect
 
 class TicketPlannerUseCaseTest {
     private val config = tixConfiguration
-    private val plannerFactory = MockTicketPlannerFactory(2)
+
     private val tickets = listOf(Ticket(title = "a"), Ticket(title = "b"))
 
-    private val useCase = TicketPlannerUseCase(plannerFactory)
+
 
     @Test
     fun transform() = runTest {
+        val plannerFactory = MockTicketPlannerFactory(2)
+        val useCase = TicketPlannerUseCase(plannerFactory)
         val action = TicketPlannerAction(config, shouldDryRun = true, tickets)
         flowOf(action)
             .transform(useCase)
@@ -29,6 +32,21 @@ class TicketPlannerUseCaseTest {
                     expectTicketCreated("b")
                     expect(TicketPlanCompleted(PlanningCompleteInfo(message = "done"))) { awaitItem() }
                 }
+                awaitComplete()
+                plannerFactory.assertPlannersCalled(shouldDryRun = true, config)
+            }
+    }
+
+    @Test
+    fun transform_noConfigs() = runTest {
+        val plannerFactory = MockTicketPlannerFactory(0)
+        val useCase = TicketPlannerUseCase(plannerFactory)
+        val action = TicketPlannerAction(config, shouldDryRun = true, tickets)
+        flowOf(action)
+            .transform(useCase)
+            .test {
+                val expected = TicketPlanFailed(TicketPlanningException("no ticket systems configs"))
+                expect(expected) { awaitItem() }
                 awaitComplete()
                 plannerFactory.assertPlannersCalled(shouldDryRun = true, config)
             }
