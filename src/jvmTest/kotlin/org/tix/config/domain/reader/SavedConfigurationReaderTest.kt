@@ -13,18 +13,27 @@ import kotlin.test.expect
 class SavedConfigurationReaderTest {
     private companion object {
         const val OPTIONS_SAVED_CONFIG_NAME = "options_saved_config"
+        const val MARKDOWN_SAVED_CONFIG_NAME = "markdown_saved_config"
         const val WORKSPACE_SAVED_CONFIG_NAME = "workspace_saved_config"
     }
 
     private val configPaths = ConfigurationPaths()
     private val optionsSavedConfig = RawTixConfiguration(variables = mapOf("saved" to "options_saved"))
+    private val markdownConfig = RawTixConfiguration(
+        include = DynamicElement(MARKDOWN_SAVED_CONFIG_NAME),
+        variables = mapOf("saved" to "markdown")
+    )
     private val workspaceConfig = RawTixConfiguration(
         include = DynamicElement(WORKSPACE_SAVED_CONFIG_NAME),
         variables = mapOf("saved" to "workspace")
     )
+    private val markdownSavedConfig = RawTixConfiguration(variables = mapOf("saved" to "markdown_saved"))
     private val workspaceSavedConfig = RawTixConfiguration(variables = mapOf("saved" to "workspace_saved"))
     private val reader = mockk<RawTixConfigurationReader> {
         every { firstConfigFile(emptyList()) } returns null
+        every {
+            firstConfigFile(configPaths.workspaceIncludedConfigSearchPaths(markdownConfig))
+        } returns markdownSavedConfig
         every {
             firstConfigFile(configPaths.workspaceIncludedConfigSearchPaths(workspaceConfig))
         } returns workspaceSavedConfig
@@ -39,15 +48,15 @@ class SavedConfigurationReaderTest {
     fun readSavedConfigs_noSavedConfigs() {
         val configOptions = ConfigurationSourceOptions()
         expect(emptyList()) {
-            configReader.readSavedConfigs(configOptions, null)
+            configReader.readSavedConfigs(configOptions, null, null)
         }
     }
 
     @Test
-    fun readSavedConfigs_withBothConfigs() {
+    fun readSavedConfigs_withAllConfigs() {
         val configOptions = ConfigurationSourceOptions(savedConfigName = OPTIONS_SAVED_CONFIG_NAME)
-        expect(listOf(workspaceSavedConfig, optionsSavedConfig)) {
-            configReader.readSavedConfigs(configOptions, workspaceConfig)
+        expect(listOf(markdownSavedConfig, workspaceSavedConfig, optionsSavedConfig)) {
+            configReader.readSavedConfigs(configOptions, markdownConfig, workspaceConfig)
         }
     }
 
@@ -55,7 +64,15 @@ class SavedConfigurationReaderTest {
     fun readSavedConfigs_withOptionsSavedConfig() {
         val configOptions = ConfigurationSourceOptions(savedConfigName = OPTIONS_SAVED_CONFIG_NAME)
         expect(listOf(optionsSavedConfig)) {
-            configReader.readSavedConfigs(configOptions, null)
+            configReader.readSavedConfigs(configOptions, null, null)
+        }
+    }
+
+    @Test
+    fun readSavedConfigs_withMarkdownSavedConfig() {
+        val configOptions = ConfigurationSourceOptions()
+        expect(listOf(markdownSavedConfig)) {
+            configReader.readSavedConfigs(configOptions, markdownConfig, null)
         }
     }
 
@@ -63,7 +80,7 @@ class SavedConfigurationReaderTest {
     fun readSavedConfigs_withWorkspaceSavedConfig() {
         val configOptions = ConfigurationSourceOptions()
         expect(listOf(workspaceSavedConfig)) {
-            configReader.readSavedConfigs(configOptions, workspaceConfig)
+            configReader.readSavedConfigs(configOptions, null, workspaceConfig)
         }
     }
 }

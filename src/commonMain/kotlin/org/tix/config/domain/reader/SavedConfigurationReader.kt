@@ -11,8 +11,10 @@ internal class SavedConfigurationReader(
 ) {
     fun readSavedConfigs(
         configOptions: ConfigurationSourceOptions,
+        markdownConfig: RawTixConfiguration?,
         workspaceConfig: RawTixConfiguration?
     ) = listOfNotNull(
+        includedFromWorkspaceConfig(markdownConfig),
         includedFromWorkspaceConfig(workspaceConfig),
         includedFromConfigOptions(configOptions),
     )

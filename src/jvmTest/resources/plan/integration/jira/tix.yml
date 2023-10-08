@@ -1,17 +1,3 @@
-jira:
-    no_epics: false
-    url: 'https://tix-test.atlassian.net'
-    tickets: 
-        default:
-            project: TIX
-            labels: $label
-    workflows:
-        after_each:
-            - label: cleanup
-              actions:
-                  - type: delete_issue
-                    arguments:
-                        issue: $ticket.jira.key
 matrix:
     mobile: [android, iOS]
 variables:

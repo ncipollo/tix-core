@@ -36,10 +36,12 @@ class PlanSourceCombinerTest {
 
         val BAKER_ACTION = ConfigBakerAction(rawTixConfiguration, ticketSystemAuth)
         val CONFIG_OPTIONS = ConfigurationSourceOptions.forMarkdownSource(PATH)
+
         val AUTH_ACTION = AuthConfigAction(CONFIG_OPTIONS.workspaceDirectory, rawTixConfiguration)
     }
 
-    private val configSuccessfulReadSource = testTransformer(CONFIG_OPTIONS to CONFIG_LIST)
+    private val configSuccessfulReadSource =
+        testTransformer(CONFIG_OPTIONS.copy(markdownContent = MARKDOWN) to CONFIG_LIST)
     private val source = flowOf(MarkdownPlanAction(PATH, false))
     private val fileSystem = FakeFileSystem()
     private val markdownValidator = MarkdownSourceValidator(fileSystem)
@@ -68,7 +70,12 @@ class PlanSourceCombinerTest {
     fun transformFlow_withTextMarkdownSource_emitsSuccess() = runTest {
         val combiner = combiner(
             authReadSource = testTransformer(AUTH_ACTION.copy(path = null) to ticketSystemAuth),
-            configReadUseCase = testTransformer(CONFIG_OPTIONS.copy(workspaceDirectory = null) to CONFIG_LIST)
+            configReadUseCase = testTransformer(
+                CONFIG_OPTIONS.copy(
+                    workspaceDirectory = null,
+                    markdownContent = MARKDOWN
+                ) to CONFIG_LIST
+            )
         )
         val expectedResult = PlanSourceResult.Success(tixConfiguration, MARKDOWN)
         val action = MarkdownPlanAction(MarkdownTextSource(MARKDOWN))
@@ -125,7 +132,10 @@ class PlanSourceCombinerTest {
 
     @Test
     fun transformFlow_markdownSourceFails_emitsError() = runTest {
-        val combiner = combiner(markdownFileUseCase = markdownErrorFileUseCase())
+        val combiner = combiner(
+            configReadUseCase = testTransformer(CONFIG_OPTIONS to CONFIG_LIST),
+            markdownFileUseCase = markdownErrorFileUseCase()
+        )
         val expectedResult = PlanSourceResult.Error(TIX_ERROR)
         source.transform(combiner)
             .test {
@@ -141,7 +151,7 @@ class PlanSourceCombinerTest {
             .exceptionOrNull()
             ?.toTixError()
         val expectedResult = PlanSourceResult.Error(expectedError!!)
-        source.transform(combiner())
+        source.transform(combiner(configReadUseCase = testTransformer(CONFIG_OPTIONS to CONFIG_LIST)))
             .test {
                 assertEquals(expectedResult, awaitItem())
                 awaitComplete()

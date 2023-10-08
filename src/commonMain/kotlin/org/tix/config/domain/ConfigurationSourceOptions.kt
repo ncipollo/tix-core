@@ -5,7 +5,8 @@ import org.tix.platform.path.pathByExpandingTilde
 data class ConfigurationSourceOptions(
     val workspaceDirectory: String? = null,
     val savedConfigName: String? = null,
-    val includeRootConfig: Boolean = true
+    val includeRootConfig: Boolean = true,
+    val markdownContent: String? = null
 ) {
     companion object {
         fun forMarkdownSource(markdownPath: String, includeConfigName: String? = null) =

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.tix.config.ConfigurationPaths
 import org.tix.config.data.raw.RawTixConfiguration
+import org.tix.config.domain.reader.MarkdownConfigurationReader
 import org.tix.config.domain.reader.RootConfigurationReader
 import org.tix.config.domain.reader.SavedConfigurationReader
 import org.tix.config.domain.reader.WorkspaceConfigurationReader
@@ -19,10 +20,15 @@ import kotlin.test.assertEquals
 class ConfigurationReadUseCaseTest {
     private companion object {
         const val PATH_1 = "/path1/tix.md"
-        val CONFIG_OPTIONS = ConfigurationSourceOptions.forMarkdownSource(PATH_1)
+        const val MARKDOWN = "markdown"
+        val CONFIG_OPTIONS = ConfigurationSourceOptions.forMarkdownSource(PATH_1).copy(markdownContent = MARKDOWN)
     }
 
     private val configPaths = ConfigurationPaths()
+    private val markdownConfig = RawTixConfiguration(
+        include = DynamicElement("saved_markdown"),
+        variables = mapOf("markdown" to "markdown")
+    )
     private val rootConfig = RawTixConfiguration(variables = mapOf("root" to "config"))
     private val savedConfig = RawTixConfiguration(variables = mapOf("saved" to "config"))
     private val workspaceConfig = RawTixConfiguration(
@@ -30,6 +36,7 @@ class ConfigurationReadUseCaseTest {
         variables = mapOf("workspace" to "workspace")
     )
 
+    private val markdownConfigReader = mockk<MarkdownConfigurationReader>()
     private val rootConfigReader = mockk<RootConfigurationReader>()
     private val savedConfigReader = mockk<SavedConfigurationReader>()
     private val workflowConfigReader = mockk<WorkspaceConfigurationReader>()
@@ -38,6 +45,7 @@ class ConfigurationReadUseCaseTest {
     private val useCase = ConfigurationReadUseCase(
         configPaths = configPaths,
         reader = reader,
+        markdownConfigurationReader = markdownConfigReader,
         rootConfigReader = rootConfigReader,
         savedConfigReader = savedConfigReader,
         workspaceConfigReader = workflowConfigReader
@@ -48,7 +56,7 @@ class ConfigurationReadUseCaseTest {
         val source = flowOf(CONFIG_OPTIONS).transform(useCase)
         respondWithConfigurations()
         source.test {
-            assertEquals(listOf(rootConfig, savedConfig, workspaceConfig), awaitItem())
+            assertEquals(listOf(rootConfig, savedConfig, workspaceConfig, markdownConfig), awaitItem())
             awaitComplete()
         }
     }
@@ -64,14 +72,22 @@ class ConfigurationReadUseCaseTest {
     }
 
     private fun respondWithConfigurations() {
+        every { markdownConfigReader.configFromMarkdown(MARKDOWN) } returns markdownConfig
         every { rootConfigReader.readRootConfig(CONFIG_OPTIONS) } returns rootConfig
-        every { savedConfigReader.readSavedConfigs(CONFIG_OPTIONS, workspaceConfig) } returns listOf(savedConfig)
+        every {
+            savedConfigReader.readSavedConfigs(
+                CONFIG_OPTIONS,
+                markdownConfig,
+                workspaceConfig
+            )
+        } returns listOf(savedConfig)
         every { workflowConfigReader.readWorkspaceConfig(CONFIG_OPTIONS) } returns workspaceConfig
     }
 
     private fun respondWithNoConfigurations() {
+        every { markdownConfigReader.configFromMarkdown(MARKDOWN) } returns null
         every { rootConfigReader.readRootConfig(CONFIG_OPTIONS) } returns null
-        every { savedConfigReader.readSavedConfigs(CONFIG_OPTIONS, null) } returns emptyList()
+        every { savedConfigReader.readSavedConfigs(CONFIG_OPTIONS, null, null) } returns emptyList()
         every { workflowConfigReader.readWorkspaceConfig(CONFIG_OPTIONS) } returns null
     }
 }

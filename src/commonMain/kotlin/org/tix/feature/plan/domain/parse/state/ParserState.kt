@@ -1,8 +1,8 @@
 package org.tix.feature.plan.domain.parse.state
 
+import org.tix.serialize.dynamic.DynamicElement
 import org.tix.ticket.body.BodySegment
 import org.tix.ticket.body.LinebreakSegment
-import org.tix.serialize.dynamic.DynamicElement
 
 internal class ParserState {
     private val ticketPath: MutableList<PartialTicket> = ArrayList()
@@ -41,5 +41,5 @@ internal class ParserState {
     }
 
     fun buildNestedBody(buildBlock: () -> Unit) : List<BodySegment> =
-        currentTicket?.buildNestedBody(buildBlock) ?: error("no ticket has been started")
+        currentTicket?.buildNestedBody(buildBlock) ?: emptyList()
 }

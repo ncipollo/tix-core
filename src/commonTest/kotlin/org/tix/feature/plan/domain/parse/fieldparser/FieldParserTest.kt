@@ -1,5 +1,6 @@
 package org.tix.feature.plan.domain.parse.fieldparser
 
+import org.tix.feature.plan.domain.parse.configparser.ConfigLanguage
 import org.tix.serialize.dynamic.DynamicElement
 import org.tix.serialize.dynamic.emptyDynamic
 import kotlin.test.Test
@@ -19,7 +20,7 @@ class FieldParserTest {
             "key2": "value2"
         }
         """.trimIndent()
-        expect(DYNAMIC) { FieldParser.parse(code, language = FieldLanguage.JSON) }
+        expect(DYNAMIC) { FieldParser.parse(code, language = ConfigLanguage.JSON) }
     }
 
     @Test
@@ -30,7 +31,7 @@ class FieldParserTest {
             "key2": "value2"
         }
         """.trimIndent()
-        expect(emptyDynamic()) { FieldParser.parse(code, FieldLanguage.NO_FIELDS) }
+        expect(emptyDynamic()) { FieldParser.parse(code, ConfigLanguage.NO_CONFIG) }
     }
 
     @Test
@@ -39,6 +40,6 @@ class FieldParserTest {
         key1: value1
         key2: value2
         """.trimIndent()
-        expect(DYNAMIC) { FieldParser.parse(code, FieldLanguage.YAML) }
+        expect(DYNAMIC) { FieldParser.parse(code, ConfigLanguage.YAML) }
     }
 }

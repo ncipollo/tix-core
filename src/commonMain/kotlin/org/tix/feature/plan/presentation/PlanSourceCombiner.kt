@@ -22,10 +22,13 @@ class PlanSourceCombiner(
 ) : FlowTransformer<MarkdownPlanAction, PlanSourceResult> {
     override fun transformFlow(upstream: Flow<MarkdownPlanAction>): Flow<PlanSourceResult> =
         upstream.flatMapLatest { action ->
-            flowOf(action.configSourceOptions)
-                .transform(configurationUseCase)
-                .combine(markdown(action.markdownSource)) { configResult, markdownResult ->
-                    toResult(configResult, markdownResult)
+            markdown(action.markdownSource)
+                .flatMapLatest { markdownResult ->
+                    val markdownContent = markdownResult.getOrNull()
+                    val optionsWithMarkdown = action.configSourceOptions.copy(markdownContent = markdownContent)
+                    flowOf(optionsWithMarkdown)
+                        .transform(configurationUseCase)
+                        .map { configResult -> toResult(configResult, markdownResult) }
                 }.catch {
                     // Catch parsing exceptions from config or markdown
                     emit(PlanSourceResult.Error(it.toTixError()))
