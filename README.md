@@ -24,7 +24,7 @@ tickets for you.
 
 ```bash
 brew tap ncipollo/tools
-brew install kotlin-tix
+brew install tix
 ```
 
 # Planning 🔮
@@ -47,6 +47,8 @@ tix my_tickets.md
 
 Tix configuration may be specified in either json or yaml. Tix will look for configuration in the following locations:
 
+- In the preamble section of the markdown document (i.e before the first ticket section). More on this in the markdown
+  section below.
 - The workspace configuration located in the same directory as the markdown file. The configuration file is expected to
   be named `tix.yml` or `tix.json`
 - Via an included configuration from `~/.tix/configs` (more on this later)
@@ -185,12 +187,14 @@ You can use this section to define matrix expansions for tickets. Matrix expansi
   ticket (title, body, fields, etc).
 
 For example, assuming we have the following matrix:
+
 ```yaml
 matrix:
   Mobile: [ Android, iOS ]
 ```
 
 And the following markdown:
+
 ```markdown
 # $Mobile Ticket 1
 
@@ -200,6 +204,7 @@ And the following markdown:
 ```
 
 We would end up with the following tickets:
+
 - Android Ticket 1
 - iOS Ticket 1
 - Android Ticket 2
@@ -267,9 +272,38 @@ abstractions to generate representations which are specific to a ticketing syste
 - List type elements will would utilize the wiki-media style indentation markers for jira (`--`)
 - Code blocks in jira will use the `{code}` markers.
 
-### Special Blocks
+### Tix Blocks
 
-Tix supports special code blocks which may be used to add or override fields for a ticket. For example:
+Tix supports special code blocks which may be used to define and override configuration values. The behavior of these
+blocks change slightly depending on where they are found within the document:
+
+- If the block is found in the document preamble (before the first ticket section), then it will represent the tix
+  configuration for the entire document.
+- If it is found within a ticket section then it will represent the field configuration for that ticket.
+
+#### Tix Configuration
+
+Tix blocks found before the first ticket represent an entire tix configuration.
+
+    ```tix
+    # Adds fields to the ticket, regardless of ticket system
+    include: my_saved_config
+    ```
+    # First Ticket
+    Ticket description...
+
+A few behavioral notes here:
+- The code block type can be `tix`, `tix_config`, `tix_json`, `tix_yml` etc.
+    - If there is an explicit `_json` or `_yml` prefix then tix will assume the configuration is in that language.
+    - If there is not an explicit language prefix, tix will infer json or yaml.
+- You can define the entire tix configuration for your document here, or you can reference a previously saved config
+  using `include`.
+- Configurations defined here will be merged on top of any other configurations you have. This means properties defined
+  here will override other tix configs (workspace config, root config, etc).
+
+#### Field Configurations
+
+Tix blocks within a ticket section represent field configuration for that ticket.
 
     ```tix
     # Adds fields to the ticket, regardless of ticket system
@@ -286,6 +320,8 @@ Tix supports special code blocks which may be used to add or override fields for
     # Adds fields to the ticket, regardless of ticket system
     field: value
     ```
+
+These fields will override any fields which might have been defined in the tix configuration.
 
 ### Ticket Levels
 
