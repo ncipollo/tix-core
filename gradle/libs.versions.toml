@@ -2,7 +2,7 @@
 coroutines = "1.7.3"
 json = "1.6.0"
 ktor = "2.3.4"
-markdown = "0.4.1"
+markdown = "0.6.0"
 mockk = "1.12.5"
 okio = "3.5.0"
 turbine = "1.0.0"
