@@ -22,11 +22,11 @@ import com.vanniktech.maven.publish.SonatypeHost
  */
 
 plugins {
-    val kotlinVersion = "1.9.10"
+    val kotlinVersion = "1.9.20"
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.codingfeline.buildkonfig") version "0.13.3"
-    id("com.vanniktech.maven.publish") version "0.25.3"
+    id("com.vanniktech.maven.publish") version "0.29.0"
     id("com.github.ben-manes.versions") version "0.46.0"
     jacoco
 }
@@ -297,12 +297,12 @@ tasks.register("jvmTestCoverage") {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.S01, true)
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
     coordinates(group.toString(), name, version.toString())
 
-    // Provide artifacts information requited by Maven Central
+    // Provide artifacts information required by Maven Central
     pom {
         name.set("Tix Core Library")
         description.set("Kotlin MPP library for authoring, tracking and managing tickets.")
@@ -318,7 +318,7 @@ mavenPublishing {
             developer {
                 id.set("ncipollo")
                 name.set("Nick Cipollo")
-                email.set("njc115@gmail.com>")
+                email.set("njc115@gmail.com")
             }
         }
         scm {
