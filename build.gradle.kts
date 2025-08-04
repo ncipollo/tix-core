@@ -27,11 +27,31 @@ plugins {
     kotlin("plugin.serialization") version kotlinVersion
     id("com.codingfeline.buildkonfig") version "0.13.3"
     id("com.vanniktech.maven.publish") version "0.25.3"
+    id("com.github.ben-manes.versions") version "0.46.0"
     jacoco
 }
 
 repositories {
     mavenCentral()
+}
+
+// Configure dependency updates plugin
+tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask> {
+    rejectVersionIf {
+        isNonStable(candidate.version)
+    }
+    
+    // Check buildSrc dependencies too
+    checkBuildEnvironmentConstraints = true
+    
+    // Output format (can be "plain", "json", "xml", or "html")
+    outputFormatter = "plain"
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+    return !(stableKeyword || regex.matches(version))
 }
 
 kotlin {
