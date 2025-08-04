@@ -1,0 +1,25 @@
+---
+description: When asked to create a planning file
+globs: 
+alwaysApply: false
+---
+# Plan
+
+You may be asked to create a plan and then execute tasks. The following is guidance for that plan:
+- When asked to "create a plan", always create the plan file.
+- Always use markdown as a format.
+- You should create the plan within the root of the project.
+- A plan should have multiple markdown sectios.
+- The first section should be overview of the plan.
+- Next section should be assumptions.
+- Last section should be the task list.
+- The user may request additional sections.
+
+# Tasks Lists
+
+You may be asked to create a task list and then execute tasks. The following is guidance for this task list:
+- You should create the task list within the root of the project.
+- The last task should always be "Delete this task list".
+- Always check off the task when you are done.
+- We should add a section to the task list which outlines assumptions we are making about our tasks.
+- We should also add a section which provides file structure information for the package we are working within.
