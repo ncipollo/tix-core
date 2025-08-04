@@ -22,7 +22,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{secrets.ORG_GRADLE_PROJECT_signingKey}}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{secrets.ORG_GRADLE_PROJECT_signingPassword}}
           TIX_VERSION: ${{github.ref_name}}
-        run: ./gradlew publishAllPublicationsToMavenCentralRepository
+        run: ./gradlew publishAndReleaseToMavenCentral
       - name: Github Publish
         uses: ncipollo/release-action@v1
         with:

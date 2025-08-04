@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED_VARIABLE")
 
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import com.vanniktech.maven.publish.SonatypeHost
+
 
 /**
  * Dependency Hierarchy
@@ -26,7 +26,7 @@ plugins {
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.codingfeline.buildkonfig") version "0.13.3"
-    id("com.vanniktech.maven.publish") version "0.29.0"
+    id("com.vanniktech.maven.publish") version "0.34.0"
     id("com.github.ben-manes.versions") version "0.46.0"
     jacoco
 }
@@ -297,7 +297,7 @@ tasks.register("jvmTestCoverage") {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
     signAllPublications()
 
     coordinates(group.toString(), name, version.toString())
