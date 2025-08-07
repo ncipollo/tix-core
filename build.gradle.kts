@@ -25,7 +25,7 @@ plugins {
     val kotlinVersion = "2.2.0"
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
-    id("com.codingfeline.buildkonfig") version "0.13.3"
+    id("com.codingfeline.buildkonfig") version "0.17.1"
     id("com.vanniktech.maven.publish") version "0.34.0"
     id("com.github.ben-manes.versions") version "0.46.0"
     jacoco
