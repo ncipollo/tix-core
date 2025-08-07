@@ -44,7 +44,7 @@ class FlowResultTest {
     @Test
     fun map_success() {
         val result = FlowResult.success(42).map { "the answer is $it" }
-        expect("the answer is 42") {
+        expect("the answer is 42x") {
             result.getOrThrow()
         }
     }
@@ -57,4 +57,5 @@ class FlowResultTest {
             result.exceptionOrNull()
         }
     }
+
 }

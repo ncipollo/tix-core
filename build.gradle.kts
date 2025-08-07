@@ -208,8 +208,8 @@ kotlin {
             }
         }
         val jvmTest by getting {
+            dependsOn(commonTest)
             dependencies {
-                dependsOn(commonTest)
                 implementation(kotlin("test-junit"))
                 implementation(libs.mockk.jvm)
             }
