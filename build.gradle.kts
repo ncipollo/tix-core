@@ -22,7 +22,7 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
  */
 
 plugins {
-    val kotlinVersion = "1.9.20"
+    val kotlinVersion = "2.2.0"
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.codingfeline.buildkonfig") version "0.13.3"
@@ -49,7 +49,7 @@ tasks.withType<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 }
 
 fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     return !(stableKeyword || regex.matches(version))
 }
@@ -57,10 +57,9 @@ fun isNonStable(version: String): Boolean {
 kotlin {
     js(IR) {
         compilations.all {
-            kotlinOptions {
-                moduleKind = "umd"
-                sourceMap = true
-                metaInfo = true
+            compilerOptions.configure {
+                moduleKind.set(org.jetbrains.kotlin.gradle.dsl.JsModuleKind.MODULE_UMD)
+                sourceMap.set(true)
             }
         }
         nodejs {
@@ -74,7 +73,9 @@ kotlin {
 
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = JavaVersion.VERSION_11.toString()
+            compilerOptions.configure {
+                jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+            }
         }
 
         val test by compilations.getting {
@@ -88,14 +89,14 @@ kotlin {
                     "src/jvmMain/kotlin"
                 )
 
-                val classFiles = File("${buildDir}/classes/kotlin/jvm/")
+                val classFiles = File("${layout.buildDirectory.get().asFile}/classes/kotlin/jvm/")
                     .walkBottomUp()
                     .toSet()
 
                 classDirectories.setFrom(classFiles)
                 sourceDirectories.setFrom(files(coverageSourceDirs))
 
-                executionData.setFrom(files("${buildDir}/jacoco/jvmTest.exec"))
+                executionData.setFrom(files("${layout.buildDirectory.get().asFile}/jacoco/jvmTest.exec"))
 
                 reports {
                     xml.required.set(true)
@@ -109,14 +110,14 @@ kotlin {
                     "src/jvmMain/kotlin"
                 )
 
-                val classFiles = File("${buildDir}/classes/kotlin/jvm/")
+                val classFiles = File("${layout.buildDirectory.get().asFile}/classes/kotlin/jvm/")
                     .walkBottomUp()
                     .toSet()
 
                 classDirectories.setFrom(classFiles)
                 sourceDirectories.setFrom(files(coverageSourceDirs))
 
-                executionData.setFrom(files("${buildDir}/jacoco/jvmTest.exec"))
+                executionData.setFrom(files("${layout.buildDirectory.get().asFile}/jacoco/jvmTest.exec"))
 
                 violationRules {
                     rule {
@@ -285,7 +286,7 @@ tasks.register("hostOSNativeTest") {
 }
 
 tasks.register("printCoverageLocation") {
-    val htmlIndexPath = "${buildDir}/reports/jacoco/jacocoTestReport/html/index.html"
+    val htmlIndexPath = "${layout.buildDirectory.get().asFile}/reports/jacoco/jacocoTestReport/html/index.html"
     println("Coverage HTML Location: $htmlIndexPath")
 }
 
