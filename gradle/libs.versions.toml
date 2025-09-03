@@ -4,7 +4,7 @@ json = "1.6.0"
 ktor = "2.3.4"
 markdown = "0.7.3"
 mockk = "1.12.5"
-okio = "3.5.0"
+okio = "3.16.0"
 turbine = "1.0.0"
 yml = "0.13.0"
 
