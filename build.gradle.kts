@@ -22,7 +22,7 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
  */
 
 plugins {
-    val kotlinVersion = "2.2.10"
+    val kotlinVersion = "2.2.20"
     kotlin("multiplatform") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
     id("com.codingfeline.buildkonfig") version "0.17.1"
